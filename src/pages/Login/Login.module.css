@@ -1,0 +1,23 @@
+.loginCardWrapper {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginCard {
+    padding: 25px;
+    min-width: 400px;
+    border-radius: 8px;
+    box-shadow: 1px 3px 9px var(--color-strong-purple);
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.inputsWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
