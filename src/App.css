@@ -1,38 +1,39 @@
+* {
+    font-family: Roboto Mono, monospace;
+    font-size: 14px;
+    line-height: 1.15;
+    font-weight: normal;
+    padding: 0;
+    margin: 0;
+}
+
+:root {
+    --color-light-purple: #E9EEFF;
+    --color-strong-purple: #4452D0;
+    --color-main-black: #000000;
+    --color-main-white: #FFFFFF;
+    --color-main-border: #181820;
+    --color-main-gray: #A0A0A6;
+    /*--color-light-gray: #E9EEFF;*/
+    --color-strong-orange: rgba(233, 80, 14, .8);
+
+}
+
 .App {
-  text-align: center;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1 {
+    font-size: 2.57rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+h2 {
+    font-size: 1.71rem;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+h3 {
+    font-size: 1.29rem;
 }
