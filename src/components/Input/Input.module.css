@@ -1,0 +1,25 @@
+.inputWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.mainInput {
+    width: inherit;
+    font-size: 1.5rem;
+    padding: 10px;
+    border: 3px solid var(--color-light-purple);
+    border-radius: 8px;
+}
+
+.mainInput:focus {
+    outline: none;
+}
+
+.errorMessage {
+    font-size: .9rem;
+    color: var(--color-strong-orange);
+}
+
+.error {
+    border: 3px solid var(--color-strong-orange);
+}
