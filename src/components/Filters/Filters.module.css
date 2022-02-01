@@ -1,0 +1,98 @@
+.contentWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.filtersWrapper {
+    padding-left: 44px;
+    padding-top: 27px;
+    display: flex;
+    gap: 56px;
+}
+
+.filterName {
+    font-size: 1.7rem;
+}
+
+.selectWrapper {
+    width: 400px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.minWidth450 {
+    min-width: 450px;
+}
+
+.deviceTypeSelect {
+    width: 400px;
+    border-radius: 4px;
+    /*border: 1px solid var(--color-main-border);*/
+    min-height: 51px;
+    display: flex;
+    /*padding: 15px;*/
+}
+
+.deviceDateSelect {
+    width: 150px;
+    border-radius: 4px;
+    border: 1px solid var(--color-main-border);
+    padding: 15px;
+}
+
+.fullWidthButton {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-right: 51px;
+}
+
+.dropButtonWrapper {
+    display: flex;
+}
+
+.dropButton {
+    padding: 5px;
+    color: var(--color-main-gray);
+    transition: all .3s;
+    cursor: pointer;
+}
+
+.dropButton:hover {
+    color: var(--color-main-black);
+    transition: all .3s;
+}
+
+.dropButton:after {
+    content: "";
+    display: block;
+    height: 5px;
+    width: 100%;
+    background-image: linear-gradient(to right, var(--color-main-gray) 50%, white 0%);
+    background-position: bottom;
+    background-size: 10px 2px;
+    background-repeat: repeat-x;
+}
+
+.dropButton:hover:after {
+    background-image: linear-gradient(to right, var(--color-main-black) 50%, white 0%);
+}
+
+.tableWrapper {
+    margin-left: 22px;
+    margin-top: 30px;
+    width: 100%;
+    max-width: 1685px;
+}
