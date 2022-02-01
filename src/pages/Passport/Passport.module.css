@@ -1,0 +1,117 @@
+* {
+    transition: all .3s;
+}
+
+.pageWrapper {
+    height: calc(100% - 120px);
+    width: calc(100vw - 250px);
+    padding-top: 80px;
+    padding-left: 88px;
+    padding-bottom: 30px;
+    overflow-x: auto;
+}
+
+.passportHeaderWrapper {
+
+}
+
+.passportType {
+    font-size: 1.7rem;
+}
+
+.passportNameWrapper {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 8px;
+}
+
+.passportNameWrapper > h1 {
+    max-width: 700px;
+    width: 38%;
+}
+
+.icons {
+    display: flex;
+    gap: 17px;
+}
+
+.inactiveIcon {
+    opacity: .5;
+}
+
+.passportUUId {
+    margin-top: 16px;
+}
+
+.passportMainContent {
+    margin-top: 64px;
+    /*overflow-x: auto;*/
+}
+
+.passportStepWrapper {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    width: 1177px;
+}
+
+.stepContentWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 480px;
+}
+
+.descriptionWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.stepRowWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.descriptionRowHeader {
+    width: 200px;
+    padding-right: 10px;
+    color: var(--color-main-gray);
+}
+
+.stepVideoPreview {
+    width: 221px;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    text-align: center;
+    padding: 44px 30px;
+    background-color: var(--color-main-gray);
+    border-radius: 4px;
+    margin-left: 80px;
+}
+
+.stepVideoPreview:hover {
+    cursor: not-allowed;
+    /*background-color: var(--color-light-purple);*/
+}
+
+.stepVideoPreview {
+    text-wrap: normal;
+}
+
+.configurationButtonsWrapper {
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    margin-left: 80px;
+}
+
+.configurationButtonsWrapper > button:hover {
+    cursor: not-allowed;
+}
+
+.noRequiredInformation {
+    margin-top: 150px;
+}
