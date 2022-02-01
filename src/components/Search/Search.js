@@ -1,0 +1,18 @@
+import React from 'react';
+import styles from './Search.module.css'
+import searchIcon from '../../assets/search.svg'
+import {useTranslation} from "react-i18next";
+
+
+export default function Search(props) {
+    let { t } = useTranslation()
+    return (
+        <div className={styles.searchWrapper}>
+            <div className={styles.searchIcon}>
+                <img src={searchIcon} alt="search icon"/>
+            </div>
+            <input value={props.value || ''} onChange={(e) => props.onChange && props.onChange(e.target.value)} className={styles.searchField} placeholder={t('search.enterName')}/>
+            <button className={styles.searchButton}>{t('search.Find')}</button>
+        </div>
+    );
+}
