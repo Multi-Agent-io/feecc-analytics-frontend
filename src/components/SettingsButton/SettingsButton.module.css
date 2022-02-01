@@ -1,0 +1,9 @@
+.buttonWrapper {
+    height: 48px;
+    width: 48px;
+}
+
+.buttonWrapper > img {
+    height: inherit;
+    width: inherit;
+}
