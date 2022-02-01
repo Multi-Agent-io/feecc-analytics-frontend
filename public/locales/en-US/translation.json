@@ -1,0 +1,58 @@
+{
+  "sidebar": {
+    "Passports": "Passports",
+    "Employees": "Employees",
+    "Schemas": "Schemas",
+    "Logout": "Log out"
+  },
+  "search": {
+    "enterName": "Enter product name or employee name",
+    "Find": "Find"
+  },
+  "filters": {
+    "DeviceType": "Device type",
+    "Date": "Date",
+    "Overwork": "Exceeding standard hours",
+    "NeedsFix": "Need improvement",
+    "ChooseFromList": "Choose from list",
+    "calendar": {
+      "months": {
+        "January": "January",
+        "February": "February",
+        "March": "March",
+        "April": "April",
+        "May": "May",
+        "June": "June",
+        "July": "July",
+        "August": "August",
+        "September": "September",
+        "October": "October",
+        "November": "November",
+        "December": "December"
+      },
+      "days": {
+        "Mon": "Mon",
+        "Tue": "Tue",
+        "Wed": "Wen",
+        "Thu": "Thu",
+        "Fri": "Fri",
+        "Sat": "Sat",
+        "Sun": "Sun"
+      }
+
+    }
+  },
+  "login": {
+    "Username": "Username",
+    "Password": "Password",
+    "loginToProceed": "Log in to proceed",
+    "usernameIsRequired": "Username is required",
+    "passwordIsRequired": "Password is required",
+    "usernameIsNotFound": "Username is not found",
+    "passwordIsIncorrect": "Password is incorrect",
+    "incorrectUsernameOrPassword": "Incorrect username or password"
+  },
+  "passport": {
+    "noRequiredInformation": "This passport does not contain required information"
+  }
+}

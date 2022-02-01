@@ -1,0 +1,58 @@
+{
+  "sidebar": {
+    "Passports": "Паспорта",
+    "Employees": "Сотрудники",
+    "Schemas": "Схемы",
+    "Logout": "Выход"
+  },
+  "search": {
+    "enterName": "Введите название изделия или имя сотрудника",
+    "Find": "Найти"
+  },
+  "filters": {
+    "DeviceType": "Тип устройства",
+    "Date": "Дата",
+    "Overwork": "Превышение нормочасов",
+    "NeedsFix": "Необходимость доработки",
+    "ChooseFromList": "Выберите из списка",
+    "calendar": {
+      "months": {
+        "January": "Январь",
+        "February": "Февраль",
+        "March": "Март",
+        "April": "Апрель",
+        "May": "Май",
+        "June": "Июнь",
+        "July": "Июль",
+        "August": "Август",
+        "September": "Сентябрь",
+        "October": "Октябрь",
+        "November": "Ноябрь",
+        "December": "Декабрь"
+      },
+      "days": {
+        "Mon": "Пн",
+        "Tue": "Вт",
+        "Wed": "Ср",
+        "Thu": "Чт",
+        "Fri": "Пт",
+        "Sat": "Сб",
+        "Sun": "Вс"
+      }
+    }
+  },
+  "login": {
+    "Username": "Логин",
+    "Password": "Пароль",
+    "loginToProceed": "Войдите для продолжения",
+    "proceed": "Продолжить",
+    "usernameIsRequired": "Поле должно быть заполнено",
+    "passwordIsRequired": "Поле должно быль заполнено",
+    "usernameIsNotFound": "Пользователь не найден",
+    "passwordIsIncorrect": "Неправильный пароль",
+    "incorrectUsernameOrPassword": "Неправильный логин или пароль"
+  },
+  "passport": {
+    "noRequiredInformation": "Данный паспорт не содержит в себе информации об этапах сборки"
+  }
+}
