@@ -1,0 +1,8 @@
+.messageWrapper {
+    display: flex;
+    width: calc(100vw - 166px);
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+}
