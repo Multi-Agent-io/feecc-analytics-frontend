@@ -12,13 +12,13 @@ import {history} from "../../store/main";
 
 
 export default function Passports(props) {
-    const pageSize = 11
-
+    let [pageSize, setPageSize] = useState(11)
     let dispatch = useDispatch()
     let authorized = useSelector(getAuthorizationStatus)
     let [filtersValues, setFiltersValues] = useState({deviceType: [''], date: null, overwork: null, requiredFix: null})
     let [searchValue, setSearchValue] = useState('')
     let [page, setPage] = useState(localStorage.getItem('tablePage') || 25)
+    let [filtersDisplay, changeFiltersDisplay] = useState(true)
     let passportsNumber = useSelector(getPassportsNumber)
 
     let rows = useSelector(getPassports)?.toJS()
@@ -26,12 +26,12 @@ export default function Passports(props) {
     useEffect(() => {
         localStorage.setItem('tablePage', page)
         fetchPassports()
-    }, [filtersValues, page])
+    }, [filtersValues, page, pageSize])
 
     let fetchPassports = () => {
         let {deviceType, date, overwork, requiredFix } = filtersValues
         if (authorized) {
-            doGetPassports(dispatch, page, 11, searchValue, date, requiredFix, overwork)
+            doGetPassports(dispatch, page, pageSize, searchValue, date, requiredFix, overwork)
                 .then((res) => {
                 })
                 .catch((err) => {
@@ -51,14 +51,21 @@ export default function Passports(props) {
             <div className={styles.searchWrapper}>
                 <ScanButton/>
                 <Search value={searchValue} onChange={setSearchValue}/>
-                <SettingsButton/>
+                <SettingsButton onClick={() => {
+                    changeFiltersDisplay(!filtersDisplay)
+                    setPageSize(13)
+                }}/>
             </div>
             <div className={styles.contentWrapper}>
-                <Filters onChange={(values) => {
-                    if (page !== localStorage.getItem('tablePage') && page !== 1)
-                        setPage(1)
-                    setFiltersValues(values)
-                }} onDrop={dropSettings}/>
+                <Filters
+                    onChange={(values) => {
+                        if (page !== localStorage.getItem('tablePage') && page !== 1)
+                            setPage(1)
+                        setFiltersValues(values)
+                    }}
+                    onDrop={dropSettings}
+                    toggle={filtersDisplay}
+                />
                 <Table
                     onPageChange={(page) => {
                         setPage(parseInt(page))

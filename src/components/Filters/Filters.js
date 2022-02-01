@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import clsx from "clsx";
 import styles from './Filters.module.css'
 import {useTranslation} from "react-i18next";
 import Checkbox from "../Checkbox/Checkbox";
@@ -31,30 +32,27 @@ export default function Filters(props) {
         props.onDrop && props.onDrop()
     }
 
-    return (
-        <div className={styles.contentWrapper}>
-            <div className={styles.filtersWrapper}>
-                <div className={styles.column}>
-                    <div className={styles.filterName}>{t('filters.DeviceType')}</div>
-                    <div className={styles.deviceTypeSelect}>
-                        <Select onChange={(e) => setDeviceType(e)} options={options}/>
+    return props.toggle === true ? (<div className={styles.contentWrapper}>
+                <div className={styles.filtersWrapper}>
+                    <div className={styles.column}>
+                        <div className={styles.filterName}>{t('filters.DeviceType')}</div>
+                        <div className={styles.deviceTypeSelect}>
+                            <Select onChange={(e) => setDeviceType(e)} options={options}/>
+                        </div>
+                    </div>
+                    <div className={styles.column}>
+                        <div className={styles.filterName}>{t('filters.Date')}</div>
+                        <DatePicker onChange={(e) => setDate(e)}/>
+                    </div>
+                    <div className={classNames(styles.column, styles.minWidth450)}>
+                        <Checkbox onChange={(status) => setOverwork(status)} checked={overwork} type="time">{t('filters.Overwork')}</Checkbox>
+                        <Checkbox onChange={(status) => setRequiredFix(status)} checked={requiredFix} type="fix">{t('filters.NeedsFix')}</Checkbox>
+                    </div>
+                    <div className={classNames(styles.column, styles.fullWidthButton) }>
+                        <div className={styles.dropButtonWrapper}>
+                            <h2 onClick={dropFilters} className={styles.dropButton}>Сбросить</h2>
+                        </div>
                     </div>
                 </div>
-                <div className={styles.column}>
-                    <div className={styles.filterName}>{t('filters.Date')}</div>
-                    <DatePicker onChange={(e) => setDate(e)}/>
-                </div>
-                <div className={classNames(styles.column, styles.minWidth450)}>
-                    <Checkbox onChange={(status) => setOverwork(status)} checked={overwork} type="time">{t('filters.Overwork')}</Checkbox>
-                    <Checkbox onChange={(status) => setRequiredFix(status)} checked={requiredFix} type="fix">{t('filters.NeedsFix')}</Checkbox>
-                </div>
-                <div className={classNames(styles.column, styles.fullWidthButton) }>
-                    <div className={styles.dropButtonWrapper}>
-                        <h2 onClick={dropFilters} className={styles.dropButton}>Сбросить</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    );
+            </div>) : (<div></div>);
 }
