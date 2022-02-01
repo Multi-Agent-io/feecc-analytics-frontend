@@ -1,0 +1,20 @@
+.pageWrapper {
+    padding-top: 32px;
+    width: calc(100vw - 166px);
+}
+
+.searchWrapper {
+    display: flex;
+    height: 48px;
+    width: calc(100% - 89px);
+    gap: 29px;
+    padding-left: 44px;
+}
+
+.contentWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
