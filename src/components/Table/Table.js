@@ -54,7 +54,7 @@ export default function Table(props) {
                                 {item.needFix && (<img src={fixIcon} alt="Fix required icon"/>)}
                             </td>
                             <td onClick={() => history.push(`/passport/${item.internal_id}`)} id={styles.nameCol}>{item.model}</td>
-                            <td id={styles.typeCol}>{item.type !== null ? item.type : 'Не указан'}</td>
+                            <td id={styles.typeCol}>{item.type !== null ? item.type : 'Сборка'}</td>
                             <td id={styles.dateTimeCol}>
                                 <div>{moment(item.time).format("DD.MM.YY HH:MM")}</div>
                             </td>
