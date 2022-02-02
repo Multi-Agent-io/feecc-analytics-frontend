@@ -19,43 +19,31 @@ export default function Passport(props) {
     let passport = useSelector(getCurrentPassport)?.toJS()
     let employees = useSelector(getAllEmployees)?.toJS()
 
-    // let [usernames, setUsernames] = useState([])
-
     useEffect(() => {
         doGetPassport(dispatch, location.split('/')[2])
             .then((res) => {
-                // console.log(res)
-                // setUsernames([''])
                 res.passport.biography.forEach((step, index) => {
                     decodeUser(dispatch, step.employee_name)
                         .then((res) => {
-                            // if(res.employee !== null) {
-                            //     let arr = usernames
-                            //     arr[index] = res.employee.name
-                            //     setUsernames(arr)
-                            // }
-                            // else {
-                            //     console.log('setting user to not found')
-                            //     let arr = usernames
-                            //     arr[index] = 'Сотрудник не найден'
-                            //     setUsernames(arr)
-                            // }
-                            // console.log('biography step', index)
-                            // console.log('usernames')
-                            // console.log(usernames)
-                    })
+                        })
                 })
-                // setTimeout(() => {
-                //     console.log('employees')
-                //     console.log(employees)
-                // }, 2000)
             })
             .catch((error) => {})
     }, [])
 
+    let reverseDate = (dateString) => {
+        let d1 = dateString.split(' ')
+        let d2 = d1[0].split('-')
+        let temp = d2[1]
+        d2[1] = d2[0]
+        d2[0] = temp
+        return `${d2[0]}-${d2[1]}-${d2[2]} ${d1[1]}`
+    }
     let formatTime = (step) => {
-        const start = Date.parse(step.session_start_time)
-        const end = Date.parse(step.session_end_time)
+        reverseDate(step.session_start_time)
+        let start = Date.parse(reverseDate(step.session_start_time))
+        let end = Date.parse(reverseDate(step.session_end_time))
+
         if (step.session_start_time === null || step.session_end_time === null)
             return "Время не указано"
         const diff = (end - start)/1000
@@ -92,7 +80,10 @@ export default function Passport(props) {
             res += seconds + ' ' + secondsAdd
         return res
     }
-
+    let extractDate = (dateString) => {
+        let dateArray = dateString.split(' ')[0].split('-')
+        return `${dateArray[0]}.${dateArray[1]}.${dateArray[2].slice(2)}`
+    }
     return (
         <div className={styles.pageWrapper}>
             <div className={styles.passportHeaderWrapper}>
@@ -104,7 +95,7 @@ export default function Passport(props) {
                         <img className={clsx({[styles.inactiveIcon]: !passport.needFix})} src={fixRequiredIcon} alt="Fix required icon"/>
                     </div>
                 </div>
-                <h2 className={styles.passportUUId}>{passport.uuid}</h2>
+                <h2 className={styles.passportUUId}>{passport.uuid} | {passport.internal_id}</h2>
             </div>
             <div className={styles.passportMainContent}>
             {passport.biography !== null && passport.biography !== undefined && passport.biography.length > 0 ? passport.biography.map((step, index) => {
@@ -123,7 +114,7 @@ export default function Passport(props) {
                                         </div>
                                         <div className={styles.stepRowWrapper}>
                                             <h3 className={styles.descriptionRowHeader}>Дата завершения:</h3>
-                                            <h3>{moment(Date.parse(step.session_end_time)).format('DD.MM.YY')}</h3>
+                                            <h3>{extractDate(step.session_end_time)}</h3>
                                         </div>
                                     </div>
                                 </div>

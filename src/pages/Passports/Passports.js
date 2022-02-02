@@ -50,10 +50,10 @@ export default function Passports(props) {
         <div className={styles.pageWrapper}>
             <div className={styles.searchWrapper}>
                 <ScanButton/>
-                <Search value={searchValue} onChange={setSearchValue}/>
+                <Search value={searchValue} onSearch={() => fetchPassports()} onChange={setSearchValue}/>
                 <SettingsButton onClick={() => {
                     changeFiltersDisplay(!filtersDisplay)
-                    setPageSize(13)
+                    filtersDisplay ? setPageSize(13) : setPageSize(11)
                 }}/>
             </div>
             <div className={styles.contentWrapper}>
