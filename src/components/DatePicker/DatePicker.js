@@ -132,11 +132,6 @@ export default function DatePicker(props) {
     let [selectedDay, setSelectedDay] = useState(todayTimestamp)
     let [monthDetails, setMonthDetails] = useState(getMonthDetails(year, month))
 
-    // let setYearOffset = (offset) => {
-    //     setYear(year + offset)
-    //     setMonthDetails(getMonthDetails(year, month))
-    // }
-
     let setMonthOffset = (offset) => {
         let localMonth = month + offset
         let localYear = year
@@ -208,7 +203,7 @@ export default function DatePicker(props) {
         <div ref={ref} className={styles.MyDatePicker}>
             <div className={clsx(styles.mdpInput, {[styles.mdpInputActive]: showDatePicker})}
                  onClick={() => changeShowDatePicker(!showDatePicker)}>
-                <input type="date" ref={inputRef} onChange={updateDateFromInput}/>
+                <input value={props.value} type="date" ref={inputRef} onChange={updateDateFromInput}/>
                 {showDatePicker && (<span className={styles.mdpLine}></span>)}
             </div>
             {showDatePicker ? (

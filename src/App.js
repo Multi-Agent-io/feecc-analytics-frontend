@@ -32,7 +32,6 @@ function App() {
 
     useEffect(() => {
         if(authorized && localStorage.getItem('token') !== undefined && localStorage.getItem('token') !== null) {
-            // history.push('/passports')
             doFetchUser(dispatch)
                 .then((res) => {
                     if (res.status === 200 && location === '/') {
@@ -43,26 +42,22 @@ function App() {
                     }
                 })
                 .catch((err) => {
-                    console.log('Error while fetching user')
-                    console.log('Error code')
-                    console.log(err)
                 })
-
-        } else {
-            history.push('/')
         }
         if(!authorized) {
             if(localStorage.getItem('token') !== undefined && localStorage.getItem('token') !== null)
                 doFetchUser(dispatch).then((res) => {
-                    if(res.status === 200) {
+                    if(res.status === 200 && location === '/') {
                         history.push('/passports')
                     } else if (res.status === 401) {
                         history.push('/')
                     }
                 })
             else {
-                if(location !== '/')
+                if(location !== '/') {
+                    console.log('FORCE REDIRECT')
                     history.push('/')
+                }
             }
         }
     })
