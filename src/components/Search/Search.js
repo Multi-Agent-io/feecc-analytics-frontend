@@ -12,7 +12,7 @@ export default function Search(props) {
                 <img src={searchIcon} alt="search icon"/>
             </div>
             <input value={props.value || ''} onChange={(e) => props.onChange && props.onChange(e.target.value)} className={styles.searchField} placeholder={t('search.enterName')}/>
-            <button className={styles.searchButton}>{t('search.Find')}</button>
+            <button onClick={() => props.onSearch && props.onSearch()} className={styles.searchButton}>{t('search.Find')}</button>
         </div>
     );
 }
