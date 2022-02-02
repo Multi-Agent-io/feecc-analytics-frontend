@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {forwardRef, useEffect, useRef, useState} from 'react';
+import moment from "moment";
 import clsx from "clsx";
 import styles from './Filters.module.css'
 import {useTranslation} from "react-i18next";
@@ -12,12 +13,11 @@ export default function Filters(props) {
     let [overwork, setOverwork] = useState(false)
     let [requiredFix, setRequiredFix] = useState(false)
     let [deviceType, setDeviceType] = useState([''])
-
     let {t} = useTranslation()
     let options = [
-        {id: 0, name: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.', value: "Type1", state: false},
-        {id: 1, name: 'Type 2', value: "Type2", state: false},
-        {id: 2, name: 'Type 3', value: "Type3", state: false},
+        {id: 0, name: 'Тип 1', value: "Type1", state: false},
+        {id: 1, name: 'Тип 2', value: "Type2", state: false},
+        {id: 2, name: 'Тип 3', value: "Type3", state: false},
     ]
 
     useEffect(() => {
@@ -42,7 +42,7 @@ export default function Filters(props) {
                     </div>
                     <div className={styles.column}>
                         <div className={styles.filterName}>{t('filters.Date')}</div>
-                        <DatePicker onChange={(e) => setDate(e)}/>
+                        <DatePicker value={moment(date).format('yyyy-MM-DD')} onChange={(e) => setDate(e)}/>
                     </div>
                     <div className={classNames(styles.column, styles.minWidth450)}>
                         <Checkbox onChange={(status) => setOverwork(status)} checked={overwork} type="time">{t('filters.Overwork')}</Checkbox>
