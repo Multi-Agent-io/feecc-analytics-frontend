@@ -127,7 +127,7 @@ export const decodeUser = (dispatch, username) => {
                     dispatch({
                         type: types.USER__DECODE_EMPLOYEE,
                         userHash: username,
-                        username: res.data.employee.name || 'Сотрудник не найден'
+                        username: res.data.employee?.name || 'Сотрудник не найден'
                     })
                     resolve(res.data)
                 } else {
