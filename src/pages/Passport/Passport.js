@@ -6,9 +6,11 @@ import {getAllEmployees, getCurrentPassport, getLocation} from "../../store/sele
 import {useDispatch, useSelector} from "react-redux";
 import {decodeUser, doGetPassport} from "../../store/userActions";
 import overworkIcon from '../../assets/time_icon.svg'
+import removeIcon from '../../assets/remove.png'
 import fixRequiredIcon from '../../assets/fix_icon.svg'
 import Button from "../../components/Button/Button";
 import {useTranslation} from "react-i18next";
+import ReactPlayer from "react-player";
 
 export default function Passport(props) {
 
@@ -18,6 +20,9 @@ export default function Passport(props) {
     let location = useSelector(getLocation)
     let passport = useSelector(getCurrentPassport)?.toJS()
     let employees = useSelector(getAllEmployees)?.toJS()
+
+    let [showModal, toggleModal] = useState(false)
+    let [selectedStep, setSelectedStep] = useState({})
 
     useEffect(() => {
         doGetPassport(dispatch, location.split('/')[2])
@@ -39,6 +44,7 @@ export default function Passport(props) {
         d2[0] = temp
         return `${d2[0]}-${d2[1]}-${d2[2]} ${d1[1]}`
     }
+
     let formatTime = (step) => {
         reverseDate(step.session_start_time)
         let start = Date.parse(reverseDate(step.session_start_time))
@@ -100,7 +106,7 @@ export default function Passport(props) {
             <div className={styles.passportMainContent}>
             {passport.biography !== null && passport.biography !== undefined && passport.biography.length > 0 ? passport.biography.map((step, index) => {
                     return (
-                            <div className={styles.passportStepWrapper}>
+                            <div key={index} className={styles.passportStepWrapper}>
                                 <div className={styles.stepContentWrapper}>
                                     <h2>{step.name}</h2>
                                     <div className={styles.descriptionWrapper}>
@@ -118,7 +124,12 @@ export default function Passport(props) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className={styles.stepVideoPreview}>
+                                <div className={styles.stepVideoPreview}
+                                     onClick={() => {
+                                         setSelectedStep(step)
+                                         toggleModal(true)
+                                     }}
+                                >
                                     <h2>Превью видеозаписи</h2>
                                 </div>
                                 <div className={styles.configurationButtonsWrapper}>
@@ -130,6 +141,16 @@ export default function Passport(props) {
                 <h1 className={styles.noRequiredInformation}>{t('passport.noRequiredInformation')}</h1>
             )}
             </div>
+            {showModal && (
+                <div className={styles.modalWrapper}>
+                    <div className={styles.modalContent}>
+                        <img onClick={() => toggleModal(false)} className={styles.removeIcon} src={removeIcon} alt="remove icon"/>
+                        <ReactPlayer width={1100} height={630} controls={true} url={`https://gateway.pinata.cloud/ipfs/${selectedStep.video_hashes[0]}`}/>
+                        <div className={styles.videoDescription}>{selectedStep.name}</div>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 }

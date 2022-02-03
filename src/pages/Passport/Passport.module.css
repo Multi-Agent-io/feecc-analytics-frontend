@@ -93,7 +93,7 @@
 }
 
 .stepVideoPreview:hover {
-    cursor: not-allowed;
+    cursor: pointer;
     /*background-color: var(--color-light-purple);*/
 }
 
@@ -114,4 +114,43 @@
 
 .noRequiredInformation {
     margin-top: 150px;
+}
+
+.modalWrapper {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, .2);
+}
+
+.modalContent {
+    border-radius: 10px;
+    padding: 30px;
+    background-color: var(--color-main-white);
+    position: relative;
+}
+
+.removeIcon {
+    width: 50px;
+    position: absolute;
+    left: -30px;
+    top: -30px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 100%;
+    box-shadow: 3px 3px 3px var(--color-main-gray);
+}
+
+.removeIcon:hover {
+    background-color: var(--color-light-purple);
+}
+
+.videoDescription {
+    margin-top: 30px;
+    font-size: 2rem;
 }
