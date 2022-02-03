@@ -26,7 +26,6 @@ function App() {
         // ['^/production-schemas', () => <Schemas/>],
         ['^/production-schemas', () => <UnderConstruction/>],
         ['^/passport/*', () => <Passport/>]
-        ['^/*', () => <Login/>]
 
     ]
     let route = (path) => routes.find(r => path.match(r[0]) !== null)?.[1]?.()
