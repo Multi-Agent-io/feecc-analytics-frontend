@@ -26,6 +26,19 @@ export default function Table(props) {
                 buttonsClickHandler(parseInt(e.target.value))
         }
     }
+
+    let getDate = (dateString) => {
+        if(dateString === "Invalid date")
+            return "Can't find time"
+        return dateString
+    }
+
+    // useEffect(() => {
+    //     console.log('mounted')
+    //     console.log('pages', pages)
+    //     console.log('props.passportsNumber', props.passportsNumber)
+    // }, [])
+
     return (
         <div>
             <table>
@@ -45,7 +58,6 @@ export default function Table(props) {
                 </thead>
                 <tbody>
                     {props.rowsData.map((item, index) => {
-                        // if (index >= page * pageSize && index < (page+1)*pageSize)
                         return (<tr key={index}>
                             <td id={styles.timeCol}>
                                 {item.overwork && (<img src={timeIcon} alt="Overwork icon"/>)}
@@ -56,7 +68,7 @@ export default function Table(props) {
                             <td onClick={() => history.push(`/passport/${item.internal_id}`)} id={styles.nameCol}>{item.model}</td>
                             <td id={styles.typeCol}>{item.type !== null ? item.type : 'Сборка'}</td>
                             <td id={styles.dateTimeCol}>
-                                <div>{moment(item.time).format("DD.MM.YY HH:MM")}</div>
+                                <div>{getDate(moment(item.date).format("DD.MM.YYYY HH:MM:SS"))}</div>
                             </td>
                         </tr>)
                     })}
