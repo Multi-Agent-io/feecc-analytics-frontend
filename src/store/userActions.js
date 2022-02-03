@@ -8,7 +8,7 @@ import axios from "axios";
 export const doGetAuthToken = (username, password) => {
     return new Promise((resolve, reject) => {
         axios.post(
-            'http://localhost:5002/token',
+            'http://analytics.netmvas.com:5002/token',
             `username=${username}&password=${password}&scope=&client_id=&client_secret=`,
             {
                 headers: {
@@ -33,7 +33,7 @@ export const doGetAuthToken = (username, password) => {
 export const doFetchUser = (dispatch) => {
     return new Promise((resolve, reject) => {
         axios.get(
-            'http://localhost:5002/api/v1/users/me',
+            'http://analytics.netmvas.com:5002/api/v1/users/me',
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export const doFetchUser = (dispatch) => {
 
 export const doGetPassports = (dispatch, page=1, size=12, name = null, date = null, overtime = null, rework = null) => {
     return new Promise((resolve, reject) => {
-        let request = 'http://localhost:5002/api/v1/passports'
+        let request = 'http://analytics.netmvas.com:5002/api/v1/passports'
         request += '/?page=' + page + '&items=' + size
         if (name !== null && name !== '' && name !== undefined)
             request += '&name=' + name
@@ -91,7 +91,7 @@ export const doGetPassports = (dispatch, page=1, size=12, name = null, date = nu
 
 export const doGetPassport = (dispatch, internalId) => {
     return new Promise((resolve, reject) => {
-        axios.get(`http://localhost:5002/api/v1/passports/${internalId}`,
+        axios.get(`http://analytics.netmvas.com:5002/api/v1/passports/${internalId}`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ export const doGetPassport = (dispatch, internalId) => {
 export const decodeUser = (dispatch, username) => {
     return new Promise((resolve, reject) => {
         axios.post(
-            `http://localhost:5002/api/v1/employees/decode`,
+            `http://analytics.netmvas.com:5002/api/v1/employees/decode`,
             {"encoded_name":username},
             {
                 headers: {
