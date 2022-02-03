@@ -8,7 +8,7 @@ import axios from "axios";
 export const doGetAuthToken = (username, password) => {
     return new Promise((resolve, reject) => {
         axios.post(
-            'http://analytics.netmvas.com:5002/token',
+            'http://134.209.240.5:5002/token',
             `username=${username}&password=${password}&scope=&client_id=&client_secret=`,
             {
                 headers: {
@@ -33,7 +33,7 @@ export const doGetAuthToken = (username, password) => {
 export const doFetchUser = (dispatch) => {
     return new Promise((resolve, reject) => {
         axios.get(
-            'http://analytics.netmvas.com:5002/api/v1/users/me',
+            'http://134.209.240.5:5002/api/v1/users/me',
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export const doFetchUser = (dispatch) => {
 
 export const doGetPassports = (dispatch, page=1, size=12, name = null, date = null, overtime = null, rework = null) => {
     return new Promise((resolve, reject) => {
-        let request = 'http://analytics.netmvas.com:5002/api/v1/passports'
+        let request = 'http://134.209.240.5:5002/api/v1/passports'
         request += '/?page=' + page + '&items=' + size
         if (name !== null && name !== '' && name !== undefined)
             request += '&name=' + name
@@ -91,7 +91,7 @@ export const doGetPassports = (dispatch, page=1, size=12, name = null, date = nu
 
 export const doGetPassport = (dispatch, internalId) => {
     return new Promise((resolve, reject) => {
-        axios.get(`http://analytics.netmvas.com:5002/api/v1/passports/${internalId}`,
+        axios.get(`http://134.209.240.5:5002/api/v1/passports/${internalId}`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ export const doGetPassport = (dispatch, internalId) => {
 export const decodeUser = (dispatch, username) => {
     return new Promise((resolve, reject) => {
         axios.post(
-            `http://analytics.netmvas.com:5002/api/v1/employees/decode`,
+            `http://134.209.240.5:5002/api/v1/employees/decode`,
             {"encoded_name":username},
             {
                 headers: {
@@ -127,7 +127,7 @@ export const decodeUser = (dispatch, username) => {
                     dispatch({
                         type: types.USER__DECODE_EMPLOYEE,
                         userHash: username,
-                        username: res.data.employee?.name || 'Сотрудник не найден'
+                        username: res.data.employee.name || 'Сотрудник не найден'
                     })
                     resolve(res.data)
                 } else {
