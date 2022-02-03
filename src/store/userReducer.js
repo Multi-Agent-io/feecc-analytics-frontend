@@ -156,15 +156,14 @@ export const userReducer = (state = {}, action) => {
                 passports[index] = item
                 if(passports[index].model === null)
                     passports[index].model = "Без названия"
-                passports[index].needFix = Math.random() < 0.5 // Random boolean
-                passports[index].overwork = Math.random() < 0.5 // Random boolean
+                passports[index].needFix = true // Random boolean
+                passports[index].overwork = true // Random boolean
                 passports[index].time = passports.date
             })
 
             return state
                 .set('passports', fromJS(passports))
                 .set('passportsNumber', action.count)
-                // .update('passports', item => console.log(item))
         }
         case types.USER__FETCH_SELECTED_PASSPORT: {
             return state
