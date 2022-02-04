@@ -7,22 +7,38 @@ import Checkbox from "../Checkbox/Checkbox";
 import classNames from "classnames";
 import Select from "../Select/Select";
 import DatePicker from "../DatePicker/DatePicker";
+import {doGetPassportTypes} from "../../store/userActions";
+import {useDispatch, useSelector} from "react-redux";
+import {history} from "../../store/main";
+import {getAllTypes} from "../../store/selectors";
 
 export default function Filters(props) {
+    let dispatch = useDispatch()
     let [date, setDate] = useState(null)
     let [overwork, setOverwork] = useState(false)
     let [requiredFix, setRequiredFix] = useState(false)
     let [deviceType, setDeviceType] = useState([''])
     let {t} = useTranslation()
-    let options = [
-        {id: 0, name: 'Тип 1', value: "Type1", state: false},
-        {id: 1, name: 'Тип 2', value: "Type2", state: false},
-        {id: 2, name: 'Тип 3', value: "Type3", state: false},
-    ]
+    // let options = [
+    //     {id: 0, name: 'Тип 1', value: "Type1", state: false},
+    //     {id: 1, name: 'Тип 2', value: "Type2", state: false},
+    //     {id: 2, name: 'Тип 3', value: "Type3", state: false},
+    // ]
+
+    let passportTypes = useSelector(getAllTypes)
 
     useEffect(() => {
             props.onChange && props.onChange({deviceType, date, overwork, requiredFix})
     }, [date, overwork, requiredFix, deviceType])
+
+    useEffect(() => {
+       doGetPassportTypes(dispatch)
+           .then((res) => {})
+           .catch((err) => {
+               if(err.response.status === 401)
+                   history.push('/')
+           })
+    }, [])
 
     let dropFilters = () => {
         setDate(null)
@@ -37,7 +53,7 @@ export default function Filters(props) {
                     <div className={styles.column}>
                         <div className={styles.filterName}>{t('filters.DeviceType')}</div>
                         <div className={styles.deviceTypeSelect}>
-                            <Select onChange={(e) => setDeviceType(e)} options={options}/>
+                            <Select onChange={(e) => setDeviceType(e)} options={passportTypes}/>
                         </div>
                     </div>
                     <div className={styles.column}>
@@ -54,5 +70,5 @@ export default function Filters(props) {
                         </div>
                     </div>
                 </div>
-            </div>) : (<div></div>);
+            </div>) : (<div/>);
 }

@@ -16,7 +16,7 @@ export default function Select(props) {
                 })
                 return {...state, checkboxes: [...newState]}
             case 'reset': {
-                props.onChange && props.onChange([''])
+                props.onChange && props.onChange('')
                 return init(props.options)
             }
             default:
@@ -54,13 +54,17 @@ export default function Select(props) {
             changeSelection(res)
         else
             changeSelection('Выберите из списка')
-        props.onChange && props.onChange(arr)
+        props.onChange && props.onChange(res)
     }
 
     let resetSelection = () => {
         changeSelection('Выберите из списка')
         localDispatch({type: 'reset'})
     }
+
+    useEffect(() => {
+        localDispatch({type: 'reset'})
+    }, [props.options])
 
     return (
         <div className={clsx(styles.selectWrapper, {[styles.selectWrapperActive]: selectStatus})}>
