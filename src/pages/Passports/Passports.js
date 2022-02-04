@@ -12,27 +12,37 @@ import {history} from "../../store/main";
 
 
 export default function Passports(props) {
-    let [pageSize, setPageSize] = useState(11)
+
     let dispatch = useDispatch()
-    let authorized = useSelector(getAuthorizationStatus)
+
+    let [pageSize, setPageSize] = useState(11)
     let [filtersValues, setFiltersValues] = useState({deviceType: [''], date: null, overwork: null, requiredFix: null})
     let [searchValue, setSearchValue] = useState('')
-    let [page, setPage] = useState(localStorage.getItem('tablePage') || 25)
+    let [page, setPage] = useState(localStorage.getItem('tablePage') || 1)
     let [filtersDisplay, changeFiltersDisplay] = useState(true)
-    let passportsNumber = useSelector(getPassportsNumber)
 
+    let authorized = useSelector(getAuthorizationStatus)
+    let pages = Math.ceil(useSelector(getPassportsNumber)/pageSize)
     let rows = useSelector(getPassports)?.toJS()
 
+
     useEffect(() => {
-        localStorage.setItem('tablePage', page)
         fetchPassports()
     }, [filtersValues, page, pageSize])
+
+    useEffect(() => {
+        if (rows.length === 0)
+            fetchPassports()
+        if(page > pages && pages !== 0)
+            setPage(pages)
+    }, [rows])
 
     let fetchPassports = () => {
         let {deviceType, date, overwork, requiredFix } = filtersValues
         if (authorized) {
-            doGetPassports(dispatch, page, pageSize, searchValue, date, requiredFix, overwork)
+            doGetPassports(dispatch, page, pageSize, searchValue, date, requiredFix, overwork, '')
                 .then((res) => {
+                    // correctPage()
                 })
                 .catch((err) => {
                     if (err.response.status === 401)
@@ -44,6 +54,11 @@ export default function Passports(props) {
     let dropSettings = () => {
         setSearchValue('')
         setPage(1)
+    }
+
+    let setTablePage = (page) => {
+        setPage(parseInt(page))
+        localStorage.setItem('tablePage', page)
     }
 
     return (
@@ -67,13 +82,11 @@ export default function Passports(props) {
                     toggle={filtersDisplay}
                 />
                 <Table
-                    onPageChange={(page) => {
-                        setPage(parseInt(page))
-                    }}
+                    setPage={setTablePage}
                     rowsData={rows}
-                    startPage={page}
+                    page={page}
                     pageSize={pageSize}
-                    passportsNumber={passportsNumber}
+                    pages={pages}
                 />
             </div>
         </div>
