@@ -53,6 +53,7 @@ export default function Login(props) {
                                 history.push('/passports')
                             }
                         })
+                        .catch((err) => {})
                 })
                 .catch((error) => {
                     setUsernameError(t('login.incorrectUsernameOrPassword'))

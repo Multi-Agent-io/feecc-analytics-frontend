@@ -84,6 +84,8 @@ export default function Passport(props) {
             res += minutes + ' ' + minutesAdd + ' '
         if (seconds > 0)
             res += seconds + ' ' + secondsAdd
+        if (res === '')
+            res += '0 секунд'
         return res
     }
     let extractDate = (dateString) => {
