@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import moment from "moment";
 import {history} from "../../store/main";
 import timeIcon from '../../assets/time_icon.svg'
@@ -10,34 +10,36 @@ import rightArrow from '../../assets/arrow_right.svg'
 import slashIcon from '../../assets/slash.svg'
 
 export default function Table(props) {
-    const pageSize = props.pageSize
-    let page = props.startPage
-    let pages = Math.ceil(props.passportsNumber/pageSize)
-    let buttonsClickHandler = (page) => {
-        props.onPageChange && props.onPageChange(page)
-    }
 
     let onInputChange = (e) => {
         let value = e.target.value
         if (typeof parseInt(value) === "number") {
             if(value === '')
-                buttonsClickHandler(1)
-            else if (value > 0 && value <= pages)
-                buttonsClickHandler(parseInt(e.target.value))
+                setPage(1)
+            else if (value > 0 && value <= props.pages)
+                setPage(parseInt(e.target.value))
         }
     }
 
-    let getDate = (dateString) => {
+    let checkDate = (dateString) => {
         if(dateString === "Invalid date")
             return "Can't find time"
         return dateString
     }
 
-    // useEffect(() => {
-    //     console.log('mounted')
-    //     console.log('pages', pages)
-    //     console.log('props.passportsNumber', props.passportsNumber)
-    // }, [])
+    let setPage = (page) => {
+        props.setPage && props.setPage(page)
+    }
+
+    let decreasePage = () => {
+        if (props.page > 1)
+            setPage(parseInt(props.page)-1)
+    }
+
+    let increasePage = () => {
+        if (props.page < props.pages)
+            setPage(parseInt(props.page)+1)
+    }
 
     return (
         <div>
@@ -68,18 +70,18 @@ export default function Table(props) {
                             <td onClick={() => history.push(`/passport/${item.internal_id}`)} id={styles.nameCol}>{item.model}</td>
                             <td id={styles.typeCol}>{item.type !== null ? item.type : 'Сборка'}</td>
                             <td id={styles.dateTimeCol}>
-                                <div>{getDate(moment(item.date).format("DD.MM.YYYY HH:MM:SS"))}</div>
+                                <div>{checkDate(moment(item.date).format("DD.MM.YYYY HH:MM:SS"))}</div>
                             </td>
                         </tr>)
                     })}
                 </tbody>
             </table>
             <div className={styles.pageSelectorWrapper}>
-                <img onClick={() => buttonsClickHandler(page > 1 ? (page - 1) : page)} className={styles.arrows} src={leftArrow} alt="Previous page arrow"/>
-                <input onChange={onInputChange} className={styles.outlinedPageNumberWrapper} value={page}/>
+                <img onClick={decreasePage} className={styles.arrows} src={leftArrow} alt="Previous page arrow"/>
+                <input onChange={onInputChange} className={styles.outlinedPageNumberWrapper} value={props.page}/>
                 <img className={styles.slashSeparator} src={slashIcon} alt="Pages slash separator"/>
-                <div className={styles.pageNumberWrapper}>{pages}</div>
-                <img onClick={() => buttonsClickHandler(page >= pages ? page : page + 1)} className={styles.arrows} src={rightArrow} alt="Next page arrow"/>
+                <div className={styles.pageNumberWrapper}>{props.pages}</div>
+                <img onClick={increasePage} className={styles.arrows} src={rightArrow} alt="Next page arrow"/>
             </div>
         </div>
     );
