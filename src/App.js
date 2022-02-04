@@ -38,10 +38,11 @@ function App() {
                         history.push('/passports')
                     } else if (res.status === 401) {
                         history.push('/')
-                        console.log('Error while fetching user. Res.status !== 200')
                     }
                 })
                 .catch((err) => {
+                    if(err.response.status === 401)
+                        history.push('/')
                 })
         }
         if(!authorized) {
@@ -49,13 +50,14 @@ function App() {
                 doFetchUser(dispatch).then((res) => {
                     if(res.status === 200 && location === '/') {
                         history.push('/passports')
-                    } else if (res.status === 401) {
-                        history.push('/')
                     }
+                }).catch((err) => {
+                    if(err.response.status === 401 && location !== '/')
+                        history.push('/')
                 })
             else {
                 if(location !== '/') {
-                    console.log('FORCE REDIRECT')
+                    localStorage.setItem('tablePage', '1')
                     history.push('/')
                 }
             }
