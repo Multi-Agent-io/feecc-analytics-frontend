@@ -153,4 +153,21 @@
 .videoDescription {
     margin-top: 30px;
     font-size: 2rem;
+    max-width: 1000px;
+}
+
+.cantFindVideo {
+    font-size: 2rem;
+    color: var(--color-strong-orange);
+    padding: 20px;
+    text-align: center;
+}
+
+.notFound {
+    /*color: var(--color-strong-orange);*/
+    background-color: var(--color-light-purple);
+}
+
+.notFound:hover {
+    cursor: not-allowed;
 }

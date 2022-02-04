@@ -126,13 +126,15 @@ export default function Passport(props) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className={styles.stepVideoPreview}
+                                <div className={clsx(styles.stepVideoPreview, {[styles.notFound]: step.video_hashes === null})}
                                      onClick={() => {
-                                         setSelectedStep(step)
-                                         toggleModal(true)
+                                         if(step.video_hashes !== null) {
+                                             setSelectedStep(step)
+                                             toggleModal(true)
+                                         }
                                      }}
                                 >
-                                    <h2>Превью видеозаписи</h2>
+                                    <h2>{step.video_hashes !== null ? "Превью видеозаписи" : "Запись недоступна"}</h2>
                                 </div>
                                 <div className={styles.configurationButtonsWrapper}>
                                     <Button variant="clear" disabled={true}>Отправить на доработку</Button>
@@ -147,7 +149,11 @@ export default function Passport(props) {
                 <div className={styles.modalWrapper}>
                     <div className={styles.modalContent}>
                         <img onClick={() => toggleModal(false)} className={styles.removeIcon} src={removeIcon} alt="remove icon"/>
-                        <ReactPlayer width={1100} height={630} controls={true} url={`https://gateway.pinata.cloud/ipfs/${selectedStep.video_hashes[0]}`}/>
+                        {selectedStep.video_hashes !== null ? (
+                            <ReactPlayer width={1100} height={630} controls={true} url={`https://gateway.pinata.cloud/ipfs/${selectedStep.video_hashes[0]}`}/>
+                        ) : (
+                            <div className={styles.cantFindVideo}>Невозможно найти видео</div>
+                        )}
                         <div className={styles.videoDescription}>{selectedStep.name}</div>
                     </div>
                 </div>
