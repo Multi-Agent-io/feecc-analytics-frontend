@@ -5,3 +5,4 @@ export const getLocation = state => state.router.location.pathname
 export const getCurrentPassport = state => state.user.get('selectedPassport')
 export const getPassportsNumber = state => state.user.get('passportsNumber')
 export const getAllEmployees = state => state.user.get('employees')
+export const getAllTypes = state => state.user.get('passportTypes')

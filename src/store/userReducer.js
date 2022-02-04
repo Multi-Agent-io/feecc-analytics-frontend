@@ -139,7 +139,8 @@ export const userInitialState = fromJS({
         ],
     passportsNumber: 0,
     selectedPassport: {},
-    employees: {}
+    employees: {},
+    passportTypes: []
 })
 
 export const userReducer = (state = {}, action) => {
@@ -178,6 +179,19 @@ export const userReducer = (state = {}, action) => {
             return state
                 .setIn(['employees', action.userHash], action.username)
         }
+        case types.USER__FETCH_PASSPORT_TYPES: {
+            let passportTypes = []
+            action.passportTypes.forEach((type, index) => {
+                let tempType = {id: '', name: '', state: false}
+                tempType.id = type.schema_id
+                tempType.name = type.schema_type
+                tempType.state = false
+                passportTypes.push(tempType)
+            })
+            return state
+                .set('passportTypes', [...passportTypes])
+        }
+
         default:
             return state
     }

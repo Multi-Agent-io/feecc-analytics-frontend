@@ -127,7 +127,7 @@ export const decodeUser = (dispatch, username) => {
                     dispatch({
                         type: types.USER__DECODE_EMPLOYEE,
                         userHash: username,
-                        username: res.data.employee.name || 'Сотрудник не найден'
+                        username: res.data.employee?.name || 'Сотрудник не найден'
                     })
                     resolve(res.data)
                 } else {
@@ -135,5 +135,32 @@ export const decodeUser = (dispatch, username) => {
                 }
             })
             .catch(reject)
+    })
+}
+
+export const doGetPassportTypes = (dispatch) => {
+    return new Promise((resolve, reject) => {
+        axios.get(
+            'http://134.209.240.5:5002/api/v1/passports/types',
+            {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            )
+            .then((res) => {
+                console.log(res)
+                if(res.status === 200) {
+                    dispatch({type: types.USER__FETCH_PASSPORT_TYPES, passportTypes: res.data.data})
+                    resolve(res)
+                }
+                else
+                    reject(res)
+            })
+            .catch((err) => {
+                console.log(err)
+                reject(err)
+            })
     })
 }
