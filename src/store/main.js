@@ -4,6 +4,7 @@ import {userReducer, userInitialState} from "./userReducer";
 
 import { createBrowserHistory } from 'history'
 import { connectRouter, routerMiddleware } from 'connected-react-router'
+import {filtersInitialState, filtersReducer} from "./filtersReducer";
 
 
 export const history = createBrowserHistory()
@@ -15,10 +16,12 @@ export const history = createBrowserHistory()
 export const store = createStore(
     combineReducers({
         user: userReducer,
+        filters: filtersReducer,
         router: connectRouter(history)
     }),
     {
-        user: userInitialState
+        user: userInitialState,
+        filters: filtersInitialState
     },
     compose(
         applyMiddleware(routerMiddleware(history))
