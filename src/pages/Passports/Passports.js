@@ -44,6 +44,8 @@ export default function Passports(props) {
             doGetPassports(dispatch, page, pageSize, searchValue, date, requiredFix, overwork, deviceType, sortingDirection)
                 .then((res) => {})
                 .catch((err) => {
+                    console.log('FATAL ERROR')
+                    console.log(err)
                     if (err.response?.status === 401)
                         history.push('/')
                 })

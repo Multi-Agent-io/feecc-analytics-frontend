@@ -1,10 +1,6 @@
 import {types} from "./common";
 import axios from "axios";
 
-// export const doLoginAttempt = (dispatch, login, password, status = true) => {
-//     dispatch({type: types.USER__AUTHORIZE, status: status})
-// }
-
 export const doGetAuthToken = (username, password) => {
     return new Promise((resolve, reject) => {
         axios.post(
@@ -54,14 +50,16 @@ export const doFetchUser = (dispatch) => {
 
 export const doGetPassports = (dispatch, page=1, size=12, name = null, date = null, overtime = null, rework = null, passportTypes = null, dateDirection = "asc") => {
     return new Promise((resolve, reject) => {
-        let passTypes = passportTypes.replaceAll(', ', ',')
+        let passTypes = ''
+        if (typeof passportTypes === 'string')
+            passTypes = ''
         let request = 'http://134.209.240.5:5002/api/v1/passports'
         request += '/?page=' + page + '&items=' + size
         if (name !== null && name !== '' && name !== undefined)
             request += '&name=' + name
         if (date !== null && date !== '' && date !== undefined)
             request += '&date=' + new Date(date + 86400000).toISOString()
-        if (passTypes !== null && passTypes !== '' && passTypes !== undefined && typeof passTypes === 'string')
+        if (passTypes !== '' && passTypes !== undefined && typeof passTypes === 'string')
             request += '&types=' + passTypes
         if (dateDirection !== null && dateDirection !== '' && dateDirection !== undefined && typeof dateDirection === 'string')
             request += "&sort_by_date=" + dateDirection
