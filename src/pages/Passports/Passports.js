@@ -54,6 +54,7 @@ export default function Passports(props) {
         dropStoredFilters(dispatch)
         setSearchValue('')
         setPage(1)
+        fetchPassports()
     }
 
     let setTablePage = (page) => {
