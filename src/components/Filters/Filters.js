@@ -1,6 +1,5 @@
-import React, {forwardRef, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import moment from "moment";
-import clsx from "clsx";
 import styles from './Filters.module.css'
 import {useTranslation} from "react-i18next";
 import Checkbox from "../Checkbox/Checkbox";
@@ -10,20 +9,28 @@ import DatePicker from "../DatePicker/DatePicker";
 import {doGetPassportTypes} from "../../store/userActions";
 import {useDispatch, useSelector} from "react-redux";
 import {history} from "../../store/main";
-import {getAllTypes} from "../../store/selectors";
+import {getAllTypes, getFiltersValues} from "../../store/selectors";
+import {setFilters} from "../../store/filtersActions";
 
 export default function Filters(props) {
     let dispatch = useDispatch()
-    let [date, setDate] = useState(null)
-    let [overwork, setOverwork] = useState(false)
-    let [requiredFix, setRequiredFix] = useState(false)
-    let [deviceType, setDeviceType] = useState([''])
+    let filtersValues = useSelector(getFiltersValues)
+    let [date, setDate] = useState(filtersValues.date)
+    let [overwork, setOverwork] = useState(filtersValues.overwork)
+    let [requiredFix, setRequiredFix] = useState(filtersValues.requiredFix)
+    let [deviceType, setDeviceType] = useState(filtersValues.deviceType)
     let {t} = useTranslation()
 
     let passportTypes = useSelector(getAllTypes)
 
     useEffect(() => {
         props.onChange && props.onChange({deviceType, date, overwork, requiredFix})
+        setFilters(dispatch, {
+            date: date !== undefined ? date : null,
+            deviceType: deviceType !== undefined ? deviceType: '',
+            overwork: overwork !== undefined ? overwork : null,
+            requiredFix: requiredFix !== undefined ? requiredFix : null
+        })
     }, [date, overwork, requiredFix, deviceType])
 
     useEffect(() => {
