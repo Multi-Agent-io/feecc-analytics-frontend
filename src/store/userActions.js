@@ -54,7 +54,9 @@ export const doFetchUser = (dispatch) => {
 
 export const doGetPassports = (dispatch, page=1, size=12, name = null, date = null, overtime = null, rework = null, passportTypes = null, dateDirection = "asc") => {
     return new Promise((resolve, reject) => {
-        let passTypes = passportTypes.replaceAll(', ', ',')
+        let passTypes = ''
+        if (typeof passportTypes === 'string')
+            passTypes = passportTypes.replaceAll(', ', ',')
         let request = 'http://134.209.240.5:5002/api/v1/passports'
         request += '/?page=' + page + '&items=' + size
         if (name !== null && name !== '' && name !== undefined)
