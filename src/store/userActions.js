@@ -52,15 +52,21 @@ export const doFetchUser = (dispatch) => {
     })
 }
 
-export const doGetPassports = (dispatch, page=1, size=12, name = null, date = null, overtime = null, rework = null) => {
+export const doGetPassports = (dispatch, page=1, size=12, name = null, date = null, overtime = null, rework = null, passportTypes = null, dateDirection = "asc") => {
     return new Promise((resolve, reject) => {
+        let passTypes = passportTypes.replaceAll(', ', ',')
         let request = 'http://134.209.240.5:5002/api/v1/passports'
         request += '/?page=' + page + '&items=' + size
         if (name !== null && name !== '' && name !== undefined)
             request += '&name=' + name
         if (date !== null && date !== '' && date !== undefined)
-            request += '&date=' + date
-        //TODO remove after dev of filters is done
+            request += '&date=' + new Date(date + 86400000).toISOString()
+        if (passTypes !== null && passTypes !== '' && passTypes !== undefined && typeof passTypes === 'string')
+            request += '&types=' + passTypes
+        if (dateDirection !== null && dateDirection !== '' && dateDirection !== undefined && typeof dateDirection === 'string')
+            request += "&sort_by_date=" + dateDirection
+
+        //TODO remove after development of these filters is done
         let devBlock = true
         //
         if (overtime !== null && overtime !== undefined && !devBlock)

@@ -20,27 +20,28 @@ export default function Passports(props) {
     let [searchValue, setSearchValue] = useState('')
     let [page, setPage] = useState(localStorage.getItem('tablePage') || 1)
     let [filtersDisplay, changeFiltersDisplay] = useState(true)
+    let [sortingDirection, setSortingDirection] = useState('asc')
 
     let authorized = useSelector(getAuthorizationStatus)
-    let pages = Math.ceil(useSelector(getPassportsNumber)/pageSize)
+    let pages = Math.ceil(useSelector(getPassportsNumber) / pageSize)
     let rows = useSelector(getPassports)?.toJS()
 
 
     useEffect(() => {
         fetchPassports()
-    }, [filtersValues, page, pageSize])
+    }, [filtersValues, sortingDirection, page, pageSize])
 
     useEffect(() => {
         if (rows.length === 0)
             fetchPassports()
-        if(page > pages && pages !== 0)
+        if (page > pages && pages !== 0)
             setPage(pages)
     }, [rows])
 
     let fetchPassports = () => {
-        let {deviceType, date, overwork, requiredFix } = filtersValues
+        let {deviceType, date, overwork, requiredFix} = filtersValues
         if (authorized) {
-            doGetPassports(dispatch, page, pageSize, searchValue, date, requiredFix, overwork, '')
+            doGetPassports(dispatch, page, pageSize, searchValue, date, requiredFix, overwork, deviceType, sortingDirection)
                 .then((res) => {
                     // correctPage()
                 })
@@ -82,6 +83,7 @@ export default function Passports(props) {
                     toggle={filtersDisplay}
                 />
                 <Table
+                    onDirectionChange={setSortingDirection}
                     setPage={setTablePage}
                     rowsData={rows}
                     page={page}

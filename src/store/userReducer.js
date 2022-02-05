@@ -144,7 +144,8 @@ export const userInitialState = fromJS({
 })
 
 export const userReducer = (state = {}, action) => {
-    console.log('user-reducer', action)
+    if(action.type.startsWith('USER__'))
+        console.log('user-reducer', action)
 
     switch (action.type) {
         case types.USER__AUTHORIZE: {
@@ -181,10 +182,11 @@ export const userReducer = (state = {}, action) => {
         }
         case types.USER__FETCH_PASSPORT_TYPES: {
             let passportTypes = []
+            // TODO Refactor this for just pushing action.passportTypes inside state.passportTypes
+            // TODO Refactor parsing of state.passportTypes in Select.js component
             action.passportTypes.forEach((type, index) => {
-                let tempType = {id: '', name: '', state: false}
-                tempType.id = type.schema_id
-                tempType.name = type.schema_type
+                let tempType = {name: '', state: false}
+                tempType.name = type
                 tempType.state = false
                 passportTypes.push(tempType)
             })

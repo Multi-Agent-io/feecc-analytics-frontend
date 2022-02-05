@@ -59,6 +59,10 @@ tr > td {
     width: 15%;
 }
 
+#dateTimeCol > img.reversed {
+    transform: rotateX(180deg);
+}
+
 thead > #timeCol, #fixCol > img {
     opacity: .5;
 }
@@ -74,6 +78,13 @@ thead > #timeCol, #fixCol > img {
 }
 
 .arrows {
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.arrows > img {
     height: 18px;
     margin-left: 16px;
     margin-right: 24px;

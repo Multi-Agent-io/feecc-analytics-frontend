@@ -19,25 +19,21 @@ export default function Filters(props) {
     let [requiredFix, setRequiredFix] = useState(false)
     let [deviceType, setDeviceType] = useState([''])
     let {t} = useTranslation()
-    // let options = [
-    //     {id: 0, name: 'Тип 1', value: "Type1", state: false},
-    //     {id: 1, name: 'Тип 2', value: "Type2", state: false},
-    //     {id: 2, name: 'Тип 3', value: "Type3", state: false},
-    // ]
 
     let passportTypes = useSelector(getAllTypes)
 
     useEffect(() => {
-            props.onChange && props.onChange({deviceType, date, overwork, requiredFix})
+        props.onChange && props.onChange({deviceType, date, overwork, requiredFix})
     }, [date, overwork, requiredFix, deviceType])
 
     useEffect(() => {
-       doGetPassportTypes(dispatch)
-           .then((res) => {})
-           .catch((err) => {
-               if(err.response.status === 401)
-                   history.push('/')
-           })
+        doGetPassportTypes(dispatch)
+            .then((res) => {
+            })
+            .catch((err) => {
+                if (err.response.status === 401)
+                    history.push('/')
+            })
     }, [])
 
     let dropFilters = () => {
@@ -48,27 +44,30 @@ export default function Filters(props) {
         props.onDrop && props.onDrop()
     }
 
-    return props.toggle === true ? (<div className={styles.contentWrapper}>
-                <div className={styles.filtersWrapper}>
-                    <div className={styles.column}>
-                        <div className={styles.filterName}>{t('filters.DeviceType')}</div>
-                        <div className={styles.deviceTypeSelect}>
-                            <Select onChange={(e) => setDeviceType(e)} options={passportTypes}/>
-                        </div>
-                    </div>
-                    <div className={styles.column}>
-                        <div className={styles.filterName}>{t('filters.Date')}</div>
-                        <DatePicker value={moment(date).format('yyyy-MM-DD')} onChange={(e) => setDate(e)}/>
-                    </div>
-                    <div className={classNames(styles.column, styles.minWidth450)}>
-                        <Checkbox onChange={(status) => setOverwork(status)} checked={overwork} type="time">{t('filters.Overwork')}</Checkbox>
-                        <Checkbox onChange={(status) => setRequiredFix(status)} checked={requiredFix} type="fix">{t('filters.NeedsFix')}</Checkbox>
-                    </div>
-                    <div className={classNames(styles.column, styles.fullWidthButton) }>
-                        <div className={styles.dropButtonWrapper}>
-                            <h2 onClick={dropFilters} className={styles.dropButton}>Сбросить</h2>
-                        </div>
+    return props.toggle === true ? (
+        <div className={styles.contentWrapper}>
+            <div className={styles.filtersWrapper}>
+                <div className={styles.column}>
+                    <div className={styles.filterName}>{t('filters.DeviceType')}</div>
+                    <div className={styles.deviceTypeSelect}>
+                        <Select onChange={(e) => setDeviceType(e)} options={passportTypes}/>
                     </div>
                 </div>
-            </div>) : (<div/>);
+                <div className={styles.column}>
+                    <div className={styles.filterName}>{t('filters.Date')}</div>
+                    <DatePicker value={moment(date).format('yyyy-MM-DD')} onChange={(e) => setDate(e)}/>
+                </div>
+                <div className={classNames(styles.column, styles.minWidth450)}>
+                    <Checkbox onChange={(status) => setOverwork(status)} checked={overwork}
+                              type="time">{t('filters.Overwork')}</Checkbox>
+                    <Checkbox onChange={(status) => setRequiredFix(status)} checked={requiredFix}
+                              type="fix">{t('filters.NeedsFix')}</Checkbox>
+                </div>
+                <div className={classNames(styles.column, styles.fullWidthButton)}>
+                    <div className={styles.dropButtonWrapper}>
+                        <h2 onClick={dropFilters} className={styles.dropButton}>Сбросить</h2>
+                    </div>
+                </div>
+            </div>
+        </div>) : (<div/>);
 }

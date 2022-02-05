@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import styles from './Passport.module.css'
-import moment from "moment";
 import clsx from "clsx";
 import {getAllEmployees, getCurrentPassport, getLocation} from "../../store/selectors";
 import {useDispatch, useSelector} from "react-redux";
@@ -49,7 +48,7 @@ export default function Passport(props) {
         reverseDate(step.session_start_time)
         let start = Date.parse(reverseDate(step.session_start_time))
         let end = Date.parse(reverseDate(step.session_end_time))
-
+        // console.log('start, end: ', start, end)
         if (step.session_start_time === null || step.session_end_time === null)
             return "Время не указано"
         const diff = (end - start)/1000
@@ -92,6 +91,7 @@ export default function Passport(props) {
         let dateArray = dateString.split(' ')[0].split('-')
         return `${dateArray[0]}.${dateArray[1]}.${dateArray[2].slice(2)}`
     }
+
     return (
         <div className={styles.pageWrapper}>
             <div className={styles.passportHeaderWrapper}>
@@ -113,6 +113,9 @@ export default function Passport(props) {
                                     <h2>{step.name}</h2>
                                     <div className={styles.descriptionWrapper}>
                                         <div className={styles.stepRowWrapper}>
+                                            <h3 className={styles.descriptionRowHeader}>Время начала:</h3>
+                                            <h3>{step.session_start_time?.split(' ')[1]}</h3>
+                                        </div><div className={styles.stepRowWrapper}>
                                             <h3 className={styles.descriptionRowHeader}>Длительность:</h3>
                                             <h3>{formatTime(step)}</h3>
                                         </div>
@@ -150,7 +153,7 @@ export default function Passport(props) {
                     <div className={styles.modalContent}>
                         <img onClick={() => toggleModal(false)} className={styles.removeIcon} src={removeIcon} alt="remove icon"/>
                         {selectedStep.video_hashes !== null ? (
-                            <ReactPlayer width={1100} height={630} controls={true} url={`https://gateway.pinata.cloud/ipfs/${selectedStep.video_hashes[0]}`}/>
+                            <ReactPlayer playing={true} width={1100} height={630} controls={true} url={`https://multiagent.mypinata.cloud/ipfs/${selectedStep.video_hashes[0]}`}/>
                         ) : (
                             <div className={styles.cantFindVideo}>Невозможно найти видео</div>
                         )}

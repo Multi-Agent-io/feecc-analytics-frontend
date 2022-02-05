@@ -48,13 +48,14 @@ export default function Select(props) {
             if(index !== arr.length - 1)
                 res += ', '
         })
+        props.onChange && props.onChange(res)
         if(res.length > 26)
             res = res.slice(0, 26) + '...'
         if(res !== '')
             changeSelection(res)
         else
             changeSelection('Выберите из списка')
-        props.onChange && props.onChange(res)
+
     }
 
     let resetSelection = () => {
@@ -81,7 +82,7 @@ export default function Select(props) {
                     </div>
                     {state.checkboxes.map((item, index) => {
                         return (
-                            <div>
+                            <div key={index}>
                                 <Checkbox checked={item.state} onChange={() => updateCheckbox(index)} variant="small" >{item.name}</Checkbox>
                             </div>
                         )

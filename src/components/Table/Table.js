@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import moment from "moment";
 import {history} from "../../store/main";
 import timeIcon from '../../assets/time_icon.svg'
@@ -8,8 +8,11 @@ import styles from './Table.module.css'
 import leftArrow from '../../assets/arrrow_left.svg'
 import rightArrow from '../../assets/arrow_right.svg'
 import slashIcon from '../../assets/slash.svg'
+import clsx from "clsx";
 
 export default function Table(props) {
+
+    let [direction, setDirection] = useState(false)
 
     let onInputChange = (e) => {
         let value = e.target.value
@@ -41,6 +44,10 @@ export default function Table(props) {
             setPage(parseInt(props.page)+1)
     }
 
+    useEffect(() => {
+        props.onDirectionChange && props.onDirectionChange(!direction ? "asc" : "desc")
+    }, [direction])
+
     return (
         <div>
             <table>
@@ -54,7 +61,7 @@ export default function Table(props) {
                     <td id={styles.nameCol}>Название</td>
                     <td id={styles.typeCol}>Тип изделия</td>
                     <td id={styles.dateTimeCol}>
-                        <img src={sorting} alt="sorting icon"/>
+                        <img className={clsx({[styles.reversed]: direction})} onClick={() => setDirection(!direction)} src={sorting} alt="sorting icon"/>
                         <div>Дата завершения</div>
                     </td>
                 </thead>
@@ -77,11 +84,15 @@ export default function Table(props) {
                 </tbody>
             </table>
             <div className={styles.pageSelectorWrapper}>
-                <img onClick={decreasePage} className={styles.arrows} src={leftArrow} alt="Previous page arrow"/>
+                <div onClick={decreasePage} className={styles.arrows} >
+                    <img src={leftArrow} alt="Previous page arrow"/>
+                </div>
                 <input onChange={onInputChange} className={styles.outlinedPageNumberWrapper} value={props.page}/>
                 <img className={styles.slashSeparator} src={slashIcon} alt="Pages slash separator"/>
                 <div className={styles.pageNumberWrapper}>{props.pages}</div>
-                <img onClick={increasePage} className={styles.arrows} src={rightArrow} alt="Next page arrow"/>
+                <div onClick={increasePage} className={styles.arrows}>
+                    <img src={rightArrow} alt="Next page arrow"/>
+                </div>
             </div>
         </div>
     );
