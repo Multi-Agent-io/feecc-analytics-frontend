@@ -77,7 +77,7 @@ export default function Table(props) {
                             <td onClick={() => history.push(`/passport/${item.internal_id}`)} id={styles.nameCol}>{item.model}</td>
                             <td id={styles.typeCol}>{item.type !== null ? item.type : 'Сборка'}</td>
                             <td id={styles.dateTimeCol}>
-                                <div>{checkDate(moment(item.date).format("DD.MM.YYYY HH:MM:SS"))}</div>
+                                <div>{checkDate(moment(item.creation_time).format("DD.MM.YYYY HH:MM:SS"))}</div>
                             </td>
                         </tr>)
                     })}

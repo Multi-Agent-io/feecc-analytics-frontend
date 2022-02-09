@@ -160,9 +160,7 @@ export const userReducer = (state = {}, action) => {
                     passports[index].model = "Без названия"
                 passports[index].needFix = true // Random boolean
                 passports[index].overwork = true // Random boolean
-                passports[index].time = passports.date
             })
-
             return state
                 .set('passports', fromJS(passports))
                 .set('passportsNumber', action.count)
