@@ -1,6 +1,7 @@
 {
   "sidebar": {
     "Passports": "Паспорта",
+    "TCD": "ОТК",
     "Employees": "Сотрудники",
     "Schemas": "Схемы",
     "Logout": "Выход"
