@@ -9,6 +9,7 @@ import Passports from "./pages/Passports/Passports";
 import UnderConstruction from "./pages/UnderConstruction/UnderConstruction";
 import Login from "./pages/Login/Login";
 import Passport from "./pages/Passport/Passport";
+import TechnicalControlDepartment from './pages/TechnicalControlDepartment/TechnicalControlDepartment'
 
 // import Schemas from "./pages/Schemas/Schemas";
 // import Employees from "./pages/Employees/Employees";
@@ -20,6 +21,7 @@ function App() {
     let routes = [
         ['^/$', () => <Login/>],
         ['^/passports', () => <Passports/>],
+        ['^/tcd', () => <TechnicalControlDepartment/>],
         // ['^/Passports', () => <UnderConstruction/>],
         // ['^/employees', () => <Employees/>],
         ['^/employees', () => <UnderConstruction/>],
