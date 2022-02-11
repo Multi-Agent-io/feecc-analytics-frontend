@@ -39,6 +39,14 @@ export default function Sidebar () {
                     <div className={styles.menuItemDescription}>{t('sidebar.Passports')}</div>
                     <div className={styles.bottomLine}/>
                 </div>
+                <div className={clsx(styles.menuItem, {[styles.selectedItem]: pathname === '/tcd'})}
+                    onClick={() => changeLocation('/tcd')}
+                >
+                    <div className={styles.topLine}/>
+                    <img src={passportsIcon} alt="passports icon"/>
+                    <div className={styles.menuItemDescription}>{t('sidebar.Passports')}</div>
+                    <div className={styles.bottomLine}/>
+                </div>
                 <div className={clsx(styles.menuItem, {[styles.selectedItem]: pathname === '/employees'})}
                     onClick={() => changeLocation('/employees')}
                 >
