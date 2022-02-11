@@ -65,7 +65,6 @@ export default function Passports(props) {
     return (
         <div className={styles.pageWrapper}>
             <div className={styles.searchWrapper}>
-                <ScanButton/>
                 <Search value={searchValue} onSearch={() => fetchPassports()} onChange={setSearchValue}/>
                 <SettingsButton onClick={() => {
                     changeFiltersDisplay(!filtersDisplay)

@@ -36,7 +36,7 @@ export default function Sidebar () {
                 >
                     <div className={styles.topLine}/>
                     <img src={passportsIcon} alt="passports icon"/>
-                    <div className={styles.menuItemDescription}>{t('sidebar.Passports')}</div>
+                    <div className={styles.menuItemDescription}>{t('sidebar.Passports')}</div> 
                     <div className={styles.bottomLine}/>
                 </div>
                 <div className={clsx(styles.menuItem, {[styles.selectedItem]: pathname === '/tcd'})}
@@ -44,7 +44,7 @@ export default function Sidebar () {
                 >
                     <div className={styles.topLine}/>
                     <img src={passportsIcon} alt="passports icon"/>
-                    <div className={styles.menuItemDescription}>{t('sidebar.Passports')}</div>
+                    <div className={styles.menuItemDescription}>{t("sidebar.TCD")}</div> 
                     <div className={styles.bottomLine}/>
                 </div>
                 <div className={clsx(styles.menuItem, {[styles.selectedItem]: pathname === '/employees'})}

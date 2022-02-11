@@ -2,6 +2,11 @@
     width: 48px;
     height: 48px;
     border-radius: 7px;
+    cursor: pointer;
+}
+
+.buttonWrapper:hover {
+    transform: scale(1.1);
 }
 
 .buttonWrapper > img {
