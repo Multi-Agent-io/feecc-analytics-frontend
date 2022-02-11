@@ -52,13 +52,20 @@ export default function Table(props) {
         <div>
             <table>
                 <thead>
+                    {props.type == "pasports" && 
                     <td id={styles.timeCol}>
                         <img src={timeIcon} alt="Overwork icon"/>
                     </td>
+                    }
+                    {props.type == "pasports" && 
                     <td id={styles.fixCol}>
                         <img src={fixIcon} alt="Fix required icon"/>
                     </td>
+                    }
                     <td id={styles.nameCol}>Название</td>
+                    {props.type == "protocols" && 
+                    <td id={styles.typeCol}>Состояние</td> 
+                    }  
                     <td id={styles.typeCol}>Тип изделия</td>
                     <td id={styles.dateTimeCol}>
                         <img className={clsx({[styles.reversed]: direction})} onClick={() => setDirection(!direction)} src={sorting} alt="sorting icon"/>
@@ -66,7 +73,8 @@ export default function Table(props) {
                     </td>
                 </thead>
                 <tbody>
-                    {props.rowsData.map((item, index) => {
+                    {props.type == "pasports" && 
+                    props.rowsData.map((item, index) => {
                         return (<tr key={index}>
                             <td id={styles.timeCol}>
                                 {item.overwork && (<img src={timeIcon} alt="Overwork icon"/>)}
@@ -81,6 +89,18 @@ export default function Table(props) {
                             </td>
                         </tr>)
                     })}
+                    {props.type == "protocols" &&
+                    props.rowsData.map((item, index) => {
+                        return (<tr className={styles.protoRow} key={item.id}>   
+                                    <td id={styles.nameCol}>{item.name}</td>
+                                    <td id = {styles.stateCol} >{item.state}</td>
+                                    <td id={styles.typeCol}>{item.type}</td>
+                                    <td id={styles.dateTimeCol}>
+                                        <div>{checkDate(moment(item.creation_time).format("DD.MM.YYYY HH:MM:SS"))}</div>
+                                    </td>
+                                </tr>)
+                    })
+                    }
                 </tbody>
             </table>
             <div className={styles.pageSelectorWrapper}>

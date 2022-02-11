@@ -191,6 +191,9 @@ export const userReducer = (state = {}, action) => {
             return state
                 .set('passportTypes', [...passportTypes])
         }
+        case types.USER_FETCH_PROTOCOLS: {
+            
+        }
 
         default:
             return state

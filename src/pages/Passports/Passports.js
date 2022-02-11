@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import styles from './Passports.module.css'
-import ScanButton from "../../components/ScanButton/ScanButton";
 import Search from "../../components/Search/Search";
 import SettingsButton from "../../components/SettingsButton/SettingsButton";
 import Filters from "../../components/Filters/Filters";
@@ -83,6 +82,7 @@ export default function Passports(props) {
                 />
                 <Table
                     onDirectionChange={setSortingDirection}
+                    type = "pasports"
                     setPage={setTablePage}
                     rowsData={rows}
                     page={page}

@@ -172,3 +172,11 @@ export const doGetPassportTypes = (dispatch) => {
             })
     })
 }
+
+export const doGetProtocols = () => {
+    return new Promise((resolve, reject) => {
+        axios.get(
+
+        )
+    })
+}

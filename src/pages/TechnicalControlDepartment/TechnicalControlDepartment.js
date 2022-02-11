@@ -12,6 +12,7 @@ import {history} from "../../store/main";
 
 import styles from "./TechnicalControlDepartment.module.css"
 import PrintButton from "../../components/PrintButton/PrintButton";
+import Table from "../../components/Table/Table";
 
 function TechnicalControlDepartment() {
 
@@ -27,7 +28,61 @@ function TechnicalControlDepartment() {
     let authorized = useSelector(getAuthorizationStatus)
     let pages = Math.ceil(useSelector(getPassportsNumber) / pageSize)
     let rows = useSelector(getPassports)?.toJS()
+    
 
+    const dummyData = [
+        {
+            id: 1,
+            name: "1name",
+            state: "state",
+            type: "type",
+
+        },
+        {
+            id: 2,
+            name: "2name",
+            state: "state",
+            type: "type",
+             
+        },
+        {
+            id: 3,
+            name: "3name",
+            state: "state",
+            type: "type",
+             
+        },
+        {
+            id: 4,
+            name: "4name",
+            state: "state",
+            type: "type",
+             
+        },
+        {
+            id: 5,
+            name: "5name",
+            state: "state",
+            type: "type",
+             
+        },
+        {
+            id: 6,
+            name: "6name",
+            state: "state",
+            type: "type",
+             
+        },
+        {
+            id: 7,
+            name: "7name",
+            state: "state",
+            type: "type",
+             
+        },
+
+
+    ]
 
     useEffect(() => {
         fetchPassports()
@@ -39,6 +94,8 @@ function TechnicalControlDepartment() {
         if (page > pages && pages !== 0)
             setPage(pages)
     }, [rows])
+
+    
 
     let fetchPassports = () => {
         let {deviceType, date, overwork, requiredFix} = filtersValues
@@ -59,6 +116,10 @@ function TechnicalControlDepartment() {
         setPage(1)
     }
 
+    let setTablePage = (page) => {
+        setPage(parseInt(page))
+        localStorage.setItem('tablePage', page)
+    }
 
   return (
     <div className={styles.pageWrapper}>
@@ -82,6 +143,14 @@ function TechnicalControlDepartment() {
                     toggle={filtersDisplay}
                 />
             </div>
+            <Table
+                type = "protocols"
+                setPage={setTablePage}
+                rowsData={dummyData}
+                page={page}
+                pageSize={pageSize}
+                pages={pages}
+            />
         </div>
   )
 }
