@@ -1,12 +1,77 @@
-import Button from '../../components/Button/Button'
-import PrintButton from "../../components/PrintButton/PrintButton"
+import { useState, useEffect } from "react";
+
 
 import styles from './Protocol.module.css'
 
+import PrintButton from "../../components/PrintButton/PrintButton"
 import ButtonBack from '../../components/ButtonBack/ButtonBack';
+import Checkbox from "../../components/Checkbox/Checkbox";
+
 function Protocol(){
 
+  const [protocolsArray, setProtocols] = useState(undefined)
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+
+    setInterval(() => {
+      const dummyData = { // from server
+        data:[
+          ["Проверка сырья и материалов", 3, null, false, false, false], // name:string, nominalValue:number, limitDeviation:any, 1st check:boolean, 2nd check:boolean, approve:boolean  
+          ["Проверка плавности вращения колес стойки", 5, null, false, false, false],
+          ["Наименование параметра (показателя)", 6, null, false, false, false],
+          ["Проверка усилия, необходимого для включения/выключения тормоза колеса", 7, null, false, false, false],
+          ["Проверка усилия, необходимого для перемещения стойки", 67, null, false, false, false],
+          ["Проверка плавности и усилия перемещения лотков", 45, null, false, false, false],
+        ],
+        state: true,
+      }
+      setProtocols(dummyData.data)
+      setIsLoading(true)
+    }, 0)
+    
+  }, [])
+
+  const makeGridTable = (arrayItems) => {
+
+    const jsxArray = arrayItems.map((row, index) => {
+      const currRow = []
+      for (let j = 0; j < row.length; j++) {
+        if (j < 3) {
+          currRow.push(<div key={`${index} ${j}`} value = {row[j]}>{row[j]}</div>)
+        } else if(j === row.length - 1) {
+          currRow.push(
+            <div key ={`${index} ${j}`} className={styles["custom_checkbox"]}>
+              <input  type="checkbox" placeholder="Введите значение" id = {`${index} ${j}`}/>
+              <label htmlFor ={`${index} ${j}`}>Добавить на добработку</label>
+            </div>
+            )
+        } else {
+          currRow.push(<input key ={`${index} ${j}`} type='text' placeholder="Введите значение" id = {`${index} ${j}`}/>)
+        }
+      }
+      return currRow
+    })
+
+    return jsxArray
+  }
   
+  const inputDataHandler = (event) => {
+      const targetInput = event.target
+      // const targetValue = targetInput.type === "checkbox" ? targetInput.checked : targetInput.value
+      const targetValue = targetInput.value
+      const [i, j] = targetInput.id.split(" ")
+
+      const newProtocols = protocolsArray;
+      newProtocols[i][j] = targetValue
+
+      setProtocols(() => newProtocols)
+  }
+
+  const isSuperEngineer = false; // repalace with real logic
+
+  
+
   return (
     <section className={styles.section}>
       <div className={styles.header}>
@@ -18,12 +83,22 @@ function Protocol(){
         </div>
         <PrintButton/>
       </div>
-      <div className={styles["grid-container"]}>
-        <div>fgfg</div>
-        <div>fgfg</div>
-        <div>fgfg</div>
-        <div>fgfg</div>
-      </div>  
+      <div className={styles[`grid-container_header`] + " " + styles.grid}>
+        <div className={styles["col-1"]}>Наименование параметра (показателя)</div>
+        <div className={styles["col-2"]}>Значение параметра</div>
+        <div className={styles["col-3"]}>Номинальное значение</div>
+        <div className={styles["col-4"]}>Предельное отклонение</div>
+        <div className={styles["col-5"]}>Первичное испытание </div>
+        <div className={styles["col-6"]}>Вторичное испытание </div>
+
+        {isSuperEngineer && <div className={styles["col-check"]}>Проверено </div> } {/* only for super engineer */}
+        {!isSuperEngineer &&<div className={styles["col-check"]}>Доработка </div>} {/* only for junior engineer */}
+
+      </div>
+      <div onChange={inputDataHandler} className={styles["grid-container_body"] + " " + styles.grid}>
+        {!isLoading && <h1>Идёт загрузка...</h1>}
+        {isLoading && makeGridTable(protocolsArray)}
+       </div>
     </section>
   )
 }

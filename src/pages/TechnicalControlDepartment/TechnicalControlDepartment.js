@@ -130,7 +130,6 @@ function TechnicalControlDepartment() {
                     changeFiltersDisplay(!filtersDisplay)
                     filtersDisplay ? setPageSize(13) : setPageSize(11)
                 }}/>
-                <PrintButton/>
             </div>
             <div className={styles.contentWrapper}>
                 <Filters

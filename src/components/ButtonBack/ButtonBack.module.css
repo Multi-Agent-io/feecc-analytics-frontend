@@ -12,3 +12,9 @@
 .btn-back > img {
     width: 15px;
 }
+
+@media print {
+    .btn-back {
+        display: none;
+    }
+}
