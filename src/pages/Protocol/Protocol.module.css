@@ -2,14 +2,24 @@
     .grid * {
         min-width: 120px;
     }
+    .grid > div {
+        min-height: 121px;
+        word-break: break-all;
+    }
+    .section button {
+        display: none;
+    }
 }
 
 .section {
     width: calc(100vw - 250px);
-    padding: 0 1rem;
+    margin: 0 2rem;
 }
 .section h1 {
     text-align: center;
+}
+.section button {
+    float: right;
 }
 .header {
     padding-top: 1rem;
@@ -47,6 +57,9 @@
     text-align: center;
     grid-template-columns: 2fr 1fr 1fr 2fr 2fr 1fr;
 }
+.grid > div {
+    overflow: hidden;
+}
 .grid > * {
     padding: 5px;
     border: 1px solid var(--color-main-border);
@@ -58,5 +71,6 @@
         "col-1 col-3 col-4 col-5 col-6 col-check";
 }
 
-.custom_checkbox {
+.grid-container_body {
+    margin-bottom: 2rem;
 }

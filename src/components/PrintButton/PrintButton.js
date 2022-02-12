@@ -2,10 +2,10 @@ import printBtn from '../../assets/print_btn.svg'
 
 import classes from "./PrintButton.module.css" 
 
-function PrintButton() {
+function PrintButton(props) {
   
   return(
-    <button className={classes.button}  onClick = {() => window.print()}><img src={printBtn} alt="Распечатать документ"/></button>
+    <button {...props} className={classes.button} onClick = {() => window.print()}><img src={printBtn} alt="Распечатать документ"/></button>
   )
 }
 
