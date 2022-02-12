@@ -52,18 +52,18 @@ export default function Table(props) {
         <div>
             <table>
                 <thead>
-                    {props.type == "pasports" && 
+                    {props.type === "pasports" && 
                     <td id={styles.timeCol}>
                         <img src={timeIcon} alt="Overwork icon"/>
                     </td>
                     }
-                    {props.type == "pasports" && 
+                    {props.type === "pasports" && 
                     <td id={styles.fixCol}>
                         <img src={fixIcon} alt="Fix required icon"/>
                     </td>
                     }
                     <td id={styles.nameCol}>Название</td>
-                    {props.type == "protocols" && 
+                    {props.type === "protocols" && 
                     <td id={styles.typeCol}>Состояние</td> 
                     }  
                     <td id={styles.typeCol}>Тип изделия</td>
@@ -73,7 +73,7 @@ export default function Table(props) {
                     </td>
                 </thead>
                 <tbody>
-                    {props.type == "pasports" && 
+                    {props.type === "pasports" && 
                     props.rowsData.map((item, index) => {
                         return (<tr key={index}>
                             <td id={styles.timeCol}>
@@ -89,10 +89,10 @@ export default function Table(props) {
                             </td>
                         </tr>)
                     })}
-                    {props.type == "protocols" &&
+                    {props.type === "protocols" &&
                     props.rowsData.map((item, index) => {
                         return (<tr className={styles.protoRow} key={item.id}>   
-                                    <td id={styles.nameCol}>{item.name}</td>
+                                    <td onClick={() => history.push(`/tcd/protocol/${item.id}`)} id={styles.nameCol}>{item.name}</td>
                                     <td id = {styles.stateCol} >{item.state}</td>
                                     <td id={styles.typeCol}>{item.type}</td>
                                     <td id={styles.dateTimeCol}>

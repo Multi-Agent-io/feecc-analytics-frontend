@@ -4,8 +4,11 @@ import {useEffect} from "react";
 import {getAuthorizationStatus} from "./store/selectors";
 import {history} from "./store/main";
 import {doFetchUser} from "./store/userActions";import {useDispatch, useSelector} from "react-redux";
+
+
 import Sidebar from "./components/Sidebar/Sidebar";
 import Passports from "./pages/Passports/Passports";
+import Protocol from "./pages/Protocol/Protocol"
 import UnderConstruction from "./pages/UnderConstruction/UnderConstruction";
 import Login from "./pages/Login/Login";
 import Passport from "./pages/Passport/Passport";
@@ -21,16 +24,19 @@ function App() {
     let routes = [
         ['^/$', () => <Login/>],
         ['^/passports', () => <Passports/>],
-        ['^/tcd', () => <TechnicalControlDepartment/>],
         // ['^/Passports', () => <UnderConstruction/>],
         // ['^/employees', () => <Employees/>],
+        ['^/tcd/protocol/*', () => <Protocol/>],
+        ['^/tcd', () => <TechnicalControlDepartment/>],
         ['^/employees', () => <UnderConstruction/>],
         // ['^/production-schemas', () => <Schemas/>],
         ['^/production-schemas', () => <UnderConstruction/>],
-        ['^/passport/*', () => <Passport/>]
+        ['^/passport/*', () => <Passport/>],
+        
 
     ]
     let route = (path) => routes.find(r => path.match(r[0]) !== null)?.[1]?.()
+    
 
     useEffect(() => {
         if(authorized && localStorage.getItem('token') !== undefined && localStorage.getItem('token') !== null) {

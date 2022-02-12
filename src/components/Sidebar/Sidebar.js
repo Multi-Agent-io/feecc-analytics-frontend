@@ -26,7 +26,7 @@ export default function Sidebar () {
         history.push('/')
     }
     return (
-        <div className={styles.columnWrapper}>
+        <aside className={styles.columnWrapper}>
             <div className={styles.logoIcon}>
                 <img src={logo} alt="simple placeholder for logo"/>
             </div>
@@ -67,6 +67,6 @@ export default function Sidebar () {
                     <div onClick={logout} className={styles.menuItemDescription}>{t('sidebar.Logout')}</div>
                 </div>
             </div>
-        </div>
+        </aside>
     )
 }

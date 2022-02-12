@@ -1,0 +1,16 @@
+@media print {
+}
+
+.section {
+    width: calc(100vw - 250px);
+    padding: 0 1rem;
+}
+.header {
+    padding-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.grid-container {
+    display: grid;
+}
