@@ -22,10 +22,12 @@ export default function Passport(props) {
 
     let [showModal, toggleModal] = useState(false)
     let [selectedStep, setSelectedStep] = useState({})
+    const [revisionIds, setRevisionIds] = useState("")
 
     useEffect(() => {
         doGetPassport(dispatch, location.split('/')[2])
             .then((res) => {
+                
                 res.passport.biography.forEach((step, index) => {
                     decodeUser(dispatch, step.employee_name)
                         .then((res) => {
@@ -34,6 +36,14 @@ export default function Passport(props) {
             })
             .catch((error) => {})
     }, [])
+
+    const changeRevisionArrayHandler = async (id) => {
+        console.log(id);
+        const internalId = location.split('/')[2];
+        fetch(`/api/v1/passports/${internalId}/revision`,{
+            body: []
+        })
+    }
 
     let reverseDate = (dateString) => {
         let d1 = dateString.split(' ')
@@ -117,7 +127,7 @@ export default function Passport(props) {
                                             <h3>{step.session_start_time?.split(' ')[1]}</h3>
                                         </div><div className={styles.stepRowWrapper}>
                                             <h3 className={styles.descriptionRowHeader}>Длительность:</h3>
-                                            <h3>{formatTime(step)}</h3>
+                                            {step.session_end_time ? <h3>{formatTime(step)}</h3> : <h3>Не найдено</h3>}
                                         </div>
                                         <div className={styles.stepRowWrapper}>
                                             <h3 className={styles.descriptionRowHeader}>Исполнитель:</h3>
@@ -125,7 +135,7 @@ export default function Passport(props) {
                                         </div>
                                         <div className={styles.stepRowWrapper}>
                                             <h3 className={styles.descriptionRowHeader}>Дата завершения:</h3>
-                                            <h3>{extractDate(step.session_end_time)}</h3>
+                                            {step.session_end_time ? <h3>{extractDate(step.session_end_time)}</h3> : <h3>Не найдено</h3>}
                                         </div>
                                     </div>
                                 </div>
@@ -140,7 +150,13 @@ export default function Passport(props) {
                                     <h2>{step.video_hashes !== null ? "Превью видеозаписи" : "Запись недоступна"}</h2>
                                 </div>
                                 <div className={styles.configurationButtonsWrapper}>
-                                    <Button variant = {step.unit_name === null ? "default" : "clear"} disabled = {step.unit_name === null ? false : true} >Отправить на доработку</Button>
+                                    <Button 
+                                        onClick = {changeRevisionArrayHandler.bind(null, step.id)}
+                                        variant = {step.unit_name === null ? "default" : "clear"} 
+                                        disabled = {step.unit_name === null ? false : true} 
+                                    >
+                                    Отправить на доработку
+                                    </Button>
                                 </div>
                             </div>
                     )}

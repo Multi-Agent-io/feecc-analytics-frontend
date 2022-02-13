@@ -11,6 +11,7 @@ function Protocol(){
   const [rowsArray, setRowsArray] = useState(undefined)
   const [isLoading, setIsLoading] = useState(false)
   const [pasportId, setPaportId] = useState('')
+  const [isSuperEngineer, setSuperEngineer] = useState('')
 
   useEffect(() => {
 
@@ -36,13 +37,14 @@ function Protocol(){
           ["Проверка плавности и усилия перемещения лотков", 45, null, false, false, false],
         ],
         state: true,
+        superRole: true,
         pasport_id: 2144683857150,
       }
 
       setRowsArray(dummyData.data)
       setIsLoading(true)
       setPaportId(dummyData.pasport_id)
-      
+      setSuperEngineer(dummyData.superRole)
     }, 500)
     
   }, [])
@@ -63,37 +65,7 @@ function Protocol(){
 
   },[isLoading])
 
-  const makeGridTable = (arrayItems) => {
-
-    const jsxArray = arrayItems.map((row, index) => {
-      const currRow = []
-      for (let j = 0; j < row.length; j++) {
-        if (j < 3) {
-          currRow.push(<div key={`${index} ${j}`} value = {row[j]}>{row[j]}</div>)
-        } else if(j === row.length - 1) {
-          currRow.push(
-            <div key ={`${index} ${j}`} className={styles["custom_checkbox"]}>
-              <input  type="checkbox" placeholder="Введите значение" id = {`${index} ${j}`}/>
-              <label htmlFor ={`${index} ${j}`}>Проверено</label>
-            </div>
-            )
-        } else {
-          currRow.push(
-            <input 
-              key ={`${index} ${j}`} 
-              type='text' 
-              placeholder="Введите значение" 
-              id = {`${index} ${j}`}
-            />
-          )
-        }
-      }
-      return currRow
-    })
-
-    return jsxArray
-  }
-  
+  // ======== all handlers ========
   const inputDataHandler = (event) => {
       window.onbeforeunload = () => true // defense from user's reload
 
@@ -106,6 +78,7 @@ function Protocol(){
 
       setRowsArray(newState)  
   }
+
   const submitDataHandler = () => {
 
     let allFieldChecked = true;
@@ -131,17 +104,82 @@ function Protocol(){
   }
 
   const checkAllHandler = () => {
-    const allCheckBox = document.querySelectorAll(`div > input[type=checkbox]`)
-    
+    window.onbeforeunload = () => true // defense from user's reload
 
+    const allCheckBox = document.querySelectorAll(`div > input[type=checkbox]`)
+    const newState = JSON.parse(JSON.stringify(rowsArray));
+
+    for (let i = 0; i < allCheckBox.length; i++) {
+      allCheckBox[i].checked = true;
+  
+      const targetValue =  allCheckBox[i].checked 
+      const [row, column] = allCheckBox[i].id.split(" ");
+      
+      newState[row][column] = targetValue;
+
+      
+    }
+    setRowsArray(newState)
+    console.log(newState);
   }
 
-  const isSuperEngineer = false; // repalace with real logic
+  // ======== make function for render ========
+  const makeButtonSection = () => {
+    return (
+      <div className={styles["btns-section"]}>
+        <Button variant = "clear" onClick = {goToPasportHandler}>Открыть паспорт</Button>
+        <div>
+          {!isSuperEngineer && 
+            <>
+              <Button onClick = {checkAllHandler}>Отметить всё</Button>
+              <Button onClick = {submitDataHandler}>Отправить</Button>
+            </>
+          }
+          {isSuperEngineer && 
+            <Button>Подтвердить</Button>
+          }
+        </div>
+       </div>
+    )
+  }
+
+  const makeGridTable = (arrayItems) => {
+
+    const jsxArray = arrayItems.map((row, index) => {
+      const currRow = []
+      for (let j = 0; j < row.length; j++) {
+        if (j < 3) {
+          currRow.push(<div key={`${index} ${j}`} value = {row[j]}>{row[j]}</div>)
+        } else if(j === row.length - 1) {
+          currRow.push(
+            <div key ={`${index} ${j}`} className={styles["custom_checkbox"]}>
+              <input  type="checkbox"  id = {`${index} ${j}`}/>
+              <label htmlFor ={`${index} ${j}`}>Проверено</label>
+            </div>
+            )
+        } else {
+          currRow.push(
+            <input 
+              key ={`${index} ${j}`} 
+              type='text' 
+              placeholder={!isSuperEngineer && "Введите значение"} 
+              id = {`${index} ${j}`}
+            />
+          )
+        }
+      }
+      return currRow
+    })
+
+    return jsxArray
+  }
+
+  
 
   
 
   return (
-    <section className={styles.section}>
+    <section className={`${styles.section} ${isSuperEngineer === true ? styles["super-engineer"] : null}`} >
       <div className={styles.header}>
         <ButtonBack/>
         <div>
@@ -159,22 +197,15 @@ function Protocol(){
         <div className={styles["col-4"]}>Предельное отклонение</div>
         <div className={styles["col-5"]}>Первичное испытание</div>
         <div className={styles["col-6"]}>Вторичное испытание</div>
-
-        {!isSuperEngineer && <div className={styles["col-check"]}>Проверено </div> } {/* only for junior engineer */}
-        {/* {!isSuperEngineer &&<div className={styles["col-check"]}>Доработка </div>} only for junior engineer */}
+        <div className={styles["col-check"]}>Проверено </div>
+        
 
       </div>
       <div onChange={inputDataHandler} className={`${styles["grid-container_body"]} ${styles.grid}`}>
         {isLoading && makeGridTable(rowsArray)}
       </div>
-      <div className={styles["btns-section"]}>
-        {isLoading && <Button variant = "clear" onClick = {goToPasportHandler}>Открыть паспорт</Button>}
-        <div>
-          {isLoading && <Button onClick = {checkAllHandler}>Отметить всё</Button>}
-          {isLoading && <Button onClick = {submitDataHandler}>Отправить</Button>}
-        </div>
-       </div>
-       {!isLoading && <h1>Идёт загрузка...</h1>}
+      {isLoading && makeButtonSection()}
+      {!isLoading && <h1>Идёт загрузка...</h1>}
     </section>
   )
 }

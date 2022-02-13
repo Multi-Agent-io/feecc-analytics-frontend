@@ -15,6 +15,9 @@
     width: calc(100vw - 250px);
     margin: 0 2rem;
 }
+.section.super-engineer input {
+    pointer-events: none;
+}
 
 .section h1 {
     text-align: center;
