@@ -110,7 +110,7 @@ export default function Passport(props) {
                     return (
                             <div key={index} className={styles.passportStepWrapper}>
                                 <div className={styles.stepContentWrapper}>
-                                    <h2>{step.name}</h2>
+                                    <h2>{step.name}{step.unit_name && <p>относится к <a href = {`/passport/${step.parent_unit_internal_id}`}>{step.unit_name}</a></p>}</h2>
                                     <div className={styles.descriptionWrapper}>
                                         <div className={styles.stepRowWrapper}>
                                             <h3 className={styles.descriptionRowHeader}>Время начала:</h3>
@@ -140,7 +140,7 @@ export default function Passport(props) {
                                     <h2>{step.video_hashes !== null ? "Превью видеозаписи" : "Запись недоступна"}</h2>
                                 </div>
                                 <div className={styles.configurationButtonsWrapper}>
-                                    <Button variant="clear" disabled={true}>Отправить на доработку</Button>
+                                    <Button variant = {step.unit_name === null ? "default" : "clear"} disabled = {step.unit_name === null ? false : true} >Отправить на доработку</Button>
                                 </div>
                             </div>
                     )}

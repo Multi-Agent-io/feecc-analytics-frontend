@@ -1,5 +1,5 @@
 * {
-    transition: all .3s;
+    transition: all 0.3s;
 }
 
 .pageWrapper {
@@ -12,7 +12,6 @@
 }
 
 .passportHeaderWrapper {
-
 }
 
 .passportType {
@@ -37,7 +36,7 @@
 }
 
 .inactiveIcon {
-    opacity: .5;
+    opacity: 0.5;
 }
 
 .passportUUId {
@@ -83,7 +82,7 @@
 .stepVideoPreview {
     width: 221px;
     display: flex;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
     text-align: center;
     padding: 44px 30px;
@@ -103,13 +102,9 @@
 
 .configurationButtonsWrapper {
     display: flex;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
     margin-left: 80px;
-}
-
-.configurationButtonsWrapper > button:hover {
-    cursor: not-allowed;
 }
 
 .noRequiredInformation {
@@ -125,7 +120,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, .2);
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .modalContent {

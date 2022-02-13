@@ -108,6 +108,7 @@ export const doGetPassport = (dispatch, internalId) => {
             })
             .then((res) => {
                 if (res.status === 200) {
+                    console.log(res);
                     resolve(res.data)
                     dispatch({type: types.USER__FETCH_SELECTED_PASSPORT, passport: res.data.passport})
                 }
