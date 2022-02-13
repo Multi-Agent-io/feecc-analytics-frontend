@@ -166,3 +166,11 @@
 .notFound:hover {
     cursor: not-allowed;
 }
+
+.checked-btn {
+    background-color: var(--color-strong-purple);
+    color: var(--color-main-white);
+}
+.checked-btn:hover {
+    background-color: var(--color-strong-purple);
+}

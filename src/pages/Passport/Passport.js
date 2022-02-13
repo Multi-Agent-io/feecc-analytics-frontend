@@ -22,12 +22,11 @@ export default function Passport(props) {
 
     let [showModal, toggleModal] = useState(false)
     let [selectedStep, setSelectedStep] = useState({})
-    const [revisionIds, setRevisionIds] = useState("")
+    const [revisionIds, setRevisionIds] = useState([])
 
     useEffect(() => {
         doGetPassport(dispatch, location.split('/')[2])
             .then((res) => {
-                
                 res.passport.biography.forEach((step, index) => {
                     decodeUser(dispatch, step.employee_name)
                         .then((res) => {
@@ -37,11 +36,18 @@ export default function Passport(props) {
             .catch((error) => {})
     }, [])
 
-    const changeRevisionArrayHandler = async (id) => {
-        console.log(id);
-        const internalId = location.split('/')[2];
-        fetch(`/api/v1/passports/${internalId}/revision`,{
-            body: []
+    const changeRevisionArrayHandler = (id, event) => {
+        const currentBtn = event.target;
+        currentBtn.classList.toggle(styles["checked-btn"])
+        setRevisionIds((prevState) => {
+            const newState = [...prevState]
+            const indexOfId = newState.findIndex((item) => item === id.toString() )
+            if(~indexOfId){
+                newState.splice(indexOfId, 1)
+            } else {
+                newState.push(id)
+            }
+            return newState
         })
     }
 
@@ -108,6 +114,7 @@ export default function Passport(props) {
                 {passport.type !== null && passport.type !== undefined && passport.type !== '' && (<h2>{passport.type}</h2>)}
                 <div className={styles.passportNameWrapper}>
                     <h1>{(passport.model !== null && passport.model !== '') ? passport.model : 'Без названия'}</h1>
+                    <p>{revisionIds}</p>
                     <div className={styles.icons}>
                         <img className={clsx({[styles.inactiveIcon]: !passport.overwork})} src={overworkIcon} alt="Overwork icon"/>
                         <img className={clsx({[styles.inactiveIcon]: !passport.needFix})} src={fixRequiredIcon} alt="Fix required icon"/>
