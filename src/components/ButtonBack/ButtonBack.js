@@ -6,7 +6,9 @@ import styles from "./ButtonBack.module.css"
 function ButtonBack(props){
 
   return <button 
-            onClick={() => history.goBack() } 
+            {...props}
+            onClick={() => history.goBack()}
+            
             className ={`${styles["btn-back"]} ${props.classes}`}
           >
             <img src={arrowLeft}></img>

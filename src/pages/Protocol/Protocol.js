@@ -74,7 +74,14 @@ function Protocol(){
             </div>
             )
         } else {
-          currRow.push(<input key ={`${index} ${j}`} type='text' placeholder="Введите значение" id = {`${index} ${j}`}/>)
+          currRow.push(
+            <input 
+              key ={`${index} ${j}`} 
+              type='text' 
+              placeholder="Введите значение" 
+              id = {`${index} ${j}`}
+            />
+          )
         }
       }
       return currRow
@@ -84,6 +91,8 @@ function Protocol(){
   }
   
   const inputDataHandler = (event) => {
+      window.onbeforeunload = () => true // defense from user's reload
+
       const targetInput = event.target;
       const targetValue = targetInput.type === "checkbox" ? targetInput.checked : targetInput.value;
       const [i, j] = targetInput.id.split(" ");
@@ -92,6 +101,9 @@ function Protocol(){
       newState[i][j] = targetValue;
 
       setProtocols(newState)  
+  }
+  const submitDataHandler = () => {
+    console.log("submitDataHandler"); // it should dispatch protocol's data to the server
   }
 
   const isSuperEngineer = false; // repalace with real logic
@@ -125,7 +137,7 @@ function Protocol(){
       <div onChange={inputDataHandler} className={`${styles["grid-container_body"]} ${styles.grid}`}>
         {isLoading && makeGridTable(protocolsArray)}
       </div>
-       {isLoading && <Button>Отправить</Button>}
+       {isLoading && <Button onClick ={submitDataHandler}>Отправить</Button>}
 
        {!isLoading && <h1>Идёт загрузка...</h1>}
     </section>
