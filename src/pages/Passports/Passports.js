@@ -38,9 +38,9 @@ export default function Passports(props) {
     }, [rows])
 
     let fetchPassports = () => {
-        let {deviceType, date, overwork, requiredFix} = filtersValues
+        let {deviceType, date, overwork, requiredFix, passportType} = filtersValues
         if (authorized) {
-            doGetPassports(dispatch, page, pageSize, searchValue, date, requiredFix, overwork, deviceType, sortingDirection)
+            doGetPassports(dispatch, page, pageSize, searchValue, date, requiredFix, overwork, deviceType, sortingDirection, passportType)
                 .then((res) => {
                     // correctPage()
                 })
