@@ -175,10 +175,5 @@ export const doGetPassportTypes = (dispatch) => {
     })
 }
 
-export const doChangeEditMode = (_value) => {
-    return {
-        type: types.USER_CHANGE_EDIT_MODE, 
-        value: _value
-    }  
-}
+
 

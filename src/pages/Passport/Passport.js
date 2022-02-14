@@ -19,7 +19,7 @@ export default function Passport(props) {
     let location = useSelector(getLocation)
     let passport = useSelector(getCurrentPassport)?.toJS()
     let employees = useSelector(getAllEmployees)?.toJS()
-    const editModeIsOn = useSelector(getEditModeState)
+    const editModeIsOn = location.split("/")[3] === "view" ? false : true 
 
     let [showModal, toggleModal] = useState(false)
     let [selectedStep, setSelectedStep] = useState({})

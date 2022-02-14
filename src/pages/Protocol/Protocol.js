@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
-import { doChangeEditMode } from "../../store/userActions";
-import { getEditModeState } from "../../store/selectors";
+
 
 
 import styles from './Protocol.module.css'
@@ -11,14 +9,15 @@ import PrintButton from "../../components/PrintButton/PrintButton"
 import ButtonBack from '../../components/ButtonBack/ButtonBack';
 import Button from '../../components/Button/Button'
 
+
 function Protocol(){
 
   const [rowsArray, setRowsArray] = useState(undefined)
   const [isLoading, setIsLoading] = useState(false)
   const [pasportId, setPaportId] = useState('')
   const [isSuperEngineer, setSuperEngineer] = useState('')
-  const dispatch = useDispatch()
-  const editMode = useSelector(getEditModeState())
+
+ 
 
   useEffect(() => {
 
@@ -107,9 +106,7 @@ function Protocol(){
   }
 
   const goToPasportHandler = () => {
-    // dispatch(doChangeEditMode(true)) 
-    console.log(editMode);
-    window.location = `/passport/${pasportId}`
+    window.location = `/passport/${pasportId}/edit`
   }
 
   const checkAllHandler = () => {

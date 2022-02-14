@@ -82,7 +82,7 @@ export default function Table(props) {
                             <td id={styles.fixCol}>
                                 {item.needFix && (<img src={fixIcon} alt="Fix required icon"/>)}
                             </td>
-                            <td onClick={() => history.push(`/passport/${item.internal_id}`)} id={styles.nameCol}>{item.model}</td>
+                            <td onClick={() => history.push(`/passport/${item.internal_id}/view`)} id={styles.nameCol}>{item.model}</td>
                             <td id={styles.typeCol}>{item.type !== null ? item.type : 'Сборка'}</td>
                             <td id={styles.dateTimeCol}>
                                 <div>{checkDate(moment(item.creation_time).format("DD.MM.YYYY HH:MM:SS"))}</div>
