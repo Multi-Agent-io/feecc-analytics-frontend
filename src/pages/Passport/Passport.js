@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styles from './Passport.module.css'
 import clsx from "clsx";
-import {getAllEmployees, getCurrentPassport, getLocation} from "../../store/selectors";
+import {getAllEmployees, getCurrentPassport, getEditModeState, getLocation} from "../../store/selectors";
 import {useDispatch, useSelector} from "react-redux";
 import {decodeUser, doGetPassport} from "../../store/userActions";
 import overworkIcon from '../../assets/time_icon.svg'
@@ -19,44 +19,49 @@ export default function Passport(props) {
     let location = useSelector(getLocation)
     let passport = useSelector(getCurrentPassport)?.toJS()
     let employees = useSelector(getAllEmployees)?.toJS()
+    const editModeIsOn = useSelector(getEditModeState)
 
     let [showModal, toggleModal] = useState(false)
     let [selectedStep, setSelectedStep] = useState({})
     const [revisionIds, setRevisionIds] = useState([])
 
     useEffect(() => {
+        
+
         doGetPassport(dispatch, location.split('/')[2])
             .then((res) => {
                 const currentPassport = res.passport;
                 // alert when not all information are available
-                console.log(currentPassport.status);
                 if(currentPassport.status === "production"){
-                    alert("Внимание! Устройство находиться ещё на изготовлении.Данные могут быть не полными!")
+                    alert("Данное изделие находится в процессе сборки.\nИнформация о изделии может быть некорректно отображена!")
                 }
-
                 currentPassport.biography.forEach((step, index) => {
                     decodeUser(dispatch, step.employee_name)
-                        .then((res) => {
+                        .then((res) => {  
                         })
                 })
+                return currentPassport
             })
             .catch((error) => {})
     }, [])
 
     const changeRevisionArrayHandler = (id, event) => {
         const currentBtn = event.target;
-        currentBtn.classList.toggle(styles["checked-btn"])
+        currentBtn.classList.toggle(styles["checked-btn"]);
+
         setRevisionIds((prevState) => {
-            const newState = [...prevState]
-            const indexOfId = newState.findIndex((item) => item === id.toString() )
+            const newState = [...prevState];
+            const indexOfId = newState.findIndex((item) => item === id.toString() );
             if(~indexOfId){
-                newState.splice(indexOfId, 1)
+                newState.splice(indexOfId, 1);
             } else {
-                newState.push(id)
+                newState.push(id);
             }
             return newState
         })
     }
+
+    
 
     let reverseDate = (dateString) => {
         let d1 = dateString.split(' ')
@@ -128,6 +133,7 @@ export default function Passport(props) {
                     </div>
                 </div>
                 <h2 className={styles.passportUUId}>{passport.uuid} | {passport.internal_id}</h2>
+                <h2>{`Cерийный номер: ${passport["serial_number"] ? passport["serial_number"] : "не найдено"}`}</h2>
             </div>
             <div className={styles.passportMainContent}>
             {passport.biography !== null && passport.biography !== undefined && passport.biography.length > 0 ? passport.biography.map((step, index) => {
@@ -163,15 +169,18 @@ export default function Passport(props) {
                                 >
                                     <h2>{step.video_hashes !== null ? "Превью видеозаписи" : "Запись недоступна"}</h2>
                                 </div>
-                                {/*<div className={styles.configurationButtonsWrapper}>*/}
-                                {/*    <Button */}
-                                {/*        onClick = {changeRevisionArrayHandler.bind(null, step.id)}*/}
-                                {/*        variant = {step.unit_name === null ? "default" : "clear"} */}
-                                {/*        disabled = {step.unit_name === null ? false : true} */}
-                                {/*    >*/}
-                                {/*    Отправить на доработку*/}
-                                {/*    </Button>*/}
-                                {/*</div>*/}
+                                {editModeIsOn &&
+                                    <div className={styles.configurationButtonsWrapper}>
+                                        <Button
+                                            onClick = {changeRevisionArrayHandler.bind(null, step.id)}
+                                            variant = {step.unit_name === null ? "default" : "clear"}
+                                            disabled = {step.unit_name === null ? false : true}
+                                        >
+                                        Отправить на доработку
+                                        </Button>
+                                    </div>
+                                }
+                                
                             </div>
                     )}
             ) : (

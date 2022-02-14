@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styles from './Passports.module.css'
 import Search from "../../components/Search/Search";
 import SettingsButton from "../../components/SettingsButton/SettingsButton";
@@ -24,20 +24,9 @@ export default function Passports(props) {
     let authorized = useSelector(getAuthorizationStatus)
     let pages = Math.ceil(useSelector(getPassportsNumber) / pageSize)
     let rows = useSelector(getPassports)?.toJS()
+    
 
-
-    useEffect(() => {
-        fetchPassports()
-    }, [filtersValues, sortingDirection, page, pageSize])
-
-    useEffect(() => {
-        if (rows.length === 0)
-            fetchPassports()
-        if (page > pages && pages !== 0)
-            setPage(pages)
-    }, [rows])
-
-    let fetchPassports = () => {
+    let fetchPassports = useCallback(() => {
         let {deviceType, date, overwork, requiredFix, passportType} = filtersValues
         if (authorized) {
             doGetPassports(dispatch, page, pageSize, searchValue, date, requiredFix, overwork, deviceType, sortingDirection, passportType)
@@ -49,7 +38,7 @@ export default function Passports(props) {
                         history.push('/')
                 })
         }
-    }
+    }) 
 
     let dropSettings = () => {
         setSearchValue('')
@@ -60,6 +49,17 @@ export default function Passports(props) {
         setPage(parseInt(page))
         localStorage.setItem('tablePage', page)
     }
+
+    useEffect(() => {
+        fetchPassports()
+    }, [fetchPassports, filtersValues, sortingDirection, page, pageSize])
+
+    useEffect(() => {
+        if (rows.length === 0)
+            fetchPassports()
+        if (page > pages && pages !== 0)
+            setPage(pages)
+    }, [fetchPassports, rows])
 
     return (
         <div className={styles.pageWrapper}>

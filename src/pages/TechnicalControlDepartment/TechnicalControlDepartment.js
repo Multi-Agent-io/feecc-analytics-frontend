@@ -4,6 +4,7 @@ import ScanButton from "../../components/ScanButton/ScanButton";
 import Search from "../../components/Search/Search";
 import SettingsButton from "../../components/SettingsButton/SettingsButton";
 import Filters from "../../components/Filters/Filters";
+import Table from "../../components/Table/Table";
 
 import {doGetPassports} from "../../store/userActions";
 import {useDispatch, useSelector} from "react-redux";
@@ -11,8 +12,6 @@ import {getAuthorizationStatus, getPassports, getPassportsNumber} from "../../st
 import {history} from "../../store/main";
 
 import styles from "./TechnicalControlDepartment.module.css"
-import PrintButton from "../../components/PrintButton/PrintButton";
-import Table from "../../components/Table/Table";
 
 function TechnicalControlDepartment() {
 
@@ -29,6 +28,19 @@ function TechnicalControlDepartment() {
     let pages = Math.ceil(useSelector(getPassportsNumber) / pageSize)
     let rows = useSelector(getPassports)?.toJS()
     
+
+     useEffect(() => {
+        fetch("http://analytics.netmvas.com:5002/api/v1/tcd/protocols", {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(res => {
+            console.log(res);
+        })
+
+     },[])
 
     const dummyData = [
         {
@@ -147,7 +159,7 @@ function TechnicalControlDepartment() {
                 setPage={setTablePage}
                 rowsData={dummyData}
                 page={page}
-                pageSize={pageSize}
+                // pageSize={pageSize}
                 pages={pages}
             />
         </div>

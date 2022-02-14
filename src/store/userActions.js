@@ -175,10 +175,10 @@ export const doGetPassportTypes = (dispatch) => {
     })
 }
 
-export const doGetProtocols = () => {
-    return new Promise((resolve, reject) => {
-        axios.get(
-
-        )
-    })
+export const doChangeEditMode = (_value) => {
+    return {
+        type: types.USER_CHANGE_EDIT_MODE, 
+        value: _value
+    }  
 }
+

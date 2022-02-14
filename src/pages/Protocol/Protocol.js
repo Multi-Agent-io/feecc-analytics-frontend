@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
 
+import { useDispatch, useSelector } from "react-redux";
+import { doChangeEditMode } from "../../store/userActions";
+import { getEditModeState } from "../../store/selectors";
+
+
 import styles from './Protocol.module.css'
 
 import PrintButton from "../../components/PrintButton/PrintButton"
@@ -12,6 +17,8 @@ function Protocol(){
   const [isLoading, setIsLoading] = useState(false)
   const [pasportId, setPaportId] = useState('')
   const [isSuperEngineer, setSuperEngineer] = useState('')
+  const dispatch = useDispatch()
+  const editMode = useSelector(getEditModeState())
 
   useEffect(() => {
 
@@ -37,14 +44,14 @@ function Protocol(){
           ["Проверка плавности и усилия перемещения лотков", 45, null, false, false, false],
         ],
         state: true,
-        superRole: true,
-        pasport_id: 2144683857150,
+        super_role: false,
+        pasport_id: 2834543523942,
       }
 
       setRowsArray(dummyData.data)
       setIsLoading(true)
       setPaportId(dummyData.pasport_id)
-      setSuperEngineer(dummyData.superRole)
+      setSuperEngineer(dummyData.super_role)
     }, 500)
     
   }, [])
@@ -100,6 +107,8 @@ function Protocol(){
   }
 
   const goToPasportHandler = () => {
+    // dispatch(doChangeEditMode(true)) 
+    console.log(editMode);
     window.location = `/passport/${pasportId}`
   }
 
@@ -171,12 +180,12 @@ function Protocol(){
       return currRow
     })
 
-    return jsxArray
+    return (
+      <div onChange={inputDataHandler} className={`${styles["grid-container_body"]} ${styles.grid}`}>
+        {jsxArray}
+      </div>
+    )
   }
-
-  
-
-  
 
   return (
     <section className={`${styles.section} ${isSuperEngineer === true ? styles["super-engineer"] : null}`} >
@@ -201,11 +210,13 @@ function Protocol(){
         
 
       </div>
-      <div onChange={inputDataHandler} className={`${styles["grid-container_body"]} ${styles.grid}`}>
-        {isLoading && makeGridTable(rowsArray)}
-      </div>
+
+      {isLoading && makeGridTable(rowsArray)}
+
       {isLoading && makeButtonSection()}
+
       {!isLoading && <h1>Идёт загрузка...</h1>}
+
     </section>
   )
 }

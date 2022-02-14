@@ -141,6 +141,7 @@ export const userInitialState = fromJS({
     selectedPassport: {},
     employees: {},
     passportTypes: [],
+    editModeIsOn: false,
 })
 
 export const userReducer = (state = {}, action) => {
@@ -191,10 +192,11 @@ export const userReducer = (state = {}, action) => {
             return state
                 .set('passportTypes', [...passportTypes])
         }
-        case types.USER_FETCH_PROTOCOLS: {
-            
+        
+        case types.USER_CHANGE_EDIT_MODE: {
+            return state.set("editModeIsOn", action.value)
         }
-
+        
         default:
             return state
     }

@@ -1,9 +1,7 @@
-import React, {forwardRef, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import moment from "moment";
-import clsx from "clsx";
 import styles from './Filters.module.css'
 import {useTranslation} from "react-i18next";
-import Checkbox from "../Checkbox/Checkbox";
 import classNames from "classnames";
 import Select from "../Select/Select";
 import DatePicker from "../DatePicker/DatePicker";
