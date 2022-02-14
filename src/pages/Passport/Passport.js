@@ -27,7 +27,14 @@ export default function Passport(props) {
     useEffect(() => {
         doGetPassport(dispatch, location.split('/')[2])
             .then((res) => {
-                res.passport.biography.forEach((step, index) => {
+                const currentPassport = res.passport;
+                // alert when not all information are available
+                console.log(currentPassport.status);
+                if(currentPassport.status === "production"){
+                    alert("Внимание! Устройство находиться ещё на изготовлении.Данные могут быть не полными!")
+                }
+
+                currentPassport.biography.forEach((step, index) => {
                     decodeUser(dispatch, step.employee_name)
                         .then((res) => {
                         })
