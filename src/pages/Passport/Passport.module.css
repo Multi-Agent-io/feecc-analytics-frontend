@@ -3,12 +3,12 @@
 }
 
 .pageWrapper {
-    /* height: calc(100% - 120px); */
+    height: calc(100% - 120px);
     width: calc(100vw - 150px);
     padding-top: 80px;
     padding-left: 88px;
     padding-bottom: 30px;
-    /* overflow-x: auto; */
+    overflow-x: auto;
 }
 
 .passportHeaderWrapper {

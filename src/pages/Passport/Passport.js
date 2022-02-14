@@ -114,7 +114,7 @@ export default function Passport(props) {
                 {passport.type !== null && passport.type !== undefined && passport.type !== '' && (<h2>{passport.type}</h2>)}
                 <div className={styles.passportNameWrapper}>
                     <h1>{(passport.model !== null && passport.model !== '') ? passport.model : 'Без названия'}</h1>
-                    <p>{revisionIds}</p>
+                    {/*<p>{revisionIds}</p>*/}
                     <div className={styles.icons}>
                         <img className={clsx({[styles.inactiveIcon]: !passport.overwork})} src={overworkIcon} alt="Overwork icon"/>
                         <img className={clsx({[styles.inactiveIcon]: !passport.needFix})} src={fixRequiredIcon} alt="Fix required icon"/>
@@ -156,15 +156,15 @@ export default function Passport(props) {
                                 >
                                     <h2>{step.video_hashes !== null ? "Превью видеозаписи" : "Запись недоступна"}</h2>
                                 </div>
-                                <div className={styles.configurationButtonsWrapper}>
-                                    <Button 
-                                        onClick = {changeRevisionArrayHandler.bind(null, step.id)}
-                                        variant = {step.unit_name === null ? "default" : "clear"} 
-                                        disabled = {step.unit_name === null ? false : true} 
-                                    >
-                                    Отправить на доработку
-                                    </Button>
-                                </div>
+                                {/*<div className={styles.configurationButtonsWrapper}>*/}
+                                {/*    <Button */}
+                                {/*        onClick = {changeRevisionArrayHandler.bind(null, step.id)}*/}
+                                {/*        variant = {step.unit_name === null ? "default" : "clear"} */}
+                                {/*        disabled = {step.unit_name === null ? false : true} */}
+                                {/*    >*/}
+                                {/*    Отправить на доработку*/}
+                                {/*    </Button>*/}
+                                {/*</div>*/}
                             </div>
                     )}
             ) : (
