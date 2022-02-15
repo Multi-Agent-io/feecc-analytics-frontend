@@ -4,6 +4,7 @@ import {useEffect} from "react";
 import {getAuthorizationStatus} from "./store/selectors";
 import {history} from "./store/main";
 import {doFetchUser} from "./store/userActions";import {useDispatch, useSelector} from "react-redux";
+import ModalProvider from './store/ModalProvider';
 
 
 import Sidebar from "./components/Sidebar/Sidebar";
@@ -13,6 +14,7 @@ import UnderConstruction from "./pages/UnderConstruction/UnderConstruction";
 import Login from "./pages/Login/Login";
 import Passport from "./pages/Passport/Passport";
 import TechnicalControlDepartment from './pages/TechnicalControlDepartment/TechnicalControlDepartment'
+import ScanModal from './pages/ScanModal/ScanModal';
 
 // import Schemas from "./pages/Schemas/Schemas";
 // import Employees from "./pages/Employees/Employees";
@@ -73,10 +75,13 @@ function App() {
         }
     })
   return (
-    <div className="App">
-        {location !== '/' && (<Sidebar/>)}
-        {route(location)}
-    </div>
+    <ModalProvider>
+        <ScanModal/>
+        <div className="App">
+            {location !== '/' && (<Sidebar/>)}
+            {route(location)}
+        </div>
+    </ModalProvider>
   );
 }
 

@@ -7,6 +7,7 @@ import Search from "../../components/Search/Search";
 
 import styles from "./TechnicalControlDepartment.module.css"
 
+
 function TechnicalControlDepartment() {
 
     const [searchValue, setSearchValue] = useState('');
@@ -131,7 +132,6 @@ function TechnicalControlDepartment() {
         <div className={styles.searchWrapper}>
             <ScanButton/>
             <Search value={searchValue} onChange = {setSearchValue} />
-
         </div>
         <div className={`${styles["grid-table_header"]} ${styles["grid-table"]}`}>
             <div>Название</div>
