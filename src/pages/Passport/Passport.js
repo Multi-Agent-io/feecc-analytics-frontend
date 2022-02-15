@@ -23,11 +23,9 @@ export default function Passport(props) {
 
     let [showModal, toggleModal] = useState(false)
     let [selectedStep, setSelectedStep] = useState({})
-    const [revisionIds, setRevisionIds] = useState([])
+    const [revisionIds, setRevisionIds] = useState({})
 
     useEffect(() => {
-        
-
         doGetPassport(dispatch, location.split('/')[2])
             .then((res) => {
                 const currentPassport = res.passport;
@@ -45,19 +43,27 @@ export default function Passport(props) {
             .catch((error) => {})
     }, [])
 
-    const changeRevisionArrayHandler = (id, event) => {
+    const changeRevisionArrayHandler = (id, name, event) => {
         const currentBtn = event.target;
         currentBtn.classList.toggle(styles["checked-btn"]);
 
         setRevisionIds((prevState) => {
-            const newState = [...prevState];
-            const indexOfId = newState.findIndex((item) => item === id.toString() );
-            if(~indexOfId){
-                newState.splice(indexOfId, 1);
+            const newState = {...prevState};
+
+            if(newState.hasOwnProperty(id)){
+                delete newState[id];
             } else {
-                newState.push(id);
+                newState[id] = name;
             }
             return newState
+
+            // const indexOfId = newState.findIndex((item) => item === id.toString() );
+            // if(~indexOfId){
+            //     newState.splice(indexOfId, 1);
+            // } else {
+            //     newState.push(id);
+            // }
+            // return newState
         })
     }
 
@@ -140,7 +146,7 @@ export default function Passport(props) {
                     return (
                             <div key={index} className={styles.passportStepWrapper}>
                                 <div className={styles.stepContentWrapper}>
-                                    <h2>{step.name}{step.unit_name && <p>относится к <a href = {`/passport/${step.parent_unit_internal_id}`}>{step.unit_name}</a></p>}</h2>
+                                    <h2>{step.name}{step.unit_name && <p>относится к <a href = {`/passport/${step.parent_unit_internal_id}/view`}>{step.unit_name}</a></p>}</h2>
                                     <div className={styles.descriptionWrapper}>
                                         <div className={styles.stepRowWrapper}>
                                             <h3 className={styles.descriptionRowHeader}>Время начала:</h3>
@@ -172,11 +178,11 @@ export default function Passport(props) {
                                 {editModeIsOn &&
                                     <div className={styles.configurationButtonsWrapper}>
                                         <Button
-                                            onClick = {changeRevisionArrayHandler.bind(null, step.id)}
+                                            onClick = {changeRevisionArrayHandler.bind(null, step.id, step.unit_name)}
                                             variant = {step.unit_name === null ? "default" : "clear"}
                                             disabled = {step.unit_name === null ? false : true}
                                         >
-                                        Отправить на доработку
+                                        Нужна доработка
                                         </Button>
                                     </div>
                                 }
@@ -187,6 +193,7 @@ export default function Passport(props) {
                 <h1 className={styles.noRequiredInformation}>{t('passport.noRequiredInformation')}</h1>
             )}
             </div>
+            {/* <Button>Отправить на добработку</Button> */}
             {showModal && (
                 <div className={styles.modalWrapper}>
                     <div className={styles.modalContent}>
