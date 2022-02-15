@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 
-
-
-
 import styles from './Protocol.module.css'
+
+import { history } from "../../store/main";
 
 import PrintButton from "../../components/PrintButton/PrintButton"
 import ButtonBack from '../../components/ButtonBack/ButtonBack';
@@ -15,12 +14,15 @@ function Protocol(){
   const [rowsArray, setRowsArray] = useState(undefined)
   const [isLoading, setIsLoading] = useState(false)
   const [pasportId, setPaportId] = useState('')
+  const [protocolId, setProtocolId] = useState('')
   const [isSuperEngineer, setSuperEngineer] = useState('')
 
  
 
   useEffect(() => {
 
+    setProtocolId(history.location.pathname.split('/')[3]) // should be send on server to response
+    
     setTimeout(() => {
       const dummyData = { // from server
         data:[
@@ -44,12 +46,12 @@ function Protocol(){
         ],
         state: true,
         super_role: false,
-        pasport_id: 2834543523942,
+        pasport_id: 2297306753305,
       }
 
       setRowsArray(dummyData.data)
-      setIsLoading(true)
       setPaportId(dummyData.pasport_id)
+      setIsLoading(true)
       setSuperEngineer(dummyData.super_role)
     }, 500)
     
@@ -123,7 +125,6 @@ function Protocol(){
       
       newState[row][column] = targetValue;
 
-      
     }
     setRowsArray(newState)
     console.log(newState);

@@ -1,47 +1,19 @@
 import { useState, useEffect } from "react";
 
+import { history } from "../../store/main";
+
 import ScanButton from "../../components/ScanButton/ScanButton";
 import Search from "../../components/Search/Search";
-import SettingsButton from "../../components/SettingsButton/SettingsButton";
-import Filters from "../../components/Filters/Filters";
-import Table from "../../components/Table/Table";
-
-import {doGetPassports} from "../../store/userActions";
-import {useDispatch, useSelector} from "react-redux";
-import {getAuthorizationStatus, getPassports, getPassportsNumber} from "../../store/selectors";
-import {history} from "../../store/main";
 
 import styles from "./TechnicalControlDepartment.module.css"
 
 function TechnicalControlDepartment() {
 
-  let dispatch = useDispatch()
-
-    let [pageSize, setPageSize] = useState(11)
-    let [filtersValues, setFiltersValues] = useState({deviceType: [''], date: null, overwork: null, requiredFix: null})
-    let [searchValue, setSearchValue] = useState('')
-    let [page, setPage] = useState(localStorage.getItem('tablePage') || 1)
-    let [filtersDisplay, changeFiltersDisplay] = useState(true)
-    let [sortingDirection, setSortingDirection] = useState('asc')
-
-    let authorized = useSelector(getAuthorizationStatus)
-    let pages = Math.ceil(useSelector(getPassportsNumber) / pageSize)
-    let rows = useSelector(getPassports)?.toJS()
+    const [searchValue, setSearchValue] = useState('');
+    const [protocols, setProtocols] = useState([]);
+    const [filteredProtocols, setFilteredProtocols] = useState([]);
+    const [isLoading, setIsLoading] = useState(false)
     
-
-     useEffect(() => {
-        fetch("http://analytics.netmvas.com:5002/api/v1/tcd/protocols", {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-        .then(res => {
-            console.log(res);
-        })
-
-     },[])
-
     const dummyData = [
         {
             id: 1,
@@ -96,73 +68,83 @@ function TechnicalControlDepartment() {
 
     ]
 
-    useEffect(() => {
-        fetchPassports()
-    }, [filtersValues, sortingDirection, page, pageSize])
+    // ====== handler functions ======
+
+    const goToProtocolHandler = (id) => {
+        history.push(`/tcd/protocol/${id}`)
+    }
+
+    // ====== render functions ======
+
+    const makeProtocolsTable = () => {
+       return (
+        <div className={`${styles["grid-table_body"]} ${styles["grid-table"]}`}>
+           {
+            filteredProtocols.map((protocol) => {
+                return (
+                     <>
+                        <div onClick={goToProtocolHandler.bind(null, protocol.id)} >{protocol.name}</div>
+                        <div>{protocol.type}</div>
+                        <div>{protocol.state}</div>
+                        <div>{protocol.id}</div>
+                     </>
+                )
+            })
+           }
+        </div>
+       )
+    }
+
+    // ====== useEffect ======
 
     useEffect(() => {
-        if (rows.length === 0)
-            fetchPassports()
-        if (page > pages && pages !== 0)
-            setPage(pages)
-    }, [rows])
+        setIsLoading(true)
+        fetch("http://analytics.netmvas.com:5002/api/v1/tcd/protocols", {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(res => {
+            setProtocols(dummyData)
+            setFilteredProtocols(dummyData)
+            setIsLoading(false)
+        })
 
-    
+     },[])
 
-    let fetchPassports = () => {
-        let {deviceType, date, overwork, requiredFix} = filtersValues
-        if (authorized) {
-            doGetPassports(dispatch, page, pageSize, searchValue, date, requiredFix, overwork, deviceType, sortingDirection)
-                .then((res) => {
-                    // correctPage()
-                })
-                .catch((err) => {
-                    if (err.response.status === 401)
-                        history.push('/')
-                })
+     useEffect(() => {
+        if(searchValue.length === 0){
+            setFilteredProtocols(protocols.slice())
+        } else {
+            console.log(1);
+            setFilteredProtocols(
+                protocols.filter((protocol) => {
+                return protocol.name.includes(searchValue)
+            }))
         }
-    }
-
-    let dropSettings = () => {
-        setSearchValue('')
-        setPage(1)
-    }
-
-    let setTablePage = (page) => {
-        setPage(parseInt(page))
-        localStorage.setItem('tablePage', page)
-    }
+        
+    }, [searchValue])
 
   return (
-    <div className={styles.pageWrapper}>
-            <div className={styles.searchWrapper}>
-                <ScanButton/>
-                <Search value={searchValue} onSearch={() => fetchPassports()} onChange={setSearchValue}/>
-                <SettingsButton onClick={() => {
-                    changeFiltersDisplay(!filtersDisplay)
-                    filtersDisplay ? setPageSize(13) : setPageSize(11)
-                }}/>
-            </div>
-            <div className={styles.contentWrapper}>
-                <Filters
-                    onChange={(values) => {
-                        if (page !== localStorage.getItem('tablePage') && page !== 1)
-                            setPage(1)
-                        setFiltersValues(values)
-                    }}
-                    onDrop={dropSettings}
-                    toggle={filtersDisplay}
-                />
-            </div>
-            <Table
-                type = "protocols"
-                setPage={setTablePage}
-                rowsData={dummyData}
-                page={page}
-                // pageSize={pageSize}
-                pages={pages}
-            />
+    <section className={styles.pageWrapper}>
+        <div className={styles.searchWrapper}>
+            <ScanButton/>
+            <Search value={searchValue} onChange = {setSearchValue} />
+
         </div>
+        <div className={`${styles["grid-table_header"]} ${styles["grid-table"]}`}>
+            <div>Название</div>
+            <div>Состояние</div>
+            <div>Тип изделия</div>
+            <div>Время создания</div>
+        </div>
+        {isLoading ? (
+            <h1>Идёт загрузка</h1>
+        ) : (
+            makeProtocolsTable()  
+        )}
+    </section>
   )
 }
 
