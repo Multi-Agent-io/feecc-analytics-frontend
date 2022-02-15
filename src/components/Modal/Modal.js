@@ -1,12 +1,12 @@
 import classes from "./Modal.module.css";
 import ReactDOM from "react-dom";
-import { useContext } from "react/cjs/react.development";
+import { useContext, useEffect } from "react/cjs/react.development";
 import ModalActionsContext from "../../store/modal-context";
 
 function Backdrop(props) {
 
-  const { onClose } = useContext(ModalActionsContext);
-  return <div  onClick={onClose} className={classes.backdrop}></div>;
+  const { onCloseBar, onCloseConfirm } = useContext(ModalActionsContext);
+  return <div onClick={() => {onCloseBar();onCloseConfirm()}} className={classes.backdrop}></div>;
 }
 
 function ModalOverlay(props) {
@@ -18,7 +18,20 @@ function ModalOverlay(props) {
 }
 
 function Modal(props) {
+
   const portalPlace = document.querySelector("#overlays");
+
+  const keyDownHandler = (event) => {
+    console.log(event.key);
+  }
+  
+  useEffect(() => {
+    document.addEventListener("keydown", keyDownHandler);
+
+    return () => {
+      document.removeEventListener("keydown", keyDownHandler)
+    } 
+  },[])
   
   return (
     <>

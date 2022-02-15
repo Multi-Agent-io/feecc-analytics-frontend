@@ -17,53 +17,53 @@ function TechnicalControlDepartment() {
     
     const dummyData = [
         {
-            id: 1,
-            name: "1name",
-            state: "state",
-            type: "type",
-
+            id: 1, // device protocol id
+            name: "1name", // protocol name or name of device
+            status: "status", //
+            type: "type", // type of device
+            time: "00.00.00"
         },
         {
             id: 2,
             name: "2name",
-            state: "state",
+            status: "status",
             type: "type",
-             
+            time: "00.00.00"
         },
         {
             id: 3,
             name: "3name",
-            state: "state",
+            status: "status",
             type: "type",
-             
+            time: "00.00.00"
         },
         {
             id: 4,
             name: "4name",
-            state: "state",
+            status: "status",
             type: "type",
-             
+            time: "00.00.00"
         },
         {
             id: 5,
             name: "5name",
-            state: "state",
+            status: "status",
             type: "type",
-             
+            time: "00.00.00"
         },
         {
             id: 6,
             name: "6name",
-            state: "state",
+            status: "status",
             type: "type",
-             
+            time: "00.00.00"
         },
         {
             id: 7,
             name: "7name",
-            state: "state",
+            status: "status",
             type: "type",
-             
+            time: "00.00.00"
         },
 
 
@@ -86,8 +86,8 @@ function TechnicalControlDepartment() {
                      <>
                         <div onClick={goToProtocolHandler.bind(null, protocol.id)} >{protocol.name}</div>
                         <div>{protocol.type}</div>
-                        <div>{protocol.state}</div>
-                        <div>{protocol.id}</div>
+                        <div>{protocol.status}</div>
+                        <div>{protocol.time}</div>
                      </>
                 )
             })

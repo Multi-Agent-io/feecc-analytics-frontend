@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import styles from './Passport.module.css'
 import clsx from "clsx";
 import {getAllEmployees, getCurrentPassport, getEditModeState, getLocation} from "../../store/selectors";
@@ -10,6 +10,7 @@ import fixRequiredIcon from '../../assets/fix_icon.svg'
 import Button from "../../components/Button/Button";
 import {useTranslation} from "react-i18next";
 import ReactPlayer from "react-player";
+import ModalActionsContext from '../../store/modal-context';
 
 export default function Passport(props) {
 
@@ -19,7 +20,9 @@ export default function Passport(props) {
     let location = useSelector(getLocation)
     let passport = useSelector(getCurrentPassport)?.toJS()
     let employees = useSelector(getAllEmployees)?.toJS()
+
     const editModeIsOn = location.split("/")[3] === "view" ? false : true 
+    const { onOpenConfirm } = useContext(ModalActionsContext)
 
     let [showModal, toggleModal] = useState(false)
     let [selectedStep, setSelectedStep] = useState({})
@@ -56,14 +59,6 @@ export default function Passport(props) {
                 newState[id] = name;
             }
             return newState
-
-            // const indexOfId = newState.findIndex((item) => item === id.toString() );
-            // if(~indexOfId){
-            //     newState.splice(indexOfId, 1);
-            // } else {
-            //     newState.push(id);
-            // }
-            // return newState
         })
     }
 
@@ -192,8 +187,9 @@ export default function Passport(props) {
             ) : (
                 <h1 className={styles.noRequiredInformation}>{t('passport.noRequiredInformation')}</h1>
             )}
+            {editModeIsOn && <Button onClick ={onOpenConfirm}>Отправить на добработку</Button>}
             </div>
-            {/* <Button>Отправить на добработку</Button> */}
+
             {showModal && (
                 <div className={styles.modalWrapper}>
                     <div className={styles.modalContent}>

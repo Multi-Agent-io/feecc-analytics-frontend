@@ -15,6 +15,7 @@ import Login from "./pages/Login/Login";
 import Passport from "./pages/Passport/Passport";
 import TechnicalControlDepartment from './pages/TechnicalControlDepartment/TechnicalControlDepartment'
 import ScanModal from './pages/ScanModal/ScanModal';
+import ConfirmModal from './pages/ConfirmModal/ConfirmModal';
 
 // import Schemas from "./pages/Schemas/Schemas";
 // import Employees from "./pages/Employees/Employees";
@@ -77,6 +78,7 @@ function App() {
   return (
     <ModalProvider>
         <ScanModal/>
+        <ConfirmModal/>
         <div className="App">
             {location !== '/' && (<Sidebar/>)}
             {route(location)}

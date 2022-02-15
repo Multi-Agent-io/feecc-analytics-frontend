@@ -7,10 +7,10 @@ import ModalActionsContext from '../../store/modal-context';
 
 export default function ScanButton(props) {
 
-    const { onOpen } = useContext(ModalActionsContext);
+    const { onOpenBar } = useContext(ModalActionsContext);
 
     return (
-        <button onClick={onOpen} className={styles.buttonWrapper}>
+        <button onClick={onOpenBar} className={styles.buttonWrapper}>
             <img src={barcode}/>
         </button>
     );

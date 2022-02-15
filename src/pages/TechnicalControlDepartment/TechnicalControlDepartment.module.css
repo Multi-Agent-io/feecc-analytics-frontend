@@ -20,7 +20,7 @@
 }
 
 .grid-table > div {
-  padding: 0.5rem 0;
+  padding: 1rem 0;
   font-size: 1.7rem;
 }
 
@@ -30,7 +30,10 @@
 }
 
 .grid-table_body {
-  row-gap: 1rem;
+  /* row-gap: 1rem; */
+}
+.grid-table_body div:nth-child(4n + 1) {
+  cursor: pointer;
 }
 .grid-table_body > div {
   border-bottom: 1px solid var(--color-light-purple);

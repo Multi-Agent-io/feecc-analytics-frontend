@@ -1,176 +1,179 @@
 * {
-    transition: all 0.3s;
+  transition: all 0.3s;
 }
 
 .pageWrapper {
-    height: calc(100% - 120px);
-    width: calc(100vw - 150px);
-    padding-top: 80px;
-    padding-left: 88px;
-    padding-bottom: 30px;
-    overflow-x: auto;
+  height: calc(100% - 120px);
+  width: calc(100vw - 150px);
+  padding-top: 80px;
+  padding-left: 88px;
+  padding-bottom: 30px;
+  overflow-x: auto;
 }
 
 .passportHeaderWrapper {
 }
 
 .passportType {
-    font-size: 1.7rem;
+  font-size: 1.7rem;
 }
 
 .passportNameWrapper {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 8px;
 }
 
 .passportNameWrapper > h1 {
-    max-width: 700px;
-    width: 38%;
+  max-width: 700px;
+  width: 38%;
 }
 
 .icons {
-    display: flex;
-    gap: 17px;
+  display: flex;
+  gap: 17px;
 }
 
 .inactiveIcon {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 .passportUUId {
-    margin-top: 16px;
+  margin-top: 16px;
 }
 
 .passportMainContent {
-    margin-top: 64px;
-    /*overflow-x: auto;*/
+  margin-top: 64px;
+  margin-bottom: 2rem;
+  text-align: center;
+
+  /*overflow-x: auto;*/
 }
 
 .passportStepWrapper {
-    margin-top: 40px;
-    display: flex;
-    flex-direction: row;
-    width: 1177px;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: row;
+  width: 1177px;
 }
 
 .stepContentWrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 480px;
 }
 
 .descriptionWrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .stepRowWrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .descriptionRowHeader {
-    width: 200px;
-    padding-right: 10px;
-    color: var(--color-main-gray);
+  width: 200px;
+  padding-right: 10px;
+  color: var(--color-main-gray);
 }
 
 .stepVideoPreview {
-    width: 221px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 44px 30px;
-    background-color: var(--color-main-gray);
-    border-radius: 4px;
-    margin-left: 80px;
+  width: 221px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 44px 30px;
+  background-color: var(--color-main-gray);
+  border-radius: 4px;
+  margin-left: 80px;
 }
 
 .stepVideoPreview:hover {
-    cursor: pointer;
-    /*background-color: var(--color-light-purple);*/
+  cursor: pointer;
+  /*background-color: var(--color-light-purple);*/
 }
 
 .stepVideoPreview {
-    text-wrap: normal;
+  text-wrap: normal;
 }
 
 .configurationButtonsWrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 80px;
 }
 
 .noRequiredInformation {
-    margin-top: 150px;
+  margin-top: 150px;
 }
 
 .modalWrapper {
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    left: 0;
-    top: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.2);
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .modalContent {
-    border-radius: 10px;
-    padding: 30px;
-    background-color: var(--color-main-white);
-    position: relative;
+  border-radius: 10px;
+  padding: 30px;
+  background-color: var(--color-main-white);
+  position: relative;
 }
 
 .removeIcon {
-    width: 50px;
-    position: absolute;
-    left: -30px;
-    top: -30px;
-    background-color: white;
-    padding: 10px;
-    border-radius: 100%;
-    box-shadow: 3px 3px 3px var(--color-main-gray);
+  width: 50px;
+  position: absolute;
+  left: -30px;
+  top: -30px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 100%;
+  box-shadow: 3px 3px 3px var(--color-main-gray);
 }
 
 .removeIcon:hover {
-    background-color: var(--color-light-purple);
+  background-color: var(--color-light-purple);
 }
 
 .videoDescription {
-    margin-top: 30px;
-    font-size: 2rem;
-    max-width: 1000px;
+  margin-top: 30px;
+  font-size: 2rem;
+  max-width: 1000px;
 }
 
 .cantFindVideo {
-    font-size: 2rem;
-    color: var(--color-strong-orange);
-    padding: 20px;
-    text-align: center;
+  font-size: 2rem;
+  color: var(--color-strong-orange);
+  padding: 20px;
+  text-align: center;
 }
 
 .notFound {
-    /*color: var(--color-strong-orange);*/
-    background-color: var(--color-light-purple);
+  /*color: var(--color-strong-orange);*/
+  background-color: var(--color-light-purple);
 }
 
 .notFound:hover {
-    cursor: not-allowed;
+  cursor: not-allowed;
 }
 
 .checked-btn {
-    background-color: var(--color-strong-purple);
-    color: var(--color-main-white);
+  background-color: var(--color-strong-purple);
+  color: var(--color-main-white);
 }
 .checked-btn:hover {
-    background-color: var(--color-strong-purple);
+  background-color: var(--color-strong-purple);
 }
