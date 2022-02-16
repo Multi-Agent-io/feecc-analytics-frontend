@@ -20,18 +20,6 @@ function ModalOverlay(props) {
 function Modal(props) {
 
   const portalPlace = document.querySelector("#overlays");
-
-  const keyDownHandler = (event) => {
-    console.log(event.key);
-  }
-  
-  useEffect(() => {
-    document.addEventListener("keydown", keyDownHandler);
-
-    return () => {
-      document.removeEventListener("keydown", keyDownHandler)
-    } 
-  },[])
   
   return (
     <>

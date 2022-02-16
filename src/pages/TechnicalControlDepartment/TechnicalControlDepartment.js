@@ -65,7 +65,41 @@ function TechnicalControlDepartment() {
             type: "type",
             time: "00.00.00"
         },
-
+        {
+            id: 8,
+            name: "7name",
+            status: "status",
+            type: "type",
+            time: "00.00.00"
+        },
+        {
+            id: 9,
+            name: "7name",
+            status: "status",
+            type: "type",
+            time: "00.00.00"
+        },
+        {
+            id: 9,
+            name: "7name",
+            status: "status",
+            type: "type",
+            time: "00.00.00"
+        },
+        {
+            id: 9,
+            name: "7name",
+            status: "status",
+            type: "type",
+            time: "00.00.00"
+        },
+        {
+            id: 9,
+            name: "7name",
+            status: "status",
+            type: "type",
+            time: "00.00.00"
+        },
 
     ]
 
@@ -112,7 +146,7 @@ function TechnicalControlDepartment() {
             setIsLoading(false)
         })
 
-     },[])
+    }, [])
 
      useEffect(() => {
         if(searchValue.length === 0){
@@ -140,7 +174,7 @@ function TechnicalControlDepartment() {
             <div>Время создания</div>
         </div>
         {isLoading ? (
-            <h1>Идёт загрузка</h1>
+            <h1>Идёт загрузка...</h1>
         ) : (
             makeProtocolsTable()  
         )}

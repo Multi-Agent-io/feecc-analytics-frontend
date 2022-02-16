@@ -16,6 +16,7 @@ import Passport from "./pages/Passport/Passport";
 import TechnicalControlDepartment from './pages/TechnicalControlDepartment/TechnicalControlDepartment'
 import ScanModal from './pages/ScanModal/ScanModal';
 import ConfirmModal from './pages/ConfirmModal/ConfirmModal';
+import RevisionProvider from './store/RevisionProvider';
 
 // import Schemas from "./pages/Schemas/Schemas";
 // import Employees from "./pages/Employees/Employees";
@@ -77,12 +78,14 @@ function App() {
     })
   return (
     <ModalProvider>
-        <ScanModal/>
-        <ConfirmModal/>
-        <div className="App">
-            {location !== '/' && (<Sidebar/>)}
-            {route(location)}
-        </div>
+        <RevisionProvider>
+            <ScanModal/>
+            <ConfirmModal/>
+            <div className="App">
+                {location !== '/' && (<Sidebar/>)}
+                {route(location)}
+            </div>
+            </RevisionProvider>
     </ModalProvider>
   );
 }

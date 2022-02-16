@@ -52,7 +52,7 @@ export default function Passports(props) {
 
     useEffect(() => {
         fetchPassports()
-    }, [fetchPassports, filtersValues, sortingDirection, page, pageSize])
+    }, [filtersValues, sortingDirection, page, pageSize, searchValue])
 
     useEffect(() => {
         if (rows.length === 0)

@@ -10,7 +10,9 @@ import fixRequiredIcon from '../../assets/fix_icon.svg'
 import Button from "../../components/Button/Button";
 import {useTranslation} from "react-i18next";
 import ReactPlayer from "react-player";
+
 import ModalActionsContext from '../../store/modal-context';
+import RevisionContext from '../../store/revision-context';
 
 export default function Passport(props) {
 
@@ -23,10 +25,10 @@ export default function Passport(props) {
 
     const editModeIsOn = location.split("/")[3] === "view" ? false : true 
     const { onOpenConfirm } = useContext(ModalActionsContext)
+    const { changeRevision , revisionsItem } = useContext(RevisionContext)
 
     let [showModal, toggleModal] = useState(false)
     let [selectedStep, setSelectedStep] = useState({})
-    const [revisionIds, setRevisionIds] = useState({})
 
     useEffect(() => {
         doGetPassport(dispatch, location.split('/')[2])
@@ -46,20 +48,12 @@ export default function Passport(props) {
             .catch((error) => {})
     }, [])
 
-    const changeRevisionArrayHandler = (id, name, event) => {
+    const changeRevisionArrayHandler = (id, name, index, event) => {
         const currentBtn = event.target;
         currentBtn.classList.toggle(styles["checked-btn"]);
 
-        setRevisionIds((prevState) => {
-            const newState = {...prevState};
-
-            if(newState.hasOwnProperty(id)){
-                delete newState[id];
-            } else {
-                newState[id] = name;
-            }
-            return newState
-        })
+        changeRevision(id, name, index)
+        
     }
 
     
@@ -173,7 +167,7 @@ export default function Passport(props) {
                                 {editModeIsOn &&
                                     <div className={styles.configurationButtonsWrapper}>
                                         <Button
-                                            onClick = {changeRevisionArrayHandler.bind(null, step.id, step.unit_name)}
+                                            onClick = {changeRevisionArrayHandler.bind(null, step.id, step.name, index)}
                                             variant = {step.unit_name === null ? "default" : "clear"}
                                             disabled = {step.unit_name === null ? false : true}
                                         >
