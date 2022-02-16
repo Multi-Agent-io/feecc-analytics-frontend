@@ -11,7 +11,7 @@ import classes from "./ScanModal.module.css"
 
 
 function ScanModal () {
-  const { modalBarStatus, onCloseBar } = useContext(ModalActionsContext);
+  const { modalBarStatus, onClose } = useContext(ModalActionsContext);
 
   let protocolId = ''; // because i don't now how to do this with useState
 
@@ -19,7 +19,7 @@ function ScanModal () {
 
     if(event.key === "Enter"){
       history.push(`/tcd/protocol/${protocolId}`)
-      onCloseBar()
+      onClose()
     } else {
       if(!Number.isNaN(+event.key)){
         protocolId = protocolId + event.key

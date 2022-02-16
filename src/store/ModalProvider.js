@@ -6,25 +6,23 @@ function ModalProvider(props) {
   const [isModalConfirmActive, setModalConfirmIsVisibale] = useState(false);
   
 
-  const closeModalBarHandler = () => {
+  const closeModal = () => {
     setModalBarIsVisibale(false);
+    setModalConfirmIsVisibale(false);
   };
+
   const openModalBarHandler = () => {
     setModalBarIsVisibale(true);
   };
 
-  
-  const closeModalConfirmHandler = () => {
-    setModalConfirmIsVisibale(false);
-  };
   const openModalConfirmHandler = () => {
     setModalConfirmIsVisibale(true);
   };
 
   const modalActions = {
-    onCloseBar: closeModalBarHandler,
+    onClose: closeModal,
+
     onOpenBar: openModalBarHandler,
-    onCloseConfirm: closeModalConfirmHandler,
     onOpenConfirm: openModalConfirmHandler,
     modalBarStatus: isModalBarActive,
     modalConfirmStatus: isModalConfirmActive,

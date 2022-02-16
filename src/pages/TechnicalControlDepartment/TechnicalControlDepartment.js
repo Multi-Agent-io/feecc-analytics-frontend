@@ -181,7 +181,7 @@ function TechnicalControlDepartment() {
                return (
                    protocol.name.includes(searchValue) &&
                    (typeOfProtocol === "Выберите из списка" ? true : protocol.type === typeOfProtocol) &&  // check if value is default
-                   (statusOfProtocol === "Выберите из списка" ? true : protocol.type === statusOfProtocol)
+                   (statusOfProtocol === "Выберите из списка" ? true : protocol.status === statusOfProtocol)
                )
            }))
        }

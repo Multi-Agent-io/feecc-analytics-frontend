@@ -1,9 +1,8 @@
 import React from "react";
 
 const ModalActionsContext = React.createContext({
-  onCloseBar: () => {},
+  onClose: () => {},
   onOpenBar: () => {},
-  onCloseConfirm: () => {},
   onOpenConfirm: () => {},
 });
 

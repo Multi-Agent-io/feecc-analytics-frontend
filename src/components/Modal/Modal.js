@@ -5,8 +5,8 @@ import ModalActionsContext from "../../store/modal-context";
 
 function Backdrop(props) {
 
-  const { onCloseBar, onCloseConfirm } = useContext(ModalActionsContext);
-  return <div onClick={() => {onCloseBar();onCloseConfirm()}} className={classes.backdrop}></div>;
+  const { onClose } = useContext(ModalActionsContext);
+  return <div onClick={() => {onClose()}} className={classes.backdrop}></div>;
 }
 
 function ModalOverlay(props) {

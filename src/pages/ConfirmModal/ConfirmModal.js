@@ -12,7 +12,7 @@ import classes from "./ConfirmModal.module.css"
 
 function ConfirmModal () {
 
-  const { modalConfirmStatus, onCloseConfirm } = useContext(ModalActionsContext);
+  const { modalConfirmStatus, onClose } = useContext(ModalActionsContext);
   const { revisionsItem } = useContext(RevisionContext)
   const [nameRevision, setNameRevision] = useState([])
   const [idsRevision, setIdsRevision] = useState([])
@@ -39,7 +39,7 @@ function ConfirmModal () {
       body: JSON.stringify(desiredArray)
     })
     .then(()=> {
-      onCloseConfirm();
+      onClose();
       history.push(`/tcd`);
     })
     
@@ -77,7 +77,7 @@ function ConfirmModal () {
               {nameRevision.map( (item, index) => item ? <li key={index}>{item}</li> : null)}
             </ol>
             <div className={classes["btn-section"]} >
-              <Button onClick ={onCloseConfirm}>Отмена</Button>
+              <Button onClick ={onClose}>Отмена</Button>
               <Button variant = "clear" onClick ={pushToServerHandler}>Отправить на доработку</Button>
             </div>
           </section>

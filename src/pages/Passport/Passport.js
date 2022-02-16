@@ -23,7 +23,8 @@ export default function Passport(props) {
     let passport = useSelector(getCurrentPassport)?.toJS()
     let employees = useSelector(getAllEmployees)?.toJS()
 
-    const editModeIsOn = location.split("/")[3] === "view"
+    const editModeIsOn = location.split("/")[3] === "edit"
+    
     const { onOpenConfirm } = useContext(ModalActionsContext)
     const { changeRevision, canSendRevision } = useContext(RevisionContext)
 
