@@ -25,6 +25,19 @@
   margin-bottom: 2rem;
 }
 
+.filters {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.filters div {
+  margin-right: 3rem;
+}
+
+.filters__main {
+  display: flex;
+}
+
 .grid-table {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;

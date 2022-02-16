@@ -44,9 +44,11 @@ function Protocol(){
           ["Проверка усилия, необходимого для перемещения стойки", 67, null, false, false, false],
           ["Проверка плавности и усилия перемещения лотков", 45, null, false, false, false],
         ],
-        state: true,
+        stage: true,
         super_role: false,
+        serial_number: 0,
         pasport_id: 2544644264919,
+        employee: ""
       }
 
       setRowsArray(dummyData.data)
@@ -108,7 +110,7 @@ function Protocol(){
   }
 
   const goToPasportHandler = () => {
-    window.location = `/passport/${pasportId}/edit`
+    history.push(`/passport/${pasportId}/edit`)
   }
 
   const checkAllHandler = () => {

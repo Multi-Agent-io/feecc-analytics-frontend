@@ -4,7 +4,6 @@ import ModalActionsContext from "./modal-context";
 function ModalProvider(props) {
   const [isModalBarActive, setModalBarIsVisibale] = useState(false);
   const [isModalConfirmActive, setModalConfirmIsVisibale] = useState(false);
-  const [modalConfirmId, setModalConfirmId] = useState('');
   
 
   const closeModalBarHandler = () => {

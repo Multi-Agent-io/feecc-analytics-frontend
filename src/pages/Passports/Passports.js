@@ -26,7 +26,7 @@ export default function Passports(props) {
     let rows = useSelector(getPassports)?.toJS()
     
 
-    let fetchPassports = useCallback(() => {
+    let fetchPassports = () => {
         let {deviceType, date, overwork, requiredFix, passportType} = filtersValues
         if (authorized) {
             doGetPassports(dispatch, page, pageSize, searchValue, date, requiredFix, overwork, deviceType, sortingDirection, passportType)
@@ -38,7 +38,7 @@ export default function Passports(props) {
                         history.push('/')
                 })
         }
-    }) 
+    }
 
     let dropSettings = () => {
         setSearchValue('')

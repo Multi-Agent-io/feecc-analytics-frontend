@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import Button from "../../components/Button/Button";
 
 import Modal from "../../components/Modal/Modal"
+import { history } from "../../store/main";
+
 import ModalActionsContext from "../../store/modal-context"
 import RevisionContext from "../../store/revision-context";
 
@@ -26,7 +28,7 @@ function ConfirmModal () {
     console.log(internal_id);
     console.log(desiredArray);
     
-    const url = `http://134.209.240.5:5002/api/v1/passports/${internal_id}/revision`
+    const url = `http://134.209.240.5:5002/api/v1/passports/${internal_id}/revision`;
 
     fetch(url, {
       method: "POST",
@@ -34,11 +36,11 @@ function ConfirmModal () {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       },
-      body:  JSON.stringify(desiredArray)
+      body: JSON.stringify(desiredArray)
     })
     .then(()=> {
       onCloseConfirm();
-      window.location = `/tcd`;
+      history.push(`/tcd`);
     })
     
   }
@@ -76,7 +78,7 @@ function ConfirmModal () {
             </ol>
             <div className={classes["btn-section"]} >
               <Button onClick ={onCloseConfirm}>Отмена</Button>
-              <Button variant = "clear" onClick ={pushToServerHandler}>Отправить на проверку</Button>
+              <Button variant = "clear" onClick ={pushToServerHandler}>Отправить на доработку</Button>
             </div>
           </section>
         </Modal>

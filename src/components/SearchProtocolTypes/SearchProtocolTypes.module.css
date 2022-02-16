@@ -1,0 +1,44 @@
+.container {
+  max-width: 400px;
+  position: relative;
+  display: block;
+  text-align: left;
+}
+
+.container h2 {
+  margin-bottom: 1rem;
+}
+
+.select {
+  display: block;
+  min-width: 400px;
+  background-color: transparent;
+  padding: 16px 18px;
+  cursor: pointer;
+  appearance: none;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  color: var(--color-main-gray);
+}
+
+.select option {
+  min-width: 220px;
+  height: 2rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--color-main-black);
+}
+.select option:first-child {
+  color: var(--color-main-gray);
+}
+
+.arrow {
+  position: absolute;
+  right: 1rem;
+  top: 4.2rem;
+  z-index: -1;
+}
+
+.arrow.rotate {
+  transform: rotate(-90deg);
+}

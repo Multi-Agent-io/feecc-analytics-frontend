@@ -12,15 +12,14 @@ function RevisionProvider (props) {
   const changeRevisions = (id, name, index,) => {
 
     setRevisionIds((prevState) => {
-      const newState = JSON.parse(JSON.stringify(prevState))
+      const newState = JSON.parse(JSON.stringify(prevState));
 
       if(newState[index]){
           newState[index] = null
       } else {
           newState[index] = { [id]: name }
       }
-
-      setCanSendRevision(newState.every(obj => obj == undefined)) // for passport button "send on revision"
+      setCanSendRevision(newState.every(obj => obj === null)); // for passport button "send on revision"
 
       return newState
   })

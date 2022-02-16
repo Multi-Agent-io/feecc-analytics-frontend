@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import styles from './Passport.module.css'
 import clsx from "clsx";
-import {getAllEmployees, getCurrentPassport, getEditModeState, getLocation} from "../../store/selectors";
+import {getAllEmployees, getCurrentPassport, getLocation} from "../../store/selectors";
 import {useDispatch, useSelector} from "react-redux";
 import {decodeUser, doGetPassport} from "../../store/userActions";
 import overworkIcon from '../../assets/time_icon.svg'
@@ -23,14 +23,14 @@ export default function Passport(props) {
     let passport = useSelector(getCurrentPassport)?.toJS()
     let employees = useSelector(getAllEmployees)?.toJS()
 
-    const editModeIsOn = location.split("/")[3] === "view" ? false : true 
+    const editModeIsOn = location.split("/")[3] === "view"
     const { onOpenConfirm } = useContext(ModalActionsContext)
     const { changeRevision, canSendRevision } = useContext(RevisionContext)
 
 
     let [showModal, toggleModal] = useState(false)
     let [selectedStep, setSelectedStep] = useState({})
-    const [isLoading, setIsLoading] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
 
 

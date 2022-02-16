@@ -11,14 +11,15 @@ import classes from "./ScanModal.module.css"
 
 
 function ScanModal () {
-  const { modalBarStatus } = useContext(ModalActionsContext);
+  const { modalBarStatus, onCloseBar } = useContext(ModalActionsContext);
 
   let protocolId = ''; // because i don't now how to do this with useState
 
   const keyDownHandler = (event) => {
 
     if(event.key === "Enter"){
-      window.location = `/tcd/protocol/${protocolId}`
+      history.push(`/tcd/protocol/${protocolId}`)
+      onCloseBar()
     } else {
       if(!Number.isNaN(+event.key)){
         protocolId = protocolId + event.key
