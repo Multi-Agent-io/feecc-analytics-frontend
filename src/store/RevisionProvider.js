@@ -6,6 +6,8 @@ import RevisionContext from "./revision-context";
 function RevisionProvider (props) {
 
   const [revisionIds, setRevisionIds] = useState([])
+  const [canSendRevision, setCanSendRevision] = useState([])
+
 
   const changeRevisions = (id, name, index,) => {
 
@@ -17,13 +19,17 @@ function RevisionProvider (props) {
       } else {
           newState[index] = { [id]: name }
       }
+
+      setCanSendRevision(newState.every(obj => obj == undefined)) // for passport button "send on revision"
+
       return newState
   })
   }
 
   const revisionActions = {
     changeRevision : changeRevisions,
-    revisionsItem: revisionIds
+    revisionsItem: revisionIds,
+    canSendRevision: canSendRevision
   }
 
   return (

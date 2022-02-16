@@ -46,7 +46,7 @@ function Protocol(){
         ],
         state: true,
         super_role: false,
-        pasport_id: 2297306753305,
+        pasport_id: 2544644264919,
       }
 
       setRowsArray(dummyData.data)
@@ -127,7 +127,6 @@ function Protocol(){
 
     }
     setRowsArray(newState)
-    console.log(newState);
   }
 
   // ======== make function for render ========

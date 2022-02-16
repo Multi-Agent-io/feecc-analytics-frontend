@@ -25,12 +25,14 @@ export default function Passport(props) {
 
     const editModeIsOn = location.split("/")[3] === "view" ? false : true 
     const { onOpenConfirm } = useContext(ModalActionsContext)
-    const { changeRevision , revisionsItem } = useContext(RevisionContext)
+    const { changeRevision, canSendRevision } = useContext(RevisionContext)
 
 
     let [showModal, toggleModal] = useState(false)
     let [selectedStep, setSelectedStep] = useState({})
     const [isLoading, setIsLoading] = useState('')
+
+
 
     useEffect(() => {
         setIsLoading(false)
@@ -48,7 +50,6 @@ export default function Passport(props) {
                             
                         })
                 })
-                console.log(1);
                 setIsLoading(true)
                 return currentPassport
             })
@@ -59,7 +60,6 @@ export default function Passport(props) {
     const changeRevisionArrayHandler = (id, name, index, event) => {
         const currentBtn = event.target;
         currentBtn.classList.toggle(styles["checked-btn"]);
-
         changeRevision(id, name, index)
     }
 
@@ -189,7 +189,7 @@ export default function Passport(props) {
         ) : (
             <h1 className={styles.noRequiredInformation}>{t('passport.noRequiredInformation')}</h1>
         )}
-        {editModeIsOn && <Button onClick ={onOpenConfirm}>Отправить на добработку</Button>}
+        {editModeIsOn && !canSendRevision &&  <Button onClick ={onOpenConfirm}>Отправить на добработку</Button>}
         </div>
 
             {showModal && (
