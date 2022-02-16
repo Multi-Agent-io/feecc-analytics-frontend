@@ -1,0 +1,23 @@
+.button {
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.button:hover {
+    /* background-color: var(--color-light-purple); */
+    transform: scale(1.1);
+}
+.button:disabled {
+    transform: none;
+    cursor: default;
+    opacity: 0.5;
+}
+
+@media print {
+    .button {
+        display: none;
+    }
+}

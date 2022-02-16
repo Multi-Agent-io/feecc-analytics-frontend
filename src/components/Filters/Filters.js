@@ -1,9 +1,7 @@
-import React, {forwardRef, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import moment from "moment";
-import clsx from "clsx";
 import styles from './Filters.module.css'
 import {useTranslation} from "react-i18next";
-import Checkbox from "../Checkbox/Checkbox";
 import classNames from "classnames";
 import Select from "../Select/Select";
 import DatePicker from "../DatePicker/DatePicker";
@@ -18,13 +16,14 @@ export default function Filters(props) {
     let [overwork, setOverwork] = useState(false)
     let [requiredFix, setRequiredFix] = useState(false)
     let [deviceType, setDeviceType] = useState([''])
+    let [passportType, setPassportType] = useState('production')
     let {t} = useTranslation()
 
     let passportTypes = useSelector(getAllTypes)
 
     useEffect(() => {
-        props.onChange && props.onChange({deviceType, date, overwork, requiredFix})
-    }, [date, overwork, requiredFix, deviceType])
+        props.onChange && props.onChange({deviceType, date, overwork, requiredFix, passportType})
+    }, [date, overwork, requiredFix, deviceType, passportType])
 
     useEffect(() => {
         doGetPassportTypes(dispatch)
@@ -56,6 +55,15 @@ export default function Filters(props) {
                 <div className={styles.column}>
                     <div className={styles.filterName}>{t('filters.Date')}</div>
                     <DatePicker value={moment(date).format('yyyy-MM-DD')} onChange={(e) => setDate(e)}/>
+                </div>
+                <div className={styles.column}>
+                    <select onChange={(e) => {setPassportType(e.target.value)}}>
+                        <option value="production">В производстве</option>
+                        <option value="built">Произведённые</option>
+                        <option value="revision">На доработке</option>
+                        <option value="approved">Подтверждённые</option>
+                        <option value="finished">Выпущенные</option>
+                    </select>
                 </div>
                 <div className={classNames(styles.column, styles.fullWidthButton)}>
                     <div className={styles.dropButtonWrapper}>

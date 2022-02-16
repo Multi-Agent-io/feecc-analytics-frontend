@@ -4,12 +4,19 @@ import {useEffect} from "react";
 import {getAuthorizationStatus} from "./store/selectors";
 import {history} from "./store/main";
 import {doFetchUser} from "./store/userActions";import {useDispatch, useSelector} from "react-redux";
+import ModalProvider from './store/ModalProvider';
+
+
 import Sidebar from "./components/Sidebar/Sidebar";
 import Passports from "./pages/Passports/Passports";
+import Protocol from "./pages/Protocol/Protocol"
 import UnderConstruction from "./pages/UnderConstruction/UnderConstruction";
 import Login from "./pages/Login/Login";
 import Passport from "./pages/Passport/Passport";
 import TechnicalControlDepartment from './pages/TechnicalControlDepartment/TechnicalControlDepartment'
+import ScanModal from './pages/ScanModal/ScanModal';
+import ConfirmModal from './pages/ConfirmModal/ConfirmModal';
+import RevisionProvider from './store/RevisionProvider';
 
 // import Schemas from "./pages/Schemas/Schemas";
 // import Employees from "./pages/Employees/Employees";
@@ -21,16 +28,20 @@ function App() {
     let routes = [
         ['^/$', () => <Login/>],
         ['^/passports', () => <Passports/>],
-        ['^/tcd', () => <TechnicalControlDepartment/>],
         // ['^/Passports', () => <UnderConstruction/>],
+        ['^/tcd/protocol/*', () => <Protocol/>],
+        ['^/tcd', () => <TechnicalControlDepartment/>],
+        // ['^/tcd', () => <UnderConstruction/>],
         // ['^/employees', () => <Employees/>],
         ['^/employees', () => <UnderConstruction/>],
         // ['^/production-schemas', () => <Schemas/>],
         ['^/production-schemas', () => <UnderConstruction/>],
-        ['^/passport/*', () => <Passport/>]
+        ['^/passport/*', () => <Passport/>],
+        
 
     ]
     let route = (path) => routes.find(r => path.match(r[0]) !== null)?.[1]?.()
+    
 
     useEffect(() => {
         if(authorized && localStorage.getItem('token') !== undefined && localStorage.getItem('token') !== null) {
@@ -66,10 +77,16 @@ function App() {
         }
     })
   return (
-    <div className="App">
-        {location !== '/' && (<Sidebar/>)}
-        {route(location)}
-    </div>
+    <ModalProvider>
+        <RevisionProvider>
+            <ScanModal/>
+            <ConfirmModal/>
+            <div className="App">
+                {location !== '/' && (<Sidebar/>)}
+                {route(location)}
+            </div>
+            </RevisionProvider>
+    </ModalProvider>
   );
 }
 

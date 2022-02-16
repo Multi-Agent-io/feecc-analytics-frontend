@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styles from './Passports.module.css'
-import ScanButton from "../../components/ScanButton/ScanButton";
 import Search from "../../components/Search/Search";
 import SettingsButton from "../../components/SettingsButton/SettingsButton";
 import Filters from "../../components/Filters/Filters";
@@ -25,23 +24,12 @@ export default function Passports(props) {
     let authorized = useSelector(getAuthorizationStatus)
     let pages = Math.ceil(useSelector(getPassportsNumber) / pageSize)
     let rows = useSelector(getPassports)?.toJS()
-
-
-    useEffect(() => {
-        fetchPassports()
-    }, [filtersValues, sortingDirection, page, pageSize])
-
-    useEffect(() => {
-        if (rows.length === 0)
-            fetchPassports()
-        if (page > pages && pages !== 0)
-            setPage(pages)
-    }, [rows])
+    
 
     let fetchPassports = () => {
-        let {deviceType, date, overwork, requiredFix} = filtersValues
+        let {deviceType, date, overwork, requiredFix, passportType} = filtersValues
         if (authorized) {
-            doGetPassports(dispatch, page, pageSize, searchValue, date, requiredFix, overwork, deviceType, sortingDirection)
+            doGetPassports(dispatch, page, pageSize, searchValue, date, requiredFix, overwork, deviceType, sortingDirection, passportType)
                 .then((res) => {
                     // correctPage()
                 })
@@ -62,10 +50,20 @@ export default function Passports(props) {
         localStorage.setItem('tablePage', page)
     }
 
+    useEffect(() => {
+        fetchPassports()
+    }, [filtersValues, sortingDirection, page, pageSize, searchValue])
+
+    useEffect(() => {
+        if (rows.length === 0)
+            fetchPassports()
+        if (page > pages && pages !== 0)
+            setPage(pages)
+    }, [fetchPassports, rows])
+
     return (
         <div className={styles.pageWrapper}>
             <div className={styles.searchWrapper}>
-                <ScanButton/>
                 <Search value={searchValue} onSearch={() => fetchPassports()} onChange={setSearchValue}/>
                 <SettingsButton onClick={() => {
                     changeFiltersDisplay(!filtersDisplay)
@@ -84,6 +82,7 @@ export default function Passports(props) {
                 />
                 <Table
                     onDirectionChange={setSortingDirection}
+                    type = "pasports"
                     setPage={setTablePage}
                     rowsData={rows}
                     page={page}

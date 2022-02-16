@@ -52,11 +52,11 @@ export const doFetchUser = (dispatch) => {
     })
 }
 
-export const doGetPassports = (dispatch, page=1, size=12, name = null, date = null, overtime = null, rework = null, passportTypes = null, dateDirection = "asc") => {
+export const doGetPassports = (dispatch, page=1, size=12, name = null, date = null, overtime = null, rework = null, deviceTypes = null, dateDirection = "asc", passportType = 'production') => {
     return new Promise((resolve, reject) => {
         let passTypes = ''
-        if (typeof passportTypes === 'string')
-            passTypes = passportTypes.replaceAll(', ', ',')
+        if (typeof deviceTypes === 'string')
+            passTypes = deviceTypes.replaceAll(', ', ',')
         let request = 'http://134.209.240.5:5002/api/v1/passports'
         request += '/?page=' + page + '&items=' + size
         if (name !== null && name !== '' && name !== undefined)
@@ -75,6 +75,7 @@ export const doGetPassports = (dispatch, page=1, size=12, name = null, date = nu
             request += '&overtime=' + overtime
         if (rework !== null && rework !== undefined && !devBlock)
             request += '&rework=' + rework
+        request += '&status=' + passportType
         axios.get(
             request,
             {
@@ -172,3 +173,6 @@ export const doGetPassportTypes = (dispatch) => {
             })
     })
 }
+
+
+

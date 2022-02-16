@@ -1,6 +1,10 @@
 .buttonWrapper {
     height: 48px;
     width: 48px;
+    cursor: pointer;
+}
+.buttonWrapper:hover {
+    transform: scale(1.1);
 }
 
 .buttonWrapper > img {

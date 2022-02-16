@@ -1,0 +1,20 @@
+.btn-back {
+    padding: 5px 10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-back:hover {
+    transform: scale(1.1);
+}
+
+.btn-back > img {
+    width: 15px;
+}
+
+@media print {
+    .btn-back {
+        display: none;
+    }
+}

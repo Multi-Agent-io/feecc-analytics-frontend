@@ -39,6 +39,7 @@ export default function Login(props) {
     }
 
     let doLogin = () => {
+        
         if (!username)
             setUsernameError(t('login.usernameIsRequired'))
         if (!password)

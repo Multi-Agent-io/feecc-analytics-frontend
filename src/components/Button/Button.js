@@ -9,12 +9,12 @@ export default function Button(props) {
     }
 
     return (
-        <div>
+        
             <button onClick={onClickHandler} className={clsx({
                 [styles.defaultButton]: props.variant === 'default' || props.variant === undefined,
                 [styles.clearButton]: props.variant === 'clear',
                 [styles.disabled]: props.disabled
             })}>{props.children}</button>
-        </div>
+        
     );
 }

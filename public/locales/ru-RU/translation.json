@@ -1,12 +1,13 @@
 {
   "sidebar": {
     "Passports": "Паспорта",
+    "TCD": "ОТК",
     "Employees": "Сотрудники",
     "Schemas": "Схемы",
     "Logout": "Выход"
   },
   "search": {
-    "enterName": "Введите название изделия или имя сотрудника",
+    "enterName": "Введите название изделия",
     "Find": "Найти"
   },
   "filters": {

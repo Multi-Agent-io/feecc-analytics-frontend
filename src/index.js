@@ -10,11 +10,11 @@ import {history} from "./store/main";
 
 ReactDOM.render(
   <React.StrictMode>
-      <Provider store={store}>
+        <Provider store={store}>
           <ConnectedRouter history={history}>
               <App />
           </ConnectedRouter>
-      </Provider>
+         </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

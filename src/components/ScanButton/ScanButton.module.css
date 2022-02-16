@@ -1,10 +1,16 @@
 .buttonWrapper {
-    width: 48px;
-    height: 48px;
-    border-radius: 7px;
+  width: 48px;
+  height: 48px;
+  border-radius: 7px;
+  cursor: pointer;
+  border: none;
+}
+
+.buttonWrapper:hover {
+  transform: scale(1.1);
 }
 
 .buttonWrapper > img {
-    width: inherit;
-    height: inherit;
+  width: inherit;
+  height: inherit;
 }

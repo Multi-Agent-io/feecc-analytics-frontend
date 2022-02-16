@@ -26,7 +26,7 @@ export default function Sidebar () {
         history.push('/')
     }
     return (
-        <div className={styles.columnWrapper}>
+        <aside className={styles.columnWrapper}>
             <div className={styles.logoIcon}>
                 <img src={logo} alt="simple placeholder for logo"/>
             </div>
@@ -36,7 +36,7 @@ export default function Sidebar () {
                 >
                     <div className={styles.topLine}/>
                     <img src={passportsIcon} alt="passports icon"/>
-                    <div className={styles.menuItemDescription}>{t('sidebar.Passports')}</div>
+                    <div className={styles.menuItemDescription}>{t('sidebar.Passports')}</div> 
                     <div className={styles.bottomLine}/>
                 </div>
                 <div className={clsx(styles.menuItem, {[styles.selectedItem]: pathname === '/tcd'})}
@@ -44,7 +44,7 @@ export default function Sidebar () {
                 >
                     <div className={styles.topLine}/>
                     <img src={passportsIcon} alt="passports icon"/>
-                    <div className={styles.menuItemDescription}>{t('sidebar.Passports')}</div>
+                    <div className={styles.menuItemDescription}>{t("sidebar.TCD")}</div> 
                     <div className={styles.bottomLine}/>
                 </div>
                 <div className={clsx(styles.menuItem, {[styles.selectedItem]: pathname === '/employees'})}
@@ -67,6 +67,6 @@ export default function Sidebar () {
                     <div onClick={logout} className={styles.menuItemDescription}>{t('sidebar.Logout')}</div>
                 </div>
             </div>
-        </div>
+        </aside>
     )
 }

@@ -1,0 +1,93 @@
+@media print {
+  .grid * {
+    min-width: 120px;
+  }
+  .grid > div {
+    min-height: 121px;
+    word-break: break-all;
+  }
+  .section button {
+    display: none;
+  }
+}
+
+.section {
+  width: calc(100vw - 250px);
+  margin: 0 2rem;
+}
+.section.super-engineer input,
+.section.super-engineer label {
+  pointer-events: none;
+}
+
+.section h1 {
+  text-align: center;
+}
+
+.serial_number {
+  font-size: 1.71rem;
+}
+
+.check-all-btn {
+  display: block;
+}
+
+.header {
+  padding-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.col-1 {
+  grid-area: col-1;
+}
+.col-2 {
+  grid-area: col-2;
+}
+.col-3 {
+  grid-area: col-3;
+}
+.col-4 {
+  grid-area: col-4;
+}
+.col-5 {
+  grid-area: col-5;
+}
+.col-6 {
+  grid-area: col-6;
+}
+.col-check {
+  grid-area: col-check;
+}
+.col-fix {
+  grid-area: col-check;
+}
+
+.grid {
+  display: grid;
+  text-align: center;
+  grid-template-columns: 2fr 1fr 1fr 2fr 2fr 1fr;
+}
+.grid > div {
+  overflow: hidden;
+}
+.grid > * {
+  padding: 5px;
+  border: 1px solid var(--color-main-border);
+}
+.grid-container_header {
+  grid-template-areas:
+    "col-1 col-2 col-2 col-5 col-6 col-check"
+    "col-1 col-3 col-4 col-5 col-6 col-check";
+}
+.grid-container_body {
+  margin-bottom: 2rem;
+}
+.btns-section {
+  display: flex;
+  justify-content: space-between;
+}
+.btns-section button {
+  margin-right: 1rem;
+}

@@ -140,7 +140,7 @@ export const userInitialState = fromJS({
     passportsNumber: 0,
     selectedPassport: {},
     employees: {},
-    passportTypes: []
+    passportTypes: [],
 })
 
 export const userReducer = (state = {}, action) => {
@@ -191,7 +191,8 @@ export const userReducer = (state = {}, action) => {
             return state
                 .set('passportTypes', [...passportTypes])
         }
-
+        
+        
         default:
             return state
     }
