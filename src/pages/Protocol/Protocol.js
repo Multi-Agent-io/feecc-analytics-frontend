@@ -12,68 +12,11 @@ import Button from '../../components/Button/Button'
 function Protocol(){
 
   const [rowsArray, setRowsArray] = useState(undefined)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [pasportId, setPaportId] = useState('')
   const [protocolId, setProtocolId] = useState('')
   const [isSuperEngineer, setSuperEngineer] = useState('')
 
- 
-
-  useEffect(() => {
-
-    setProtocolId(history.location.pathname.split('/')[3]) // should be send on server to response
-    
-    setTimeout(() => {
-      const dummyData = { // from server
-        data:[
-          ["Проверка сырья и материаловfffffffffffffffffffffffffffffffffffff", 3, null, false, false, false], // name:string, nominalValue:number, limitDeviation:any, 1st check:boolean, 2nd check:boolean, approve:boolean  
-          ["Проверка плавности вращения колес стойки", 5, null, false, false, false],
-          ["Наименование параметра (показателя)", 6, null, false, false, false],
-          ["Проверка усилия, необходимого для включения/выключения тормоза колеса", 7, null, false, false, false],
-          ["Проверка усилия, необходимого для перемещения стойки", 67, null, false, false, false],
-          ["Проверка плавности и усилия перемещения лотков", 45, null, false, false, false],
-          ["Проверка сырья и материалов", 3, null, false, false, false], // name:string, nominalValue:number, limitDeviation:any, 1st check:boolean, 2nd check:boolean, approve:boolean  
-          ["Проверка плавности вращения колес стойки", 5, null, false, false, false],
-          ["Наименование параметра (показателя)", 6, null, false, false, false],
-          ["Проверка усилия, необходимого для включения/выключения тормоза колеса", 7, null, false, false, false],
-          ["Проверка усилия, необходимого для перемещения стойки", 67, null, false, false, false],
-          ["Проверка плавности и усилия перемещения лотков", 45, null, false, false, false],
-          ["Проверка плавности вращения колес стойки", 5, null, false, false, false],
-          ["Наименование параметра (показателя)", 6, null, false, false, false],
-          ["Проверка усилия, необходимого для включения/выключения тормоза колеса", 7, null, false, false, false],
-          ["Проверка усилия, необходимого для перемещения стойки", 67, null, false, false, false],
-          ["Проверка плавности и усилия перемещения лотков", 45, null, false, false, false],
-        ],
-        stage: true,
-        super_role: false,
-        serial_number: 0,
-        pasport_id: 2544644264919,
-        employee: ""
-      }
-
-      setRowsArray(dummyData.data)
-      setPaportId(dummyData.pasport_id)
-      setIsLoading(true)
-      setSuperEngineer(dummyData.super_role)
-    }, 500)
-    
-  }, [])
-
-  useEffect(() => {
-    const allCheckBox = document.querySelectorAll(`div > input[type=checkbox]`)
-    const allCheckBoxArray = Array.from(allCheckBox)
-
-    for (let i = 0; i < allCheckBoxArray.length; i++) {
-
-      if(allCheckBoxArray[i].offsetTop > 600){
-        allCheckBoxArray[i].parentElement.classList.add(styles.pageBreaker)
-        break
-      }
-    }
-
-    return () => window.onbeforeunload = () => null // clear event listener
-
-  },[isLoading])
 
   // ======== all handlers ========
   const inputDataHandler = (event) => {
@@ -100,7 +43,7 @@ function Protocol(){
     }
 
     if(!allFieldChecked){
-      allFieldChecked = window.confirm("Внимание вы не проверили все поля! Вы хотите продолжить?")
+      allFieldChecked = window.confirm("Внимание вы не проверили все поля! Вы хотите продолжить?") // should be changed to a modal window
     } 
 
     if(allFieldChecked){
@@ -152,7 +95,6 @@ function Protocol(){
   }
 
   const makeGridTable = (arrayItems) => {
-
     const jsxArray = arrayItems.map((row, index) => {
       const currRow = []
       for (let j = 0; j < row.length; j++) {
@@ -186,6 +128,53 @@ function Protocol(){
     )
   }
 
+  // ======== use effect ========
+  useEffect(() => {
+
+    setIsLoading(true) // start loading
+
+    setProtocolId(history.location.pathname.split('/')[3]) // should be send on server to response
+    
+    setTimeout(() => {
+      const dummyData = { // from server
+        data:[
+          ["Проверка сырья и материаловfffffffffffffffffffffffffffffffffffff", 3, null, false, false, false], // name:string, nominalValue:number, limitDeviation:any, 1st check:boolean, 2nd check:boolean, approve:boolean  
+          ["Проверка плавности вращения колес стойки", 5, null, false, false, false],
+          ["Наименование параметра (показателя)", 6, null, false, false, false],
+          ["Проверка усилия, необходимого для включения/выключения тормоза колеса", 7, null, false, false, false],
+          ["Проверка усилия, необходимого для перемещения стойки", 67, null, false, false, false],
+          ["Проверка плавности и усилия перемещения лотков", 45, null, false, false, false],
+          ["Проверка сырья и материалов", 3, null, false, false, false], // name:string, nominalValue:number, limitDeviation:any, 1st check:boolean, 2nd check:boolean, approve:boolean  
+          ["Проверка плавности вращения колес стойки", 5, null, false, false, false],
+          ["Наименование параметра (показателя)", 6, null, false, false, false],
+          ["Проверка усилия, необходимого для включения/выключения тормоза колеса", 7, null, false, false, false],
+          ["Проверка усилия, необходимого для перемещения стойки", 67, null, false, false, false],
+          ["Проверка плавности и усилия перемещения лотков", 45, null, false, false, false],
+          ["Проверка плавности вращения колес стойки", 5, null, false, false, false],
+          ["Наименование параметра (показателя)", 6, null, false, false, false],
+          ["Проверка усилия, необходимого для включения/выключения тормоза колеса", 7, null, false, false, false],
+          ["Проверка усилия, необходимого для перемещения стойки", 67, null, false, false, false],
+          ["Проверка плавности и усилия перемещения лотков", 45, null, false, false, false],
+        ],
+        stage: true,
+        super_role: false,
+        serial_number: 0,
+        pasport_id: 2544644264919,
+        employee: ""
+      }
+
+      setRowsArray(dummyData.data)
+      setPaportId(dummyData.pasport_id)
+      setIsLoading(true)
+      setSuperEngineer(dummyData.super_role)
+
+      setIsLoading(false) // end loading
+    }, 500)
+
+    return () => window.onbeforeunload = () => null // clear event listener for defence from reloading (from checkAllHandler)
+
+  }, [])
+
   return (
     <section className={`${styles.section} ${isSuperEngineer === true ? styles["super-engineer"] : null}`} >
       <div className={styles.header}>
@@ -203,7 +192,7 @@ function Protocol(){
             </input>
           </h2>
         </div>
-        <PrintButton disabled={!isLoading} />
+        <PrintButton disabled={isLoading} />
       </div>
       
       <div className={`${styles["grid-container_header"]} ${styles.grid}`}>
@@ -214,15 +203,13 @@ function Protocol(){
         <div className={styles["col-5"]}>Первичное испытание</div>
         <div className={styles["col-6"]}>Вторичное испытание</div>
         <div className={styles["col-check"]}>Проверено </div>
-        
-
       </div>
 
-      {isLoading && makeGridTable(rowsArray)}
+      {!isLoading && makeGridTable(rowsArray)}
 
-      {isLoading && makeButtonSection()}
+      {!isLoading && makeButtonSection()}
 
-      {!isLoading && <h1>Идёт загрузка...</h1>}
+      {isLoading && <h1>Идёт загрузка...</h1>}
 
     </section>
   )

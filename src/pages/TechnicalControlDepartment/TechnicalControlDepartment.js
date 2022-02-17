@@ -4,7 +4,7 @@ import { history } from "../../store/main";
 
 import ScanButton from "../../components/ScanButton/ScanButton";
 import Search from "../../components/Search/Search";
-import SearchProtocol from "../../components/SearchProtocolTypes/SearchProtocol";
+import SearchProtocol from "../../components/SearchProtocol/SearchProtocol";
 import Button from "../../components/Button/Button";
 
 import styles from "./TechnicalControlDepartment.module.css"
@@ -139,7 +139,7 @@ function TechnicalControlDepartment() {
             filteredProtocols.map((protocol) => {
                 return (
                      <>
-                        <div onClick={goToProtocolHandler.bind(null, protocol.id)} >{protocol.name}</div>
+                        <div className={styles["grid-table_body__name"]} onClick={goToProtocolHandler.bind(null, protocol.id)} >{protocol.name}</div>
                         <div>{protocol.type}</div>
                         <div>{protocol.status}</div>
                         <div>{protocol.time}</div>
@@ -191,7 +191,6 @@ function TechnicalControlDepartment() {
         <div className={styles.searchWrapper}>
             <ScanButton/>
             <Search value={searchValue} onChange = {setSearchValue} />
-            
         </div>
         <div className={styles.filters}>
             <div className={styles.filters__main} >

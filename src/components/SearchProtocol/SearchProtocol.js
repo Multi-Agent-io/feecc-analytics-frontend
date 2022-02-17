@@ -24,8 +24,8 @@ function SearchProtocol(props) {
         onChange={props.onChange}
       >
         <option disabled={true}>Выберите из списка</option>
-        {optionsArray.map((type)=> {
-          return <option>{type}</option>
+        {optionsArray.map((type, index)=> {
+          return <option key={index}>{type}</option>
         })}
       </select>
       <img id="arrow-select" className={classes.arrow} src={arrow_down}/>

@@ -64,8 +64,6 @@ export default function Passport(props) {
         changeRevision(id, name, index)
     }
 
-    
-
     let reverseDate = (dateString) => {
         let d1 = dateString.split(' ')
         let d2 = d1[0].split('-')

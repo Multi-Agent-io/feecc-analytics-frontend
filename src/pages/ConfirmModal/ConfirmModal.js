@@ -46,8 +46,6 @@ function ConfirmModal () {
   }
 
   useEffect(()=> {
-
-    
     setNameRevision(
       revisionsItem.map((item)=> {
         if(item){
