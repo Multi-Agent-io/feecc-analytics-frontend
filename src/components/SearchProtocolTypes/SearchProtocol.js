@@ -2,12 +2,13 @@ import { useEffect } from "react"
 
 import arrow_down from "../../assets/arrrow_left.svg"
 
-import classes from "./SearchProtocolTypes.module.css"
+import classes from "./SearchProtocol.module.css"
 
 function SearchProtocol(props) {
   
-  const onClickSelectHandler = () => {
-    document.querySelector("#arrow-select").classList.toggle(classes.rotate)
+  const onClickSelectHandler = (event) => {
+    const arrowElement = event.target.nextSibling
+    arrowElement.classList.toggle(classes.rotate)
   }
 
   const [optionsArray, label] = [props.types, props.label]

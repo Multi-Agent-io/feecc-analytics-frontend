@@ -4,7 +4,7 @@ import { history } from "../../store/main";
 
 import ScanButton from "../../components/ScanButton/ScanButton";
 import Search from "../../components/Search/Search";
-import SearchProtocol from "../../components/SearchProtocolTypes/SearchProtocolTypes";
+import SearchProtocol from "../../components/SearchProtocolTypes/SearchProtocol";
 import Button from "../../components/Button/Button";
 
 import styles from "./TechnicalControlDepartment.module.css"
@@ -172,10 +172,8 @@ function TechnicalControlDepartment() {
     // filter logic
     useEffect(() => {
        if(searchValue.length === 0 && typeOfProtocol.length === 0){
-           console.log(1);
            setFilteredProtocols(protocols.slice())
        } else {
-           console.log(2);
            setFilteredProtocols(
                protocols.filter((protocol) => {
                return (
