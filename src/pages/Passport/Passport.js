@@ -122,8 +122,8 @@ export default function Passport(props) {
     }
 
     return (
-        isLoading && 
-        (<div className={styles.pageWrapper}>
+        isLoading && (
+        <div className={styles.pageWrapper}>
         <div className={styles.passportHeaderWrapper}>
             {passport.type !== null && passport.type !== undefined && passport.type !== '' && (<h2>{passport.type}</h2>)}
             <div className={styles.passportNameWrapper}>
@@ -142,7 +142,7 @@ export default function Passport(props) {
                 return (
                         <div key={index} className={styles.passportStepWrapper}>
                             <div className={styles.stepContentWrapper}>
-                                <h2>{step.name}{step.unit_name && <p>относится к <a href = {`/passport/${step.parent_unit_internal_id}/view`}>{step.unit_name}</a></p>}</h2>
+                                <h2>{step.name}{step.unit_name && <p>относится к <a href = {`/passport/${step.parent_unit_internal_id}/${editModeIsOn ? "edit" : "view" }`}>{step.unit_name}</a></p>}</h2>
                                 <div className={styles.descriptionWrapper}>
                                     <div className={styles.stepRowWrapper}>
                                         <h3 className={styles.descriptionRowHeader}>Время начала:</h3>
@@ -188,7 +188,7 @@ export default function Passport(props) {
         ) : (
             <h1 className={styles.noRequiredInformation}>{t('passport.noRequiredInformation')}</h1>
         )}
-        {editModeIsOn && !canSendRevision &&  <Button onClick ={onOpenConfirm}>Отправить на добработку</Button>}
+        {editModeIsOn && !canSendRevision && <Button onClick ={onOpenConfirm}>Отправить на добработку</Button>}
         </div>
 
             {showModal && (

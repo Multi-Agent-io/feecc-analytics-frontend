@@ -16,99 +16,9 @@ function TechnicalControlDepartment() {
     const [protocols, setProtocols] = useState([]);
     const [filteredProtocols, setFilteredProtocols] = useState([]);
     const [isLoading, setIsLoading] = useState(false)
-    const [typeOfProtocol, setTypeOfProtocol] = useState('Выберите из списка')
     const [statusOfProtocol, setStatusOfProtocol] = useState('Выберите из списка')
     
-    const dummyData = [
-        {
-            id: 1, // device protocol id
-            name: "1name", // protocol name or name of device
-            status: "Заполнен и не подтверждён", //
-            type: "Помпа", // type of device
-            time: "00.00.00"
-        },
-        {
-            id: 2,
-            name: "2name",
-            status: "status",
-            type: "Помпа",
-            time: "00.00.00"
-        },
-        {
-            id: 3,
-            name: "3name",
-            status: "status",
-            type: "type2",
-            time: "00.00.00"
-        },
-        {
-            id: 4,
-            name: "4name",
-            status: "status",
-            type: "type2",
-            time: "00.00.00"
-        },
-        {
-            id: 5,
-            name: "5name",
-            status: "Заполнен и подтверждён",
-            type: "Стойка",
-            time: "00.00.00"
-        },
-        {
-            id: 6,
-            name: "6name",
-            status: "status",
-            type: "type3",
-            time: "00.00.00"
-        },
-        {
-            id: 7,
-            name: "7name",
-            status: "Заполнен и подтверждён",
-            type: "type",
-            time: "00.00.00"
-        },
-        {
-            id: 8,
-            name: "7name",
-            status: "Заполнен и не подтверждён",
-            type: "Адаптер",
-            time: "00.00.00"
-        },
-        {
-            id: 9,
-            name: "7name",
-            status: "Заполнен и подтверждён",
-            type: "Адаптер",
-            time: "00.00.00"
-        },
-        {
-            id: 9,
-            name: "7name",
-            status: "Заполнен и не подтверждён",
-            type: "type",
-            time: "00.00.00"
-        },
-        {
-            id: 9,
-            name: "7name",
-            status: "Заполнен и отправлен на доработку",
-            type: "type",
-            time: "00.00.00"
-        },
-        {
-            id: 9,
-            name: "7name",
-            status: "Заполнен и отправлен на доработку",
-            type: "Стойка",
-            time: "00.00.00"
-        },
-
-    ]
-
-    const typesStatus = ['Заполнен и не подтверждён', "Заполнен и отправлен на доработку", "Заполнен и подтверждён"];
-    const typesType = ['Помпа', "Адаптер", "Стойка"];
+    const [filterTypes, setFilterTypes] = useState([])
 
     // ====== handler functions ======
 
@@ -116,9 +26,6 @@ function TechnicalControlDepartment() {
         history.push(`/tcd/protocol/${id}`)
     }
 
-    const changeFilterProtocolsTypeHandler = (event) => {
-        setTypeOfProtocol(event.target.value)
-    }
 
     const changeFilterProtocolsStatusHandler = (event) => {
         setStatusOfProtocol(event.target.value)
@@ -127,7 +34,6 @@ function TechnicalControlDepartment() {
     const cleanAllFilters = () => {
         setSearchValue('')
         setStatusOfProtocol('Выберите из списка')
-        setTypeOfProtocol('Выберите из списка')
     }
 
     // ====== render functions ======
@@ -137,12 +43,18 @@ function TechnicalControlDepartment() {
         <div className={`${styles["grid-table_body"]} ${styles["grid-table"]}`}>
            {
             filteredProtocols.map((protocol) => {
+                const date = new Date(protocol.creation_time)
+                const year = date.getFullYear();
+                const month = (date.getMonth() + 1) < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+                const day = (date.getDay() + 1) < 10 ? `0${date.getDay() + 1}` : date.getDay() + 1;
                 return (
                      <>
-                        <div className={styles["grid-table_body__name"]} onClick={goToProtocolHandler.bind(null, protocol.id)} >{protocol.name}</div>
-                        <div>{protocol.type}</div>
+                        <div 
+                            className={styles["grid-table_body__name"]} 
+                            onClick={goToProtocolHandler.bind(null, protocol.associated_unit_id)} 
+                        >{protocol.protocol_name}</div>
                         <div>{protocol.status}</div>
-                        <div>{protocol.time}</div>
+                        <div>{`${year}.${month}.${day}`}</div>
                      </>
                 )
             })
@@ -161,30 +73,42 @@ function TechnicalControlDepartment() {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
             }
         })
-        .then(res => {
-            setProtocols(dummyData)
-            setFilteredProtocols(dummyData)
+        .then(res => res.json())
+        .then((res) => {
+            console.log(res.data);
+            setProtocols(res.data)
+            setFilteredProtocols(res.data)
             setIsLoading(false)
+        })
+
+        fetch("http://134.209.240.5:5002/api/v1/tcd/protocols/types", {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then((res)=> res.json())
+        .then(res => {
+            setFilterTypes(res.data)
         })
 
     }, [])
 
     // filter logic
     useEffect(() => {
-       if(searchValue.length === 0 && typeOfProtocol.length === 0){
+       if(searchValue.length === 0 && statusOfProtocol.length === 0){
            setFilteredProtocols(protocols.slice())
        } else {
            setFilteredProtocols(
                protocols.filter((protocol) => {
                return (
-                   protocol.name.includes(searchValue) &&
-                   (typeOfProtocol === "Выберите из списка" ? true : protocol.type === typeOfProtocol) &&  // check if value is default
+                   protocol.protocol_name.toLowerCase().includes(searchValue.toLowerCase()) &&
                    (statusOfProtocol === "Выберите из списка" ? true : protocol.status === statusOfProtocol)
                )
            }))
        }
        
-    }, [searchValue, typeOfProtocol, statusOfProtocol])
+    }, [searchValue, statusOfProtocol])
 
   return (
     <section className={styles.pageWrapper}>
@@ -195,14 +119,8 @@ function TechnicalControlDepartment() {
         <div className={styles.filters}>
             <div className={styles.filters__main} >
                 <SearchProtocol 
-                    label = {"Тип устройства"} 
-                    types ={typesType} 
-                    value ={typeOfProtocol} 
-                    onChange ={changeFilterProtocolsTypeHandler}
-                />
-                <SearchProtocol 
                     label ={"Статус"} 
-                    types ={typesStatus} 
+                    types ={filterTypes} 
                     value ={statusOfProtocol} 
                     onChange ={changeFilterProtocolsStatusHandler}
                 />
@@ -211,7 +129,6 @@ function TechnicalControlDepartment() {
         </div>
         <div className={`${styles["grid-table_header"]} ${styles["grid-table"]}`}>
             <div>Название</div>
-            <div>Тип изделия</div>
             <div>Состояние</div>
             <div>Время создания</div>
         </div>

@@ -5,10 +5,6 @@ import classes from "./SearchProtocol.module.css"
 
 function SearchProtocol(props) {
   
-  // const onClickSelectHandler = (event) => {
-  //   const arrowElement = event.target.nextSibling
-  //   arrowElement.classList.toggle(classes.rotate)
-  // }
 
   const [optionsArray, label] = [props.types, props.label]
 
@@ -18,7 +14,6 @@ function SearchProtocol(props) {
       <select 
         defaultValue={props.value}
         value={props.value}
-        // onClick={onClickSelectHandler} 
         className={classes.select} 
         onChange={props.onChange}
       >

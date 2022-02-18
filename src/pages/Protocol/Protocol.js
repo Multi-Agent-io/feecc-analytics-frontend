@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import styles from './Protocol.module.css'
 
 import { history } from "../../store/main";
+import { useSelector } from "react-redux";
+import { getRule } from "../../store/selectors";
 
 import PrintButton from "../../components/PrintButton/PrintButton"
 import ButtonBack from '../../components/ButtonBack/ButtonBack';
@@ -11,12 +13,15 @@ import Button from '../../components/Button/Button'
 
 function Protocol(){
 
-  const [rowsArray, setRowsArray] = useState(undefined)
-  const [isLoading, setIsLoading] = useState(true)
-  const [pasportId, setPaportId] = useState('')
-  const [protocolId, setProtocolId] = useState('')
-  const [isSuperEngineer, setSuperEngineer] = useState('')
+  const [protocol, setProtocol] = useState(undefined);
+  const [isLoading, setIsLoading] = useState(true);
+  const [protocolId, setProtocolId] = useState('');
+  const [isSuperEngineer, setSuperEngineer] = useState('');
+  const [serialNumber, setSerialNumber] = useState('');
 
+
+  const superEngineer = useSelector(getRule) === undefined ? true : false
+  const internal_id = history.location.pathname.split('/')[3]
 
   // ======== all handlers ========
   const inputDataHandler = (event) => {
@@ -24,15 +29,23 @@ function Protocol(){
 
       const targetInput = event.target;
       const targetValue = targetInput.type === "checkbox" ? targetInput.checked : targetInput.value;
-      const [i, j] = targetInput.id.split(" ");
+      const [index, place] = targetInput.id.split(" ");
 
-      const newState = JSON.parse(JSON.stringify(rowsArray));
-      newState[i][j] = targetValue;
+      
+      const newState = JSON.parse(JSON.stringify(protocol));
+      const rowsArray = newState.rows;
 
-      setRowsArray(newState)  
+      rowsArray[index][place] = targetValue;
+
+      setProtocol(newState)
   }
 
+  const serialNumberHandler = (event) => {
+    setSerialNumber(event.target.value)
+  }
   const submitDataHandler = () => {
+
+    const rowsArray = protocol.rows
 
     let allFieldChecked = true;
     
@@ -44,34 +57,69 @@ function Protocol(){
 
     if(!allFieldChecked){
       allFieldChecked = window.confirm("Внимание вы не проверили все поля! Вы хотите продолжить?") // should be changed to a modal window
-    } 
+    }
 
-    if(allFieldChecked){
-      console.log("fetch");
+    if(!serialNumber){
+      alert("Внимание вы не заполнили серийный номер!")
+    }
+
+    if(allFieldChecked && serialNumber){
+      console.log(protocol);
+
+      const serialBody = `serial_number=${serialNumber}`
+      fetch(`http://134.209.240.5:5002/api/v1/passports/${internal_id}/serial?${serialBody}`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        // body: serialBody, через body, по невероятным причинам, не работает
+      })
+      .then((res)=> {
+        res.ok ? alert("Серийный номер отправлен!") : alert("Что-то пошло не так s!")
+      })
+      
+      fetch(`http://134.209.240.5:5002/api/v1/tcd/protocols/${internal_id}`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(protocol)
+      })
+      .then((res)=> {
+        res.ok ? alert("Протокол успешно отправлен!") : alert("Что-то пошло не так p!")
+      }).then(()=> {
+        window.onbeforeunload = () => null;
+        history.goBack()
+      })
+      
     }
 
   }
 
   const goToPasportHandler = () => {
-    history.push(`/passport/${pasportId}/edit`)
+    history.push(`/passport/${protocolId}/edit`)
   }
 
   const checkAllHandler = () => {
     window.onbeforeunload = () => true // defense from user's reload
 
     const allCheckBox = document.querySelectorAll(`div > input[type=checkbox]`)
-    const newState = JSON.parse(JSON.stringify(rowsArray));
+    const newState = JSON.parse(JSON.stringify(protocol));
+
+    const rowsArray = newState.rows
 
     for (let i = 0; i < allCheckBox.length; i++) {
       allCheckBox[i].checked = true;
   
       const targetValue =  allCheckBox[i].checked 
-      const [row, column] = allCheckBox[i].id.split(" ");
+      const [row, place] = allCheckBox[i].id.split(" ");
       
-      newState[row][column] = targetValue;
+      rowsArray[row][place] = targetValue;
 
     }
-    setRowsArray(newState)
+    setProtocol(newState)
   }
 
   // ======== make function for render ========
@@ -96,29 +144,37 @@ function Protocol(){
 
   const makeGridTable = (arrayItems) => {
     const jsxArray = arrayItems.map((row, index) => {
-      const currRow = []
-      for (let j = 0; j < row.length; j++) {
-        if (j < 3) {
-          currRow.push(<div key={`${index} ${j}`} value = {row[j]}>{row[j]}</div>)
-        } else if(j === row.length - 1) {
-          currRow.push(
-            <div key ={`${index} ${j}`} className={styles["custom_checkbox"]}>
-              <input  type="checkbox"  id = {`${index} ${j}`}/>
-              <label htmlFor ={`${index} ${j}`}>Проверено</label>
-            </div>
-            )
-        } else {
-          currRow.push(
-            <input 
-              key ={`${index} ${j}`} 
+      const {name = "Без имени", value = "", deviation = "", test1 = "", test2 = "", checked = false} = row;
+      return (
+        <>
+          <div key={`${index} name`}>{name}</div>
+          <div key={`${index} value`}>{value}</div>
+          <div key={`${index} deviation`}>{deviation}</div>
+          <input 
+              key ={`${index} test1`} 
               type='text' 
-              placeholder={!isSuperEngineer && "Введите значение"} 
-              id = {`${index} ${j}`}
-            />
-          )
-        }
-      }
-      return currRow
+              placeholder={"Введите значение"} 
+              id = {`${index} test1`}
+              value={test1}
+          />
+          <input 
+              key ={`${index} test2`} 
+              type='text' 
+              placeholder={"Введите значение"} 
+              id = {`${index} test2`}
+              value={test2}
+          />
+          <div key ={`${index} checked`}>
+              <input 
+                defaultChecked={checked} 
+                type="checkbox"  
+                id = {`${index} checked`}
+              />
+              <label htmlFor ={`${index} checked`}>Проверено</label>
+          </div>
+        </>
+      )
+      
     })
 
     return (
@@ -130,88 +186,73 @@ function Protocol(){
 
   // ======== use effect ========
   useEffect(() => {
-
-    setIsLoading(true) // start loading
-
-    setProtocolId(history.location.pathname.split('/')[3]) // should be send on server to response
     
-    setTimeout(() => {
-      const dummyData = { // from server
-        data:[
-          ["Проверка сырья и материаловfffffffffffffffffffffffffffffffffffff", 3, null, false, false, false], // name:string, nominalValue:number, limitDeviation:any, 1st check:boolean, 2nd check:boolean, approve:boolean  
-          ["Проверка плавности вращения колес стойки", 5, null, false, false, false],
-          ["Наименование параметра (показателя)", 6, null, false, false, false],
-          ["Проверка усилия, необходимого для включения/выключения тормоза колеса", 7, null, false, false, false],
-          ["Проверка усилия, необходимого для перемещения стойки", 67, null, false, false, false],
-          ["Проверка плавности и усилия перемещения лотков", 45, null, false, false, false],
-          ["Проверка сырья и материалов", 3, null, false, false, false], // name:string, nominalValue:number, limitDeviation:any, 1st check:boolean, 2nd check:boolean, approve:boolean  
-          ["Проверка плавности вращения колес стойки", 5, null, false, false, false],
-          ["Наименование параметра (показателя)", 6, null, false, false, false],
-          ["Проверка усилия, необходимого для включения/выключения тормоза колеса", 7, null, false, false, false],
-          ["Проверка усилия, необходимого для перемещения стойки", 67, null, false, false, false],
-          ["Проверка плавности и усилия перемещения лотков", 45, null, false, false, false],
-          ["Проверка плавности вращения колес стойки", 5, null, false, false, false],
-          ["Наименование параметра (показателя)", 6, null, false, false, false],
-          ["Проверка усилия, необходимого для включения/выключения тормоза колеса", 7, null, false, false, false],
-          ["Проверка усилия, необходимого для перемещения стойки", 67, null, false, false, false],
-          ["Проверка плавности и усилия перемещения лотков", 45, null, false, false, false],
-        ],
-        stage: true,
-        super_role: false,
-        serial_number: 0,
-        pasport_id: 2544644264919,
-        employee: ""
-      }
+    setIsLoading(true) // start loading
+    
+    fetch(`http://134.209.240.5:5002/api/v1/tcd/protocols/${internal_id}`,{
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+    })
+    .then(res => {
+        return res.json()
+    }) 
+    .then(res => {
+      console.log(res);
 
-      setRowsArray(dummyData.data)
-      setPaportId(dummyData.pasport_id)
-      setIsLoading(true)
-      setSuperEngineer(dummyData.super_role)
-
-      setIsLoading(false) // end loading
-    }, 500)
+      setProtocol(res.protocol)
+      setProtocolId(internal_id)
+      setSuperEngineer(superEngineer)
+      setSerialNumber(res.serial_number)
+      setIsLoading(false)
+    })
 
     return () => window.onbeforeunload = () => null // clear event listener for defence from reloading (from checkAllHandler)
 
   }, [])
 
+
   return (
-    <section className={`${styles.section} ${isSuperEngineer === true ? styles["super-engineer"] : null}`} >
-      <div className={styles.header}>
-        <ButtonBack/>
-        <div>
-          <h1>ПРОТОКОЛ приемо-сдаточных испытаний №__-В</h1>
-          <h2>Стойка эндоскопическая E-CART, Артикул S-02 (ТУ 32.50.50-206-89134710-2020)</h2>
-          <h2>
-            SN: 941619006-
-            <input 
-              id = "serial_number" 
-              className = {styles["serial_number"]}
-              placeholder = "000000"
-            >
-            </input>
-          </h2>
+    isLoading ? (
+    <h1 className={styles.loading} >Идёт загрузка...</h1>
+    ) : (
+      <section className={`${styles.section} ${isSuperEngineer === true ? styles["super-engineer"] : null}`} >
+        <div className={styles.header}>
+          <ButtonBack/>
+          <div>
+            <h1>ПРОТОКОЛ приемо-сдаточных испытаний №__-В</h1>
+            <h2 className={styles["protocol_name"]}>{protocol.protocol_name}</h2>
+            <h2>
+              SN: 941619006-
+              <input 
+                onChange={serialNumberHandler}
+                value={serialNumber}
+                type="number"
+                className = {styles["serial_number"]}
+                placeholder = "000000"
+              >
+              </input>
+            </h2>
+          </div>
+          <PrintButton disabled={isLoading} />
         </div>
-        <PrintButton disabled={isLoading} />
-      </div>
-      
-      <div className={`${styles["grid-container_header"]} ${styles.grid}`}>
-        <div className={styles["col-1"]}>Наименование параметра (показателя)</div>
-        <div className={styles["col-2"]}>Значение параметра</div>
-        <div className={styles["col-3"]}>Номинальное значение</div>
-        <div className={styles["col-4"]}>Предельное отклонение</div>
-        <div className={styles["col-5"]}>Первичное испытание</div>
-        <div className={styles["col-6"]}>Вторичное испытание</div>
-        <div className={styles["col-check"]}>Проверено </div>
-      </div>
 
-      {!isLoading && makeGridTable(rowsArray)}
+        <div className={`${styles["grid-container_header"]} ${styles.grid}`}>
+          <div className={styles["col-1"]}>Наименование параметра (показателя)</div>
+          <div className={styles["col-2"]}>Значение параметра</div>
+          <div className={styles["col-3"]}>Номинальное значение</div>
+          <div className={styles["col-4"]}>Предельное отклонение</div>
+          <div className={styles["col-5"]}>Первичное испытание</div>
+          <div className={styles["col-6"]}>Вторичное испытание</div>
+          <div className={styles["col-check"]}>Проверено </div>
+        </div>
 
-      {!isLoading && makeButtonSection()}
+        {makeGridTable(protocol.rows)}
+          
+        {makeButtonSection()} 
 
-      {isLoading && <h1>Идёт загрузка...</h1>}
-
-    </section>
+      </section>)
   )
 }
 
