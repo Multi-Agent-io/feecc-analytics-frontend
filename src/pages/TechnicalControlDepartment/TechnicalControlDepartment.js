@@ -7,6 +7,8 @@ import Search from "../../components/Search/Search";
 import SearchProtocol from "../../components/SearchProtocol/SearchProtocol";
 import Button from "../../components/Button/Button";
 
+import useHttp from "../../hooks/use-http";
+
 import styles from "./TechnicalControlDepartment.module.css"
 
 
@@ -15,17 +17,20 @@ function TechnicalControlDepartment() {
     const [searchValue, setSearchValue] = useState('');
     const [protocols, setProtocols] = useState([]);
     const [filteredProtocols, setFilteredProtocols] = useState([]);
-    const [isLoading, setIsLoading] = useState(false)
     const [statusOfProtocol, setStatusOfProtocol] = useState('Выберите из списка')
-    
     const [filterTypes, setFilterTypes] = useState([])
+
+    const {isLoading, error, sendRequest} = useHttp()
+    const authorizationHeaders = {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
 
     // ====== handler functions ======
 
     const goToProtocolHandler = (id) => {
         history.push(`/tcd/protocol/${id}`)
     }
-
 
     const changeFilterProtocolsStatusHandler = (event) => {
         setStatusOfProtocol(event.target.value)
@@ -66,28 +71,20 @@ function TechnicalControlDepartment() {
     // ====== useEffect ======
 
     useEffect(() => {
-        setIsLoading(true)
-        fetch("http://134.209.240.5:5002/api/v1/tcd/protocols", {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem('token')}`
-            }
+
+        sendRequest({
+            url: "http://134.209.240.5:5002/api/v1/tcd/protocols",
+            headers: authorizationHeaders,
         })
-        .then(res => res.json())
-        .then((res) => {
-            console.log(res.data);
-            setProtocols(res.data)
-            setFilteredProtocols(res.data)
-            setIsLoading(false)
+        .then(({data}) => {
+            setProtocols(data)
+            setFilteredProtocols(data)
         })
 
-        fetch("http://134.209.240.5:5002/api/v1/tcd/protocols/types", {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem('token')}`
-            }
+        sendRequest({
+            url: "http://134.209.240.5:5002/api/v1/tcd/protocols/types",
+            headers: authorizationHeaders,
         })
-        .then((res)=> res.json())
         .then(res => {
             setFilterTypes(res.data)
         })
