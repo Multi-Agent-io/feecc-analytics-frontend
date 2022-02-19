@@ -10,6 +10,8 @@ import PrintButton from "../../components/PrintButton/PrintButton"
 import ButtonBack from '../../components/ButtonBack/ButtonBack';
 import Button from '../../components/Button/Button'
 
+import useHttp from "../../hooks/use-http";
+
 
 function Protocol(){
 
@@ -19,6 +21,11 @@ function Protocol(){
   const [isSuperEngineer, setSuperEngineer] = useState('');
   const [serialNumber, setSerialNumber] = useState('');
 
+  // const {isLoading, error, sendRequest} = useHttp() ......needs to be finalized
+  // const authorizationHeaders = {
+  //       "Content-Type": "application/json",
+  //       "Authorization": `Bearer ${localStorage.getItem('token')}`
+  // }
 
   const superEngineer = useSelector(getRule) === undefined ? true : false
   const internal_id = history.location.pathname.split('/')[3]
@@ -186,6 +193,8 @@ function Protocol(){
 
   // ======== use effect ========
   useEffect(() => {
+
+
     
     setIsLoading(true) // start loading
     

@@ -64,22 +64,38 @@ export default function Passport(props) {
         changeRevision(id, name, index)
     }
 
-    let reverseDate = (dateString) => {
-        let d1 = dateString.split(' ')
-        let d2 = d1[0].split('-')
-        let temp = d2[1]
-        d2[1] = d2[0]
-        d2[0] = temp
-        return `${d2[0]}-${d2[1]}-${d2[2]} ${d1[1]}`
+    let parseDate = (dateString) => {
+
+        const [hours, min, sec] = dateString.split(' ')[1].split(":")
+        const [day, month, year] = dateString.split(' ')[0].split("-") 
+        return {hours, min, sec, year, month, day}
     }
 
     let formatTime = (step) => {
-        reverseDate(step.session_start_time)
-        let start = Date.parse(reverseDate(step.session_start_time))
-        let end = Date.parse(reverseDate(step.session_end_time))
-        // console.log('start, end: ', start, end)
-        if (step.session_start_time === null || step.session_end_time === null)
+        const {
+            hours: hoursS, 
+            min: minS, 
+            sec: secS, 
+            year : yearS, 
+            month : monthS, 
+            day: dayS
+        } = parseDate(step.session_start_time)
+
+        const {
+            hours: hoursE, 
+            min: minE, 
+            sec: secE, 
+            year : yearE, 
+            month : monthE, 
+            day: dayE
+        } = parseDate(step.session_end_time)
+
+        const start = new Date(yearS, monthS, dayS, hoursS, minS, secS)
+        const end = new Date(yearE, monthE, dayE, hoursE, minE, secE)
+
+        if (step.session_start_time === null || step.session_end_time === null){
             return "Время не указано"
+        }
         const diff = (end - start)/1000
         let hours = parseInt((diff/3600).toFixed(0))
         let hoursAdd = ''
@@ -146,14 +162,22 @@ export default function Passport(props) {
                                 <div className={styles.descriptionWrapper}>
                                     <div className={styles.stepRowWrapper}>
                                         <h3 className={styles.descriptionRowHeader}>Время начала:</h3>
+                                        {step.session_start_time?.split(' ')[1] ? (
                                         <h3>{step.session_start_time?.split(' ')[1]}</h3>
+                                        ) : (
+                                        <h3>Не найдено</h3>
+                                        )}
                                     </div><div className={styles.stepRowWrapper}>
                                         <h3 className={styles.descriptionRowHeader}>Длительность:</h3>
                                         {step.session_end_time ? <h3>{formatTime(step)}</h3> : <h3>Не найдено</h3>}
                                     </div>
                                     <div className={styles.stepRowWrapper}>
                                         <h3 className={styles.descriptionRowHeader}>Исполнитель:</h3>
+                                        {employees[step.employee_name] ? (
                                         <h3>{employees[step.employee_name]}</h3>
+                                        ) : (
+                                        <h3>Не найдено</h3>
+                                        )}
                                     </div>
                                     <div className={styles.stepRowWrapper}>
                                         <h3 className={styles.descriptionRowHeader}>Дата завершения:</h3>

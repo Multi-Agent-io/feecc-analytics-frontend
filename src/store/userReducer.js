@@ -145,8 +145,8 @@ export const userInitialState = fromJS({
 })
 
 export const userReducer = (state = {}, action) => {
-    if(action.type.startsWith('USER__'))
-        console.log('user-reducer', action)
+    // if(action.type.startsWith('USER__'))
+    //     console.log('user-reducer', action)
 
     switch (action.type) {
         case types.USER__AUTHORIZE: {
