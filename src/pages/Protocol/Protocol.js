@@ -10,9 +10,6 @@ import PrintButton from "../../components/PrintButton/PrintButton"
 import ButtonBack from '../../components/ButtonBack/ButtonBack';
 import Button from '../../components/Button/Button'
 
-import useHttp from "../../hooks/use-http";
-
-
 function Protocol(){
 
   const [protocol, setProtocol] = useState(undefined);
@@ -57,7 +54,7 @@ function Protocol(){
     let allFieldChecked = true;
     
     for (let i = 0; i < rowsArray.length - 1; i++) {
-      if(rowsArray[i][rowsArray[i].length - 1] === false) {
+      if(rowsArray[i].checked === false) {
         allFieldChecked = false;
       }
     }
@@ -194,8 +191,6 @@ function Protocol(){
   // ======== use effect ========
   useEffect(() => {
 
-
-    
     setIsLoading(true) // start loading
     
     fetch(`http://134.209.240.5:5002/api/v1/tcd/protocols/${internal_id}`,{
