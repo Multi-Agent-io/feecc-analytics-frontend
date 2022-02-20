@@ -1,18 +1,17 @@
 @media print {
   .grid * {
-    min-width: 120px;
+    min-width: 140px;
   }
-  .grid > div {
-    min-height: 121px;
+  .grid-container_body > div {
+    height: 140px;
+    overflow: hidden;
     /* word-break: break-all; */
   }
   .section button {
     display: none;
   }
-
   .protocol_name {
-    height: 300px;
-    overflow: hidden;
+    height: 200px;
   }
 }
 
