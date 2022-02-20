@@ -62,7 +62,7 @@ export default function Filters(props) {
                         <option value="built">Произведённые</option>
                         <option value="revision">На доработке</option>
                         <option value="approved">Подтверждённые</option>
-                        <option value="finished">Выпущенные</option>
+                        <option value="finalized">Выпущенные</option>
                     </select>
                 </div>
                 <div className={classNames(styles.column, styles.fullWidthButton)}>
