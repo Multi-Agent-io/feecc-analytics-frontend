@@ -51,7 +51,7 @@ function TechnicalControlDepartment() {
                 const date = new Date(protocol.creation_time)
                 const year = date.getFullYear();
                 const month = (date.getMonth() + 1) < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
-                const day = (date.getDay() + 1) < 10 ? `0${date.getDay() + 1}` : date.getDay() + 1;
+                const day = (date.getDate() + 1) < 10 ? `0${date.getDate() + 1}` : date.getDate() + 1;
                 return (
                      <>
                         <div 

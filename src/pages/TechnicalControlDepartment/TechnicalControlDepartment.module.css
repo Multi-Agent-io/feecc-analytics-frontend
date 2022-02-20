@@ -45,12 +45,12 @@
 }
 
 .grid-table > div {
+  text-align: center;
   padding: 1rem 0;
   font-size: 1.7rem;
 }
 
 .grid-table > div:not(:nth-child(4n + 1)) {
-  text-align: center;
 }
 
 .grid-table_header > div {
@@ -63,7 +63,8 @@
   max-height: 630px;
   overflow-y: scroll;
 }
-.grid-table_body div:nth-child(4n + 1) {
+.grid-table_body div:nth-child(3n + 1) {
+  text-align: left;
   cursor: pointer;
 }
 
