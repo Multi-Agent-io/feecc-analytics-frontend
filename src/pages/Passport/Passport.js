@@ -200,7 +200,7 @@ export default function Passport(props) {
                                     <Button
                                         onClick = {changeRevisionArrayHandler.bind(null, step.id, step.name, index)}
                                         variant = {step.unit_name === null ? "default" : "clear"}
-                                        disabled = {step.unit_name === null ? false : true}
+                                        hidden = {step.unit_name === null ? false : true}
                                     >
                                     Нужна доработка
                                     </Button>
