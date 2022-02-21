@@ -80,7 +80,7 @@ function Protocol(){
         // body: serialBody, через body, по невероятным причинам, не работает
       })
       .then((res)=> {
-        res.ok ? alert("Серийный номер отправлен!") : alert("Что-то пошло не так s!")
+        res.ok ? alert("Серийный номер отправлен!") : alert("Что-то пошло не так серийного номера!")
       })
       
       fetch(`http://134.209.240.5:5002/api/v1/tcd/protocols/${internal_id}`, {
@@ -92,7 +92,10 @@ function Protocol(){
         body: JSON.stringify(protocol)
       })
       .then((res)=> {
-        res.ok ? alert("Протокол успешно отправлен!") : alert("Что-то пошло не так p!")
+        res.ok ? alert("Протокол успешно отправлен!") : alert("Что-то пошло не так c отправкой протокола!");
+        if(res.status === 403) {
+          alert("У вас недостаточно прав для отправки протокола!")
+        }
       }).then(()=> {
         window.onbeforeunload = () => null;
         history.goBack()
