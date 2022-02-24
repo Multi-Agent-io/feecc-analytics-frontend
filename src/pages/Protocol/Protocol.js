@@ -230,7 +230,7 @@ function Protocol(){
             <h1>ПРОТОКОЛ приемо-сдаточных испытаний №__-В</h1>
             <h2 className={styles["protocol_name"]}>{protocol.protocol_name}</h2>
             <h2>
-              SN: 941619006-
+              SN: {protocol.default_serial_number !== null ? protocol.default_serial_number : '941619006'}-
               <input 
                 onChange={serialNumberHandler}
                 value={serialNumber}
