@@ -30,9 +30,7 @@ export default function Passports(props) {
         let {deviceType, date, overwork, requiredFix, passportType} = filtersValues
         if (authorized) {
             doGetPassports(dispatch, page, pageSize, searchValue, date, requiredFix, overwork, deviceType, sortingDirection, passportType)
-                .then((res) => {
-                    // correctPage()
-                })
+                .then((res) => {})
                 .catch((err) => {
                     if (err.response.status === 401)
                         history.push('/')
@@ -82,7 +80,7 @@ export default function Passports(props) {
                 />
                 <Table
                     onDirectionChange={setSortingDirection}
-                    type = "pasports"
+                    type = "passports"
                     setPage={setTablePage}
                     rowsData={rows}
                     page={page}

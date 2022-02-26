@@ -19,9 +19,8 @@
 .searchWrapper {
   display: flex;
   height: 48px;
-  width: calc(100% - 89px);
+  width: 100%;
   gap: 29px;
-  padding-left: 44px;
   margin-bottom: 2rem;
 }
 
