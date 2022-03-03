@@ -104,7 +104,7 @@ function Protocol(){
 
   }
 
-  const goToPasportHandler = () => {
+  const goToPassportHandler = () => {
     history.push(`/passport/${protocolId}/edit`)
   }
 
@@ -132,12 +132,12 @@ function Protocol(){
   const makeButtonSection = () => {
     return (
       <div className={styles["btns-section"]}>
-        <Button variant = "clear" onClick = {goToPasportHandler}>Открыть паспорт</Button>
+        <Button variant = "clear" onClick = {goToPassportHandler}>Открыть паспорт</Button>
         <div>
-          {!isSuperEngineer && 
+          {!isSuperEngineer && protocol.status !== "Протокол утверждён" &&
             <>
               <Button onClick = {checkAllHandler}>Отметить всё</Button>
-              <Button onClick = {submitDataHandler}>Подтвердить и отправить</Button>
+              <Button onClick = {submitDataHandler}>{protocol.status === "Вторая стадия испытаний пройдена" ? "Сохранить" : "Подтвердить и отправить"}</Button>
             </>
           }
           {isSuperEngineer && 
