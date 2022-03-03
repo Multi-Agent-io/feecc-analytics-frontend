@@ -70,7 +70,7 @@ function Protocol(){
     if(allFieldChecked && serialNumber){
       console.log(protocol);
 
-      const serialBody = `serial_number=${serialNumber}`
+      const serialBody = `serial_number=${protocol.default_serial_number + serialNumber}`
       fetch(`http://134.209.240.5:5002/api/v1/passports/${internal_id}/serial?${serialBody}`, {
         method: "POST",
         headers: {
@@ -82,7 +82,7 @@ function Protocol(){
       .then((res)=> {
         res.ok ? alert("Серийный номер отправлен!") : alert("Что-то пошло не так серийного номера!")
       })
-      
+
       fetch(`http://134.209.240.5:5002/api/v1/tcd/protocols/${internal_id}`, {
         method: "POST",
         headers: {
@@ -206,12 +206,15 @@ function Protocol(){
     }) 
     .then(res => {
       console.log(res);
-
-      setProtocol(res.protocol)
-      setProtocolId(internal_id)
-      setSuperEngineer(superEngineer)
-      setSerialNumber(res.serial_number)
-      setIsLoading(false)
+      if(res.detail !== "Successful")
+        alert("Error reading protocol. No schema for this product")
+      else {
+        setProtocol(res.protocol)
+        setProtocolId(internal_id)
+        setSuperEngineer(superEngineer)
+        setSerialNumber(res.serial_number)
+        setIsLoading(false)
+      }
     })
 
     return () => window.onbeforeunload = () => null // clear event listener for defence from reloading (from checkAllHandler)
@@ -230,7 +233,7 @@ function Protocol(){
             <h1>ПРОТОКОЛ приемо-сдаточных испытаний №__-В</h1>
             <h2 className={styles["protocol_name"]}>{protocol.protocol_name}</h2>
             <h2>
-              SN: {protocol.default_serial_number !== null ? protocol.default_serial_number : '941619006'}-
+              SN: {protocol.default_serial_number !== null ? protocol.default_serial_number : '941619006-'}
               <input 
                 onChange={serialNumberHandler}
                 value={serialNumber}
