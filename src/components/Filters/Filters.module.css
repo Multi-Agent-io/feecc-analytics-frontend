@@ -16,6 +16,7 @@
 
 .filterName {
     font-size: 1.7rem;
+    height: 40px;
 }
 
 .selectWrapper {
@@ -41,7 +42,7 @@
 
 .deviceTypeSelect {
     width: 400px;
-    border-radius: 4px;
+    /*border-radius: 4px;*/
     /*border: 1px solid var(--color-main-border);*/
     min-height: 51px;
     display: flex;

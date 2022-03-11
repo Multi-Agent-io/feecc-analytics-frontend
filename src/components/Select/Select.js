@@ -12,10 +12,6 @@ export default function Select (props) {
   let [selectedElement, setSelectedElement] = useState('')
   let {t} = useTranslation()
 
-  const resetSelection = () => {
-
-  }
-
   const updateCheckbox = (index) => {
     let arr = [...checkboxes]
     arr.map((item, innerIndex) => {
