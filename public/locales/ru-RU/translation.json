@@ -12,6 +12,7 @@
   },
   "filters": {
     "DeviceType": "Тип устройства",
+    "DeviceStatus": "Статус изделия",
     "Date": "Дата",
     "Overwork": "Превышение нормочасов",
     "NeedsFix": "Необходимость доработки",
@@ -40,6 +41,9 @@
         "Sat": "Сб",
         "Sun": "Вс"
       }
+    },
+    "selects": {
+      "removeSelections": "Снять все выделения"
     }
   },
   "login": {
