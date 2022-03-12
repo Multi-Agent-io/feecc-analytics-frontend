@@ -39,6 +39,14 @@ export default function SelectMultiple(props) {
             if(index !== arr.length - 1)
                 res += ','
         })
+        if (res !== '') {
+            let temp = res
+            if(res.length > 26)
+                temp = res.slice(0, 26) + "..."
+            changeSelection(temp)
+        } else {
+            changeSelection(t('filters.ChooseFromList'))
+        }
         props.onChange && props.onChange(res)
     }, [checkboxes])
 

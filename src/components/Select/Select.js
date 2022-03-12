@@ -29,12 +29,12 @@ export default function Select (props) {
   useEffect(() => {
     setCheckboxes(props.options)
     setTimeout(() => {
-      if(checkboxes[0] !== undefined)
+      if(checkboxes[0] !== undefined && checkboxes[0].state === true)
         setSelectedElement(checkboxes[0].name)
       else {
         setSelectedElement(t('filters.ChooseFromList'))
       }
-    }, 150)
+    }, 300)
   }, [])
 
   return (
