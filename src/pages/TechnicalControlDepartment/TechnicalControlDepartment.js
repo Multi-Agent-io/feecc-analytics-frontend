@@ -10,7 +10,7 @@ import Button from "../../components/Button/Button";
 import useHttp from "../../hooks/use-http";
 
 import styles from "./TechnicalControlDepartment.module.css"
-
+import conf from '../../config.json'
 
 function TechnicalControlDepartment() {
 
@@ -73,7 +73,7 @@ function TechnicalControlDepartment() {
     useEffect(() => {
 
         sendRequest({
-            url: "http://134.209.240.5:5002/api/v1/tcd/protocols",
+            url: `${conf.base_url}/api/v1/tcd/protocols`,
             headers: authorizationHeaders,
         })
         .then(({data}) => {
@@ -82,7 +82,7 @@ function TechnicalControlDepartment() {
         })
 
         sendRequest({
-            url: "http://134.209.240.5:5002/api/v1/tcd/protocols/types",
+            url: `${conf.base_url}/api/v1/tcd/protocols/types`,
             headers: authorizationHeaders,
         })
         .then(res => {

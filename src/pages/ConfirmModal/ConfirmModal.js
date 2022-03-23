@@ -9,6 +9,7 @@ import RevisionContext from "../../store/revision-context";
 
 import classes from "./ConfirmModal.module.css"
 
+import conf from '../../config.json'
 
 function ConfirmModal () {
 
@@ -28,7 +29,7 @@ function ConfirmModal () {
     console.log(internal_id);
     console.log(desiredArray);
     
-    const url = `http://134.209.240.5:5002/api/v1/passports/${internal_id}/revision`;
+    const url = `${conf.base_url}/api/v1/passports/${internal_id}/revision`;
 
     fetch(url, {
       method: "POST",

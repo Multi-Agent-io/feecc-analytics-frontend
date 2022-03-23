@@ -1,5 +1,6 @@
 import {types} from "./common";
 import axios from "axios";
+import conf from '../config.json'
 
 // export const doLoginAttempt = (dispatch, login, password, status = true) => {
 //     dispatch({type: types.USER__AUTHORIZE, status: status})
@@ -8,7 +9,7 @@ import axios from "axios";
 export const doGetAuthToken = (username, password) => {
     return new Promise((resolve, reject) => {
         axios.post(
-            'http://134.209.240.5:5002/token',
+            `${conf.base_url}/token`,
             `username=${username}&password=${password}&scope=&client_id=&client_secret=`,
             {
                 headers: {
@@ -33,7 +34,7 @@ export const doGetAuthToken = (username, password) => {
 export const doFetchUser = (dispatch) => {
     return new Promise((resolve, reject) => {
         axios.get(
-            'http://134.209.240.5:5002/api/v1/users/me',
+            `${conf.base_url}/api/v1/users/me`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -57,7 +58,7 @@ export const doGetPassports = (dispatch, page=1, size=12, name = null, date = nu
         let passTypes = ''
         if (typeof deviceTypes === 'string')
             passTypes = deviceTypes.replaceAll(', ', ',')
-        let request = 'http://134.209.240.5:5002/api/v1/passports'
+        let request = `${conf.base_url}/api/v1/passports`
         request += '/?page=' + page + '&items=' + size
         if (name !== null && name !== '' && name !== undefined)
             request += '&name=' + name
@@ -100,7 +101,7 @@ export const doGetPassports = (dispatch, page=1, size=12, name = null, date = nu
 
 export const doGetPassport = (dispatch, internalId) => {
     return new Promise((resolve, reject) => {
-        axios.get(`http://134.209.240.5:5002/api/v1/passports/${internalId}`,
+        axios.get(`${conf.base_url}/api/v1/passports/${internalId}`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -123,7 +124,7 @@ export const doGetPassport = (dispatch, internalId) => {
 export const decodeUser = (dispatch, username) => {
     return new Promise((resolve, reject) => {
         axios.post(
-            `http://134.209.240.5:5002/api/v1/employees/decode`,
+            `${conf.base_url}/api/v1/employees/decode`,
             {"encoded_name":username},
             {
                 headers: {
@@ -150,7 +151,7 @@ export const decodeUser = (dispatch, username) => {
 export const doGetPassportTypes = (dispatch) => {
     return new Promise((resolve, reject) => {
         axios.get(
-            'http://134.209.240.5:5002/api/v1/passports/types',
+            `${conf.base_url}/api/v1/passports/types`,
             {
                     headers: {
                         'Content-Type': 'application/json',

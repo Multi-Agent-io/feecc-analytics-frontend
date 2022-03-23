@@ -9,6 +9,7 @@ import { getRule } from "../../store/selectors";
 import PrintButton from "../../components/PrintButton/PrintButton"
 import ButtonBack from '../../components/ButtonBack/ButtonBack';
 import Button from '../../components/Button/Button'
+import conf from '../../config.json'
 
 function Protocol(){
 
@@ -71,7 +72,7 @@ function Protocol(){
       console.log(protocol);
 
       const serialBody = `serial_number=${protocol.default_serial_number + serialNumber}`
-      fetch(`http://134.209.240.5:5002/api/v1/passports/${internal_id}/serial?${serialBody}`, {
+      fetch(`${conf.base_url}/api/v1/passports/${internal_id}/serial?${serialBody}`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -83,7 +84,7 @@ function Protocol(){
         res.ok ? alert("Серийный номер отправлен!") : alert("Что-то пошло не так серийного номера!")
       })
 
-      fetch(`http://134.209.240.5:5002/api/v1/tcd/protocols/${internal_id}`, {
+      fetch(`${conf.base_url}/api/v1/tcd/protocols/${internal_id}`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -195,7 +196,7 @@ function Protocol(){
 
     setIsLoading(true) // start loading
     
-    fetch(`http://134.209.240.5:5002/api/v1/tcd/protocols/${internal_id}`,{
+    fetch(`${conf.base_url}/api/v1/tcd/protocols/${internal_id}`,{
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`
