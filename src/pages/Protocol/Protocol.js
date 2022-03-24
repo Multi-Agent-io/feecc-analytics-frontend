@@ -71,7 +71,7 @@ function Protocol(){
     if(allFieldChecked && serialNumber){
       console.log(protocol);
 
-      const serialBody = `serial_number=${protocol.default_serial_number + serialNumber}`
+      const serialBody = `serial_number=${serialNumber}`
       fetch(`${conf.base_url}/api/v1/passports/${internal_id}/serial?${serialBody}`, {
         method: "POST",
         headers: {
