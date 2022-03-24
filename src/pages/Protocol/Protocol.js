@@ -163,6 +163,7 @@ function Protocol(){
               placeholder={"Введите значение"} 
               id = {`${index} test1`}
               value={test1}
+              disabled={protocol.status === "Протокол утверждён"}
           />
           <input 
               key ={`${index} test2`} 
@@ -170,12 +171,14 @@ function Protocol(){
               placeholder={"Введите значение"} 
               id = {`${index} test2`}
               value={test2}
+              disabled={protocol.status === "Протокол утверждён"}
           />
           <div key ={`${index} checked`}>
               <input 
                 defaultChecked={checked} 
                 type="checkbox"  
                 id = {`${index} checked`}
+                disabled={protocol.status === "Протокол утверждён"}
               />
               <label htmlFor ={`${index} checked`}>Проверено</label>
           </div>
