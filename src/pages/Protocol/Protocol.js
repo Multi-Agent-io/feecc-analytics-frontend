@@ -238,7 +238,6 @@ function Protocol(){
               <input 
                 onChange={serialNumberHandler}
                 value={serialNumber}
-                type="number"
                 className = {styles["serial_number"]}
                 placeholder = "000000"
               >
