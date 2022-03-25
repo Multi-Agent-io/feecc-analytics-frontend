@@ -1,12 +1,13 @@
 import classes from "./Modal.module.css";
 import ReactDOM from "react-dom";
-import { useContext, useEffect } from "react/cjs/react.development";
-import ModalActionsContext from "../../store/modal-context";
+import { useContext} from "react/cjs/react.development";
+import ModalActionsContext  from "../../store/modal-context";
 
 function Backdrop(props) {
-
+  
   const { onClose } = useContext(ModalActionsContext);
-  return <div onClick={() => {onClose()}} className={classes.backdrop}></div>;
+
+  return <div onClick={onClose} className={classes.backdrop}></div>;
 }
 
 function ModalOverlay(props) {

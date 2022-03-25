@@ -1,16 +1,38 @@
 @media print {
   .grid * {
-    min-width: 120px;
+    min-width: 140px;
   }
-  .grid > div {
-    min-height: 121px;
-    word-break: break-all;
+  .grid-container_body > div {
+    height: 140px;
+    overflow: hidden;
+    /* word-break: break-all; */
   }
   .section button {
     display: none;
   }
+  .protocol_name {
+    height: 200px;
+  }
 }
 
+.loading {
+  display: inline-block;
+  margin: 2rem auto 0 auto;
+  text-align: center;
+  clip-path: inset(0 3ch 0 0);
+  animation: l 2s steps(4) infinite;
+}
+
+@keyframes l {
+  to {
+    clip-path: inset(0 -1ch 0 0);
+  }
+}
+
+.section h1,
+.section h2 {
+  margin-bottom: 1rem;
+}
 .section {
   width: calc(100vw - 250px);
   margin: 0 2rem;
@@ -20,12 +42,21 @@
   pointer-events: none;
 }
 
-.section h1 {
-  text-align: center;
+.protocol_name {
+  max-width: 1000px;
 }
 
 .serial_number {
   font-size: 1.71rem;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
 }
 
 .check-all-btn {
@@ -37,6 +68,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+  /* max-height: 200px; */
 }
 
 .col-1 {

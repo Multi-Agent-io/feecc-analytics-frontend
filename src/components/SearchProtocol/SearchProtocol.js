@@ -1,14 +1,10 @@
-import { useEffect } from "react"
 
 import arrow_down from "../../assets/arrrow_left.svg"
 
-import classes from "./SearchProtocolTypes.module.css"
+import classes from "./SearchProtocol.module.css"
 
 function SearchProtocol(props) {
   
-  const onClickSelectHandler = () => {
-    document.querySelector("#arrow-select").classList.toggle(classes.rotate)
-  }
 
   const [optionsArray, label] = [props.types, props.label]
 
@@ -18,13 +14,12 @@ function SearchProtocol(props) {
       <select 
         defaultValue={props.value}
         value={props.value}
-        onClick={onClickSelectHandler} 
         className={classes.select} 
         onChange={props.onChange}
       >
         <option disabled={true}>Выберите из списка</option>
-        {optionsArray.map((type)=> {
-          return <option>{type}</option>
+        {optionsArray.map((type, index)=> {
+          return <option key={index}>{type}</option>
         })}
       </select>
       <img id="arrow-select" className={classes.arrow} src={arrow_down}/>

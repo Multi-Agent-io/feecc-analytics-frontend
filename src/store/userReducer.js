@@ -141,11 +141,12 @@ export const userInitialState = fromJS({
     selectedPassport: {},
     employees: {},
     passportTypes: [],
+    rule: 'approve',
 })
 
 export const userReducer = (state = {}, action) => {
-    if(action.type.startsWith('USER__'))
-        console.log('user-reducer', action)
+    // if(action.type.startsWith('USER__'))
+    //     console.log('user-reducer', action)
 
     switch (action.type) {
         case types.USER__AUTHORIZE: {
@@ -173,6 +174,7 @@ export const userReducer = (state = {}, action) => {
             return state
                 .set('username', action.username)
                 .set('authorized', true)
+                .set("rule", action.user.rule_set[2] || undefined)
         }
         case types.USER__DECODE_EMPLOYEE: {
             return state

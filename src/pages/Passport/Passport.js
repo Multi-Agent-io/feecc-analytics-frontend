@@ -64,24 +64,38 @@ export default function Passport(props) {
         changeRevision(id, name, index)
     }
 
-    
+    let parseDate = (dateString) => {
 
-    let reverseDate = (dateString) => {
-        let d1 = dateString.split(' ')
-        let d2 = d1[0].split('-')
-        let temp = d2[1]
-        d2[1] = d2[0]
-        d2[0] = temp
-        return `${d2[0]}-${d2[1]}-${d2[2]} ${d1[1]}`
+        const [hours, min, sec] = dateString.split(' ')[1].split(":")
+        const [day, month, year] = dateString.split(' ')[0].split("-") 
+        return {hours, min, sec, year, month, day}
     }
 
     let formatTime = (step) => {
-        reverseDate(step.session_start_time)
-        let start = Date.parse(reverseDate(step.session_start_time))
-        let end = Date.parse(reverseDate(step.session_end_time))
-        // console.log('start, end: ', start, end)
-        if (step.session_start_time === null || step.session_end_time === null)
+        const {
+            hours: hoursS, 
+            min: minS, 
+            sec: secS, 
+            year : yearS, 
+            month : monthS, 
+            day: dayS
+        } = parseDate(step.session_start_time)
+
+        const {
+            hours: hoursE, 
+            min: minE, 
+            sec: secE, 
+            year : yearE, 
+            month : monthE, 
+            day: dayE
+        } = parseDate(step.session_end_time)
+
+        const start = new Date(yearS, monthS, dayS, hoursS, minS, secS)
+        const end = new Date(yearE, monthE, dayE, hoursE, minE, secE)
+
+        if (step.session_start_time === null || step.session_end_time === null){
             return "Время не указано"
+        }
         const diff = (end - start)/1000
         let hours = parseInt((diff/3600).toFixed(0))
         let hoursAdd = ''
@@ -124,8 +138,8 @@ export default function Passport(props) {
     }
 
     return (
-        isLoading && 
-        (<div className={styles.pageWrapper}>
+        isLoading && (
+        <div className={styles.pageWrapper}>
         <div className={styles.passportHeaderWrapper}>
             {passport.type !== null && passport.type !== undefined && passport.type !== '' && (<h2>{passport.type}</h2>)}
             <div className={styles.passportNameWrapper}>
@@ -144,18 +158,26 @@ export default function Passport(props) {
                 return (
                         <div key={index} className={styles.passportStepWrapper}>
                             <div className={styles.stepContentWrapper}>
-                                <h2>{step.name}{step.unit_name && <p>относится к <a href = {`/passport/${step.parent_unit_internal_id}/view`}>{step.unit_name}</a></p>}</h2>
+                                <h2>{step.name}{step.unit_name && <p>относится к <a href = {`/passport/${step.parent_unit_internal_id}/${editModeIsOn ? "edit" : "view" }`}>{step.unit_name}</a></p>}</h2>
                                 <div className={styles.descriptionWrapper}>
                                     <div className={styles.stepRowWrapper}>
                                         <h3 className={styles.descriptionRowHeader}>Время начала:</h3>
+                                        {step.session_start_time?.split(' ')[1] ? (
                                         <h3>{step.session_start_time?.split(' ')[1]}</h3>
+                                        ) : (
+                                        <h3>Не найдено</h3>
+                                        )}
                                     </div><div className={styles.stepRowWrapper}>
                                         <h3 className={styles.descriptionRowHeader}>Длительность:</h3>
                                         {step.session_end_time ? <h3>{formatTime(step)}</h3> : <h3>Не найдено</h3>}
                                     </div>
                                     <div className={styles.stepRowWrapper}>
                                         <h3 className={styles.descriptionRowHeader}>Исполнитель:</h3>
+                                        {employees[step.employee_name] ? (
                                         <h3>{employees[step.employee_name]}</h3>
+                                        ) : (
+                                        <h3>Не найдено</h3>
+                                        )}
                                     </div>
                                     <div className={styles.stepRowWrapper}>
                                         <h3 className={styles.descriptionRowHeader}>Дата завершения:</h3>
@@ -178,7 +200,7 @@ export default function Passport(props) {
                                     <Button
                                         onClick = {changeRevisionArrayHandler.bind(null, step.id, step.name, index)}
                                         variant = {step.unit_name === null ? "default" : "clear"}
-                                        disabled = {step.unit_name === null ? false : true}
+                                        hidden = {step.unit_name === null ? false : true}
                                     >
                                     Нужна доработка
                                     </Button>
@@ -190,7 +212,7 @@ export default function Passport(props) {
         ) : (
             <h1 className={styles.noRequiredInformation}>{t('passport.noRequiredInformation')}</h1>
         )}
-        {editModeIsOn && !canSendRevision &&  <Button onClick ={onOpenConfirm}>Отправить на добработку</Button>}
+        {editModeIsOn && !canSendRevision && <Button onClick ={onOpenConfirm}>Отправить на добработку</Button>}
         </div>
 
             {showModal && (

@@ -11,6 +11,7 @@
   },
   "filters": {
     "DeviceType": "Device type",
+    "DeviceStatus": "Device status",
     "Date": "Date",
     "Overwork": "Exceeding standard hours",
     "NeedsFix": "Need improvement",
@@ -39,8 +40,11 @@
         "Sat": "Sat",
         "Sun": "Sun"
       }
-
+    },
+    "selects": {
+      "removeSelections": "Clear all selected"
     }
+
   },
   "login": {
     "Username": "Username",

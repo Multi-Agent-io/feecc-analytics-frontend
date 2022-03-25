@@ -66,7 +66,7 @@ export default function Table(props) {
                     </td>
                 </thead>
                 <tbody>
-                    {props.type === "pasports" && 
+                    {props.type === "passports" &&
                     props.rowsData.map((item, index) => {
                         return (<tr key={index}>
                             <td id={styles.timeCol}>

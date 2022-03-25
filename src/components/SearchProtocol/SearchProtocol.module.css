@@ -39,6 +39,10 @@
   z-index: -1;
 }
 
-.arrow.rotate {
+.select:not(:focus) + .arrow {
+  transform: none;
+}
+
+.select:focus + .arrow {
   transform: rotate(-90deg);
 }
