@@ -70,10 +70,10 @@ export default function Table(props) {
                     props.rowsData.map((item, index) => {
                         return (<tr key={index}>
                             <td id={styles.timeCol}>
-                                {item.overwork && (<img src={timeIcon} alt="Overwork icon"/>)}
+                                {item.overwork && (<img src={timeIcon} alt=""/>)}
                             </td>
                             <td id={styles.fixCol}>
-                                {item.needFix && (<img src={fixIcon} alt="Fix required icon"/>)}
+                                {item.status === 'revision' && (<img src={fixIcon} alt="Item on revision"/>)}
                             </td>
                             <td onClick={() => history.push(`/passport/${item.internal_id}/view`)} id={styles.nameCol}>{item.model}</td>
                             <td id={styles.typeCol}>{item.type !== null ? item.type : 'Сборка'}</td>

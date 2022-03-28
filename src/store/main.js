@@ -1,5 +1,5 @@
 import {applyMiddleware, combineReducers, compose, createStore} from "redux";
-// import {composeWithDevTools} from "redux-devtools-extension";
+import {composeWithDevTools} from "redux-devtools-extension";
 import {userReducer, userInitialState} from "./userReducer";
 
 import { createBrowserHistory } from 'history'
@@ -20,7 +20,8 @@ export const store = createStore(
     {
         user: userInitialState
     },
-    compose(
-        applyMiddleware(routerMiddleware(history))
-    )
+    composeWithDevTools()
+  // compose(
+    //     applyMiddleware(routerMiddleware(history))
+    // )
 )

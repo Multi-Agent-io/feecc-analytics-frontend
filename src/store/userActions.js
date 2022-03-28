@@ -175,5 +175,23 @@ export const doGetPassportTypes = (dispatch) => {
     })
 }
 
+export const doApproveProtocol = (protocolId) => {
+    return new Promise((resolve, reject) => {
+        axios.post(
+          `${conf.base_url}/api/v1/tcd/protocols/${protocolId}/approve`,
+          {},
+          {
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${localStorage.getItem('token')}`
+              }
+          }
+        ).then((res) => {
+            res.status === 200 && res.data.status_code === 200
+              ? resolve(true)
+              : reject(res)
+        }).catch(reject)
+    })
 
+}
 

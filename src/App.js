@@ -3,7 +3,8 @@ import './i18n'
 import {useEffect} from "react";
 import {getAuthorizationStatus} from "./store/selectors";
 import {history} from "./store/main";
-import {doFetchUser} from "./store/userActions";import {useDispatch, useSelector} from "react-redux";
+import {doFetchUser} from "./store/userActions";
+import {useDispatch, useSelector} from "react-redux";
 import ModalProvider from './store/ModalProvider';
 
 
@@ -76,6 +77,7 @@ function App() {
             }
         }
     })
+
   return (
     <ModalProvider>
         <RevisionProvider>

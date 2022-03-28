@@ -2,21 +2,21 @@ import { useState } from "react";
 import ModalActionsContext from "./modal-context";
 
 function ModalProvider(props) {
-  const [isModalBarActive, setModalBarIsVisibale] = useState(false);
-  const [isModalConfirmActive, setModalConfirmIsVisibale] = useState(false);
+  const [isModalBarActive, setModalBarIsVisible] = useState(false);
+  const [isModalConfirmActive, setModalConfirmIsVisible] = useState(false);
   
 
   const closeModal = () => {
-    setModalBarIsVisibale(false);
-    setModalConfirmIsVisibale(false);
+    setModalBarIsVisible(false);
+    setModalConfirmIsVisible(false);
   };
 
   const openModalBarHandler = () => {
-    setModalBarIsVisibale(true);
+    setModalBarIsVisible(true);
   };
 
   const openModalConfirmHandler = () => {
-    setModalConfirmIsVisibale(true);
+    setModalConfirmIsVisible(true);
   };
 
   const modalActions = {
