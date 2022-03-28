@@ -3,14 +3,17 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
+    transition: all .3s;
 }
 
-.btn-back:hover {
-    transform: scale(1.1);
+.btn-back > img:hover {
+    opacity: .7;
+    transition: all .3s;
 }
 
 .btn-back > img {
-    width: 15px;
+    width: 18px;
+    opacity: .5;
 }
 
 @media print {

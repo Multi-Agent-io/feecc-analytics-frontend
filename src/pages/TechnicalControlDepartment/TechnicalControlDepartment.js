@@ -2,10 +2,7 @@ import { useState, useEffect } from "react";
 
 import { history } from "../../store/main";
 
-import ScanButton from "../../components/ScanButton/ScanButton";
-import Search from "../../components/Search/Search";
-import SearchProtocol from "../../components/SearchProtocol/SearchProtocol";
-import Button from "../../components/Button/Button";
+import {ScanButton, Search, SearchProtocol, Button} from '../../components'
 
 import useHttp from "../../hooks/use-http";
 
@@ -45,26 +42,34 @@ function TechnicalControlDepartment() {
 
     const makeProtocolsTable = () => {
        return (
-        <div className={`${styles["grid-table_body"]} ${styles["grid-table"]}`}>
-           {
-            filteredProtocols.map((protocol) => {
-                const date = new Date(protocol.creation_time)
-                const year = date.getFullYear();
-                const month = (date.getMonth() + 1) < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
-                const day = (date.getDate() + 1) < 10 ? `0${date.getDate() + 1}` : date.getDate() + 1;
-                return (
-                     <>
-                        <div 
-                            className={styles["grid-table_body__name"]} 
-                            onClick={goToProtocolHandler.bind(null, protocol.associated_unit_id)} 
-                        >{protocol.protocol_name}</div>
-                        <div>{protocol.status}</div>
-                        <div>{`${year}.${month}.${day}`}</div>
-                     </>
-                )
-            })
-           }
-        </div>
+        <table className={styles.tcd_table}>
+          <thead className={styles.tcd_thead}>
+            <tr className={styles.tcd_tr}>
+              <td className={styles.tcd_td}>Название</td>
+              <td className={styles.tcd_td}>Состояние</td>
+              <td className={styles.tcd_td}>Время создания</td>
+            </tr>
+          </thead>
+          <tbody className={styles.tcd_tbody}>
+            {filteredProtocols.map((protocol) => {
+              const date = new Date(protocol.creation_time)
+              const year = date.getFullYear();
+              const month = (date.getMonth() + 1) < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+              const day = (date.getDate() + 1) < 10 ? `0${date.getDate() + 1}` : date.getDate() + 1;
+              return (
+                <tr className={styles.tcd_tr}>
+                  <td
+                    className={`${styles.tcd_td} ${styles.table_item_header}`}
+                    onClick={() => goToProtocolHandler(protocol.associated_unit_id)}
+                  >{protocol.protocol_name}</td>
+                  <td className={styles.tcd_td}>{protocol.status}</td>
+                  <td className={styles.tcd_td}>{`${year}.${month}.${day}`}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+
+        </table>
        )
     }
 
@@ -123,11 +128,6 @@ function TechnicalControlDepartment() {
                 />
             </div>
             <Button onClick ={cleanAllFilters} variant ="clear">Очистить фильтры</Button>
-        </div>
-        <div className={`${styles["grid-table_header"]} ${styles["grid-table"]}`}>
-            <div>Название</div>
-            <div>Состояние</div>
-            <div>Время создания</div>
         </div>
         {isLoading ? (
             <h1>Идёт загрузка...</h1>
