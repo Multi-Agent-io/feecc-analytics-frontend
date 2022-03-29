@@ -1,6 +1,6 @@
 import classes from "./Modal.module.css";
 import ReactDOM from "react-dom";
-import { useContext} from "react/cjs/react.development";
+import { useContext} from "react";
 import ModalActionsContext  from "../../store/modal-context";
 
 function Backdrop(props) {
