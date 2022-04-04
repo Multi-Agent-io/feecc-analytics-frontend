@@ -146,8 +146,10 @@ function Protocol() {
             <>
               <Button onClick={ checkAllHandler }>Отметить всё</Button>
               <Button onClick={ submitDataHandler }>Отправить</Button>
-              { protocol.status !== "Вторая стадия испытаний пройдена" &&
-                <Button onClick={ approveProtocol }>Подтвердить</Button> }
+              { (
+                protocol.status === "Вторая стадия испытаний пройдена" ||
+                protocol.status === "Первая стадия испытаний пройдена"
+              ) && <Button onClick={ approveProtocol }>Подтвердить</Button> }
             </>
           }
           { isSuperEngineer &&
@@ -217,7 +219,7 @@ function Protocol() {
       })
       .then(res => {
         console.log(res);
-        if (res.detail !== "Successful")
+        if (res.detail !== "Success")
           alert("Error reading protocol. No schema for this product")
         else {
           setProtocol(res.protocol)
