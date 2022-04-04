@@ -146,7 +146,7 @@ function Protocol() {
             <>
               <Button onClick={ checkAllHandler }>Отметить всё</Button>
               <Button onClick={ submitDataHandler }>Отправить</Button>
-              { protocol.status === "Вторая стадия испытаний пройдена" &&
+              { protocol.status !== "Вторая стадия испытаний пройдена" &&
                 <Button onClick={ approveProtocol }>Подтвердить</Button> }
             </>
           }
