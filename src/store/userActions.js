@@ -187,7 +187,7 @@ export const doApproveProtocol = (protocolId) => {
               }
           }
         ).then((res) => {
-            res.status === 200 && res.data.status_code === 200
+            res.status === 200
               ? resolve(true)
               : reject(res)
         }).catch(reject)
