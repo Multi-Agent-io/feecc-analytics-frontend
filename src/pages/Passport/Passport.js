@@ -46,6 +46,7 @@ export default function Passport(props) {
                     )
                 }
                 currentPassport.biography.forEach((step, index) => {
+                    step.employee_name &&
                     decodeUser(dispatch, step.employee_name)
                         .then((res) => {  
                             
