@@ -21,13 +21,11 @@ function ConfirmModal () {
   const pushToServerHandler = () => {
     const internal_id = window.location.pathname.split("/")[2];
     const desiredArray = [];
-    for (const id of idsRevision) {
-      if(id){
-        desiredArray.push(id)
-      }
-    }
-    console.log(internal_id);
-    console.log(desiredArray);
+    for (const id of idsRevision)
+      if(id) desiredArray.push(id)
+
+    // console.log(internal_id)
+    // console.log(desiredArray)
     
     const url = `${conf.base_url}/api/v1/passports/${internal_id}/revision`;
 
@@ -40,8 +38,9 @@ function ConfirmModal () {
       body: JSON.stringify(desiredArray)
     })
     .then(()=> {
-      onClose();
-      history.push(`/tcd`);
+      onClose()
+      alert('Этапы отправлены на доработку')
+      history.push(`/tcd`)
     })
     
   }

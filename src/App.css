@@ -14,8 +14,11 @@
     --color-main-white: #FFFFFF;
     --color-main-border: #181820;
     --color-main-gray: #A0A0A6;
-    /*--color-light-gray: #E9EEFF;*/
+    --color-light-gray: #E9EEFF;
     --color-strong-orange: rgba(233, 80, 14, .8);
+
+
+    --space: 1.5rem;
 
 }
 

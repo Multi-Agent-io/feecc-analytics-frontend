@@ -1,0 +1,19 @@
+.tagWrapper {
+    font-size: 1.3rem;
+    padding: 10px 15px;
+    border-radius: 20px;
+    background-color: var(--color-light-purple);
+    transition: all .5s;
+}
+
+.warningTag {
+    background-color: var(--color-strong-orange);
+    transition: all .5s;
+}
+
+.tagHover:hover {
+    background-color: var(--color-strong-purple);
+    transition: all .5s;
+    color: var(--color-main-white);
+    cursor: pointer;
+}

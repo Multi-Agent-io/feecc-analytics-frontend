@@ -14,6 +14,7 @@ import SelectMultiple from "./SelectMultiple/SelectMultiple";
 import SettingsButton from "./SettingsButton/SettingsButton";
 import Sidebar from "./Sidebar/Sidebar";
 import Table from "./Table/Table";
+import Tag from './Tag/Tag'
 
 export {
   Button,
@@ -31,5 +32,6 @@ export {
   SelectMultiple,
   SettingsButton,
   Sidebar,
-  Table
+  Table,
+  Tag
 }
