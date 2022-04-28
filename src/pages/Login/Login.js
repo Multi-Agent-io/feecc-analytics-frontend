@@ -24,7 +24,6 @@ export default function Login(props) {
 
     let checkUsername = (username) => {
         clearErrorFields()
-        setUsernameError('')
         if (username !== '')
             setUsernameError('')
         else
