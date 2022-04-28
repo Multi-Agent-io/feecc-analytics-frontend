@@ -17,7 +17,14 @@ export default function Login(props) {
     let [usernameError, setUsernameError] = useState('')
     let [passwordError, setPasswordError] = useState('')
 
+    let clearErrorFields = () => {
+        setUsernameError('')
+        setPasswordError('')
+    }
+
     let checkUsername = (username) => {
+        clearErrorFields()
+        setUsernameError('')
         if (username !== '')
             setUsernameError('')
         else
@@ -26,6 +33,7 @@ export default function Login(props) {
     }
 
     let checkPassword = (password) => {
+        clearErrorFields()
         if (password !== '')
             setPasswordError('')
         else
@@ -68,7 +76,7 @@ export default function Login(props) {
             <div className={styles.loginCard}>
                 <h2>{t('login.loginToProceed')}</h2>
                 <div className={styles.inputsWrapper}>
-                    <Input onChange={checkUsername} placeholder={t('login.Username')} type="text" error={usernameError}/>
+                    <Input onKeyDown={onKeyDownHandler} onChange={checkUsername} placeholder={t('login.Username')} type="text" error={usernameError}/>
                     <Input onKeyDown={onKeyDownHandler} onChange={checkPassword} placeholder={t('login.Password')} type="password" error={passwordError}/>
                 </div>
                 <Button onClick={doLogin}>{t('login.proceed')}</Button>
