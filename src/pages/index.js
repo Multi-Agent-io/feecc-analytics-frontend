@@ -1,4 +1,5 @@
 import ConfirmModal from "./ConfirmModal/ConfirmModal";
+import RemoveProtocolModal from "./RemoveProtocolModal/RemoveProtocolModal";
 import Employees from "./Employees/Employees";
 import Login from "./Login/Login";
 import Passports from "./Passports/Passports";
@@ -11,6 +12,7 @@ import UnderConstruction from './UnderConstruction/UnderConstruction'
 
 export {
   ConfirmModal,
+  RemoveProtocolModal,
   Employees,
   Login,
   Passports,

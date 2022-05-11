@@ -17,6 +17,7 @@ import Passport from "./pages/Passport/Passport";
 import TechnicalControlDepartment from './pages/TechnicalControlDepartment/TechnicalControlDepartment'
 import ScanModal from './pages/ScanModal/ScanModal';
 import ConfirmModal from './pages/ConfirmModal/ConfirmModal';
+import RemoveProtocolModal from './pages/RemoveProtocolModal/RemoveProtocolModal';
 import RevisionProvider from './store/RevisionProvider';
 
 // import Schemas from "./pages/Schemas/Schemas";
@@ -83,6 +84,7 @@ function App() {
         <RevisionProvider>
             <ScanModal/>
             <ConfirmModal/>
+            <RemoveProtocolModal/>
             <div className="App">
                 {location !== '/' && (<Sidebar/>)}
                 {route(location)}

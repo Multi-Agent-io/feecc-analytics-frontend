@@ -4,6 +4,7 @@ const ModalActionsContext = React.createContext({
   onClose: () => {},
   onOpenBar: () => {},
   onOpenConfirm: () => {},
+  onDeleteProtocol: () => {},
 });
 
 export default ModalActionsContext;

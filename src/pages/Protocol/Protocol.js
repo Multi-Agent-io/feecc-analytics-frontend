@@ -1,23 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
-import styles from './Protocol.module.css'
+import styles from "./Protocol.module.css";
 
 import { history } from "../../store/main";
 import { useSelector } from "react-redux";
 import { getRule } from "../../store/selectors";
 
-import { PrintButton, ButtonBack, Button } from '../../components'
+import { PrintButton, ButtonBack, Button } from "../../components";
 
-import conf from '../../config.json'
+import conf from "../../config.json";
 import { doApproveProtocol } from "../../store/userActions";
+import ModalActionsContext from "../../store/modal-context";
 
 function Protocol() {
-
   const [protocol, setProtocol] = useState(undefined);
   const [isLoading, setIsLoading] = useState(true);
-  const [protocolId, setProtocolId] = useState('');
-  const [isSuperEngineer, setSuperEngineer] = useState('');
-  const [serialNumber, setSerialNumber] = useState('');
+  const [protocolId, setProtocolId] = useState("");
+  const [isSuperEngineer, setSuperEngineer] = useState("");
+  const [serialNumber, setSerialNumber] = useState("");
+
+  const { onDeleteProtocol } = useContext(ModalActionsContext);
 
   // const {isLoading, error, sendRequest} = useHttp() ......needs to be finalized
   // const authorizationHeaders = {
@@ -25,33 +27,32 @@ function Protocol() {
   //       "Authorization": `Bearer ${localStorage.getItem('token')}`
   // }
 
-  const superEngineer = useSelector(getRule) === undefined
-  const internal_id = history.location.pathname.split('/')[3]
+  const superEngineer = useSelector(getRule) === undefined;
+  const internal_id = history.location.pathname.split("/")[3];
 
   // ======== all handlers ========
   const inputDataHandler = (event) => {
-    window.onbeforeunload = () => true // defense from user's reload
+    window.onbeforeunload = () => true; // defense from user's reload
 
     const targetInput = event.target;
-    const targetValue = targetInput.type === "checkbox" ? targetInput.checked : targetInput.value;
+    const targetValue =
+      targetInput.type === "checkbox" ? targetInput.checked : targetInput.value;
     const [index, place] = targetInput.id.split(" ");
-
 
     const newState = JSON.parse(JSON.stringify(protocol));
     const rowsArray = newState.rows;
 
     rowsArray[index][place] = targetValue;
 
-    setProtocol(newState)
-  }
+    setProtocol(newState);
+  };
 
   const serialNumberHandler = (event) => {
-    setSerialNumber(event.target.value)
-  }
+    setSerialNumber(event.target.value);
+  };
 
   const submitDataHandler = () => {
-
-    const rowsArray = protocol.rows
+    const rowsArray = protocol.rows;
 
     let allFieldChecked = true;
 
@@ -62,218 +63,260 @@ function Protocol() {
     }
 
     if (!allFieldChecked) {
-      allFieldChecked = window.confirm("Внимание вы не проверили все поля! Вы хотите продолжить?") // should be changed to a modal window
+      allFieldChecked = window.confirm(
+        "Внимание вы не проверили все поля! Вы хотите продолжить?"
+      ); // should be changed to a modal window
     }
 
     if (!serialNumber) {
-      alert("Внимание вы не заполнили серийный номер!")
+      alert("Внимание вы не заполнили серийный номер!");
     }
 
     if (allFieldChecked && serialNumber) {
       console.log(protocol);
 
-      const serialBody = `serial_number=${ serialNumber }`
-      fetch(`${ conf.base_url }/api/v1/passports/${ internal_id }/serial?${ serialBody }`, {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${ localStorage.getItem('token') }`
-        },
-        // body: serialBody, через body, по невероятным причинам, не работает
-      })
-        .then((res) => {
-          res.ok ? alert("Серийный номер отправлен!") : alert("Что-то пошло не так серийного номера!")
-        })
+      const serialBody = `serial_number=${serialNumber}`;
+      fetch(
+        `${conf.base_url}/api/v1/passports/${internal_id}/serial?${serialBody}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          // body: serialBody, через body, по невероятным причинам, не работает
+        }
+      ).then((res) => {
+        res.ok
+          ? alert("Серийный номер отправлен!")
+          : alert("Что-то пошло не так серийного номера!");
+      });
 
-      fetch(`${ conf.base_url }/api/v1/tcd/protocols/${ internal_id }`, {
+      fetch(`${conf.base_url}/api/v1/tcd/protocols/${internal_id}`, {
         method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${ localStorage.getItem('token') }`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify(protocol)
+        body: JSON.stringify(protocol),
       })
         .then((res) => {
-          res.ok ? alert("Протокол успешно отправлен!") : alert("Что-то пошло не так c отправкой протокола!");
+          res.ok
+            ? alert("Протокол успешно отправлен!")
+            : alert("Что-то пошло не так c отправкой протокола!");
           if (res.status === 403) {
-            alert("У вас недостаточно прав для отправки протокола!")
+            alert("У вас недостаточно прав для отправки протокола!");
           }
-        }).then(() => {
-        window.onbeforeunload = () => null;
-        history.goBack()
-      })
+        })
+        .then(() => {
+          window.onbeforeunload = () => null;
+          history.goBack();
+        });
     }
-
-  }
+  };
 
   const approveProtocol = () => {
     doApproveProtocol(protocolId)
-      .then(() => alert('Протокол отправлен успешно'))
-      .catch((error) => alert(`Ошибка при отправке протокола:\n${ error }`))
-  }
+      .then(() => alert("Протокол отправлен успешно"))
+      .catch((error) => alert(`Ошибка при отправке протокола:\n${error}`));
+  };
 
   const goToPassportHandler = () => {
-    history.push(`/passport/${ protocolId }/edit`)
-  }
+    history.push(`/passport/${protocolId}/edit`);
+  };
 
   const checkAllHandler = () => {
-    window.onbeforeunload = () => true // defense from user's reload
+    window.onbeforeunload = () => true; // defense from user's reload
 
-    const allCheckBox = document.querySelectorAll(`div > input[type=checkbox]`)
+    const allCheckBox = document.querySelectorAll(`div > input[type=checkbox]`);
     const newState = JSON.parse(JSON.stringify(protocol));
 
-    const rowsArray = newState.rows
+    const rowsArray = newState.rows;
 
     for (let i = 0; i < allCheckBox.length; i++) {
       allCheckBox[i].checked = true;
 
-      const targetValue = allCheckBox[i].checked
+      const targetValue = allCheckBox[i].checked;
       const [row, place] = allCheckBox[i].id.split(" ");
 
       rowsArray[row][place] = targetValue;
-
     }
-    setProtocol(newState)
-  }
+    setProtocol(newState);
+  };
+
+  const openIPFSLink = () => {
+    window.open("https://gateway.pinata.cloud/ipfs/" + protocol.ipfs_cid);
+  };
+
+  const openTXNHashLink = () => {
+    window.open("https://robonomics.subscan.io/extrinsic/" + protocol.txn_hash);
+  };
 
   // ======== make function for render ========
   const makeButtonSection = () => {
     return (
-      <div className={ styles["btns-section"] }>
-        <Button variant="clear" onClick={ goToPassportHandler }>Открыть паспорт</Button>
+      <div className={styles["btns-section"]}>
+        <Button variant="clear" onClick={goToPassportHandler}>
+          Открыть паспорт
+        </Button>
         <div>
-          { !isSuperEngineer && protocol.status !== "Протокол утверждён" &&
+          {!isSuperEngineer && protocol.status !== "Протокол утверждён" && (
             <>
-              <Button onClick={ checkAllHandler }>Отметить всё</Button>
-              <Button onClick={ submitDataHandler }>Отправить</Button>
-              { (
-                protocol.status === "Вторая стадия испытаний пройдена" ||
-                protocol.status === "Первая стадия испытаний пройдена"
-              ) && <Button onClick={ approveProtocol }>Подтвердить</Button> }
+              <Button onClick={checkAllHandler}>Отметить всё</Button>
+              <Button onClick={submitDataHandler}>Отправить</Button>
+              {(protocol.status === "Вторая стадия испытаний пройдена" ||
+                protocol.status === "Первая стадия испытаний пройдена") && (
+                <Button onClick={approveProtocol}>Подтвердить</Button>
+              )}
             </>
-          }
-          { isSuperEngineer &&
-            <Button>Подтвердить</Button>
-          }
+          )}
+          {protocol.status === "Протокол утверждён" && (
+            <>
+              {protocol.ipfs_cid && (
+                <Button onClick={openIPFSLink}>IPFS</Button>
+              )}
+              {protocol.txn_hash && (
+                <Button onClick={openTXNHashLink}>Datalog</Button>
+              )}
+              <Button variant="delete" onClick={onDeleteProtocol}>
+                Удалить протокол
+              </Button>
+            </>
+          )}
+          {isSuperEngineer && <Button>Подтвердить</Button>}
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   const makeGridTable = (arrayItems) => {
     const jsxArray = arrayItems.map((row, index) => {
-      const {name = "Без имени", value = "", deviation = "", test1 = "", test2 = "", checked = false} = row;
+      const {
+        name = "Без имени",
+        value = "",
+        deviation = "",
+        test1 = "",
+        test2 = "",
+        checked = false,
+      } = row;
       return (
         <>
-          <div key={ `${ index } name` }>{ name }</div>
-          <div key={ `${ index } value` }>{ value }</div>
-          <div key={ `${ index } deviation` }>{ deviation }</div>
+          <div key={`${index} name`}>{name}</div>
+          <div key={`${index} value`}>{value}</div>
+          <div key={`${index} deviation`}>{deviation}</div>
           <input
-            key={ `${ index } test1` }
-            type='text'
-            placeholder={ "Введите значение" }
-            id={ `${ index } test1` }
-            value={ test1 }
-            disabled={ protocol.status === "Протокол утверждён" }
+            key={`${index} test1`}
+            type="text"
+            placeholder={"Введите значение"}
+            id={`${index} test1`}
+            value={test1}
+            disabled={protocol.status === "Протокол утверждён"}
           />
           <input
-            key={ `${ index } test2` }
-            type='text'
-            placeholder={ "Введите значение" }
-            id={ `${ index } test2` }
-            value={ test2 }
-            disabled={ protocol.status === "Протокол утверждён" }
+            key={`${index} test2`}
+            type="text"
+            placeholder={"Введите значение"}
+            id={`${index} test2`}
+            value={test2}
+            disabled={protocol.status === "Протокол утверждён"}
           />
-          <div key={ `${ index } checked` }>
+          <div key={`${index} checked`}>
             <input
-              defaultChecked={ checked }
+              defaultChecked={checked}
               type="checkbox"
-              id={ `${ index } checked` }
-              disabled={ protocol.status === "Протокол утверждён" }
+              id={`${index} checked`}
+              disabled={protocol.status === "Протокол утверждён"}
             />
-            <label htmlFor={ `${ index } checked` }> Проверено</label>
+            <label htmlFor={`${index} checked`}> Проверено</label>
           </div>
         </>
-      )
-
-    })
+      );
+    });
 
     return (
-      <div onChange={ inputDataHandler } className={ `${ styles["grid-container_body"] } ${ styles.grid }` }>
-        { jsxArray }
+      <div
+        onChange={inputDataHandler}
+        className={`${styles["grid-container_body"]} ${styles.grid}`}
+      >
+        {jsxArray}
       </div>
-    )
-  }
+    );
+  };
 
   // ======== use effect ========
   useEffect(() => {
-    setIsLoading(true) // start loading
-    fetch(`${ conf.base_url }/api/v1/tcd/protocols/${ internal_id }`, {
+    setIsLoading(true); // start loading
+    fetch(`${conf.base_url}/api/v1/tcd/protocols/${internal_id}`, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${ localStorage.getItem('token') }`
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
-      .then(res => {
-        return res.json()
+      .then((res) => {
+        return res.json();
       })
-      .then(res => {
+      .then((res) => {
         console.log(res);
         if (res.detail !== "Success")
-          alert("Error reading protocol. No schema for this product")
+          alert("Error reading protocol. No schema for this product");
         else {
-          setProtocol(res.protocol)
-          setProtocolId(internal_id)
-          setSuperEngineer(superEngineer)
-          setSerialNumber(res.serial_number)
-          setIsLoading(false)
+          setProtocol(res.protocol);
+          setProtocolId(internal_id);
+          setSuperEngineer(superEngineer);
+          setSerialNumber(res.serial_number);
+          setIsLoading(false);
         }
-      })
+      });
 
-    return () => window.onbeforeunload = () => null // clear event listener for defence from reloading (from checkAllHandler)
+    return () => (window.onbeforeunload = () => null); // clear event listener for defence from reloading (from checkAllHandler)
+  }, []);
 
-  }, [])
-
-  return (
-    isLoading ? (
-      <h1 className={ styles.loading }>Идёт загрузка...</h1>
-    ) : (
-      <section className={ `${ styles.section } ${ isSuperEngineer === true ? styles["super-engineer"] : null }` }>
-        <div className={ styles.header }>
-          <ButtonBack/>
-          <div>
-            <h1>ПРОТОКОЛ приемо-сдаточных испытаний №__-В</h1>
-            <h2 className={ styles["protocol_name"] }>{ protocol.protocol_name }</h2>
-            <h2>
-              SN: { protocol.default_serial_number !== null ? protocol.default_serial_number : '941619006-' }
-              <input
-                onChange={ serialNumberHandler }
-                value={ serialNumber }
-                className={ styles["serial_number"] }
-                placeholder="000000"
-              >
-              </input>
-            </h2>
-          </div>
-          <PrintButton disabled={ isLoading }/>
+  return isLoading ? (
+    <h1 className={styles.loading}>Идёт загрузка...</h1>
+  ) : (
+    <section
+      className={`${styles.section} ${
+        isSuperEngineer === true ? styles["super-engineer"] : null
+      }`}
+    >
+      <div className={styles.header}>
+        <ButtonBack />
+        <div>
+          <h1>ПРОТОКОЛ приемо-сдаточных испытаний №__-В</h1>
+          <h2 className={styles["protocol_name"]}>{protocol.protocol_name}</h2>
+          <h2>
+            SN:{" "}
+            {protocol.default_serial_number !== null
+              ? protocol.default_serial_number
+              : "941619006-"}
+            <input
+              onChange={serialNumberHandler}
+              value={serialNumber}
+              className={styles["serial_number"]}
+              placeholder="000000"
+            ></input>
+          </h2>
         </div>
+        <PrintButton disabled={isLoading} />
+      </div>
 
-        <div className={ `${ styles["grid-container_header"] } ${ styles.grid }` }>
-          <div className={ styles["col-1"] }>Наименование параметра (показателя)</div>
-          <div className={ styles["col-2"] }>Значение параметра</div>
-          <div className={ styles["col-3"] }>Номинальное значение</div>
-          <div className={ styles["col-4"] }>Предельное отклонение</div>
-          <div className={ styles["col-5"] }>Первичное испытание</div>
-          <div className={ styles["col-6"] }>Вторичное испытание</div>
-          <div className={ styles["col-check"] }>Проверено</div>
+      <div className={`${styles["grid-container_header"]} ${styles.grid}`}>
+        <div className={styles["col-1"]}>
+          Наименование параметра (показателя)
         </div>
+        <div className={styles["col-2"]}>Значение параметра</div>
+        <div className={styles["col-3"]}>Номинальное значение</div>
+        <div className={styles["col-4"]}>Предельное отклонение</div>
+        <div className={styles["col-5"]}>Первичное испытание</div>
+        <div className={styles["col-6"]}>Вторичное испытание</div>
+        <div className={styles["col-check"]}>Проверено</div>
+      </div>
 
-        { makeGridTable(protocol.rows) }
+      {makeGridTable(protocol.rows)}
 
-        { makeButtonSection() }
-
-      </section>)
-  )
+      {makeButtonSection()}
+    </section>
+  );
 }
 
-export default Protocol
+export default Protocol;
