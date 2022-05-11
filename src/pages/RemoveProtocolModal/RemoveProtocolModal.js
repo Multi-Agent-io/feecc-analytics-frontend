@@ -13,8 +13,9 @@ function RemoveProtocolModal() {
   const { modalDeleteStatus, onClose } = useContext(ModalActionsContext);
 
   const pushToServerHandler = () => {
-    const internal_id = window.location.pathname.split("/")[2];
+    const internal_id = window.location.pathname.split("/")[3];
     doRemoveProtocol(internal_id);
+    onClose();
     history.push("/tcd");
   };
 
