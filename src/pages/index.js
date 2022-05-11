@@ -1,4 +1,3 @@
-import ConfirmModal from "./ConfirmModal/ConfirmModal";
 import Employees from "./Employees/Employees";
 import Login from "./Login/Login";
 import Passports from "./Passports/Passports";
@@ -11,7 +10,6 @@ import UnderConstruction from './UnderConstruction/UnderConstruction'
 import Schema from "./Schema/Schema";
 
 export {
-  ConfirmModal,
   Employees,
   Login,
   Passports,

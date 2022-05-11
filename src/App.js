@@ -10,9 +10,9 @@ import ModalProvider from './store/ModalProvider';
 
 import Sidebar from "./components/Sidebar/Sidebar";
 import {
-  Passports, Protocol, UnderConstruction, Login, Passport, TechnicalControlDepartment, ScanModal, ConfirmModal, Schemas,
-  Schema
+  Passports, Protocol, UnderConstruction, Login, Passport, TechnicalControlDepartment, ScanModal, Schemas, Schema
 } from './pages'
+import { ConfirmModal } from './components'
 
 import RevisionProvider from './store/RevisionProvider';
 // import Schema from "./pages/Schema/Schema";
