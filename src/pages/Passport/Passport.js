@@ -13,6 +13,7 @@ import ReactPlayer from "react-player";
 
 import ModalActionsContext from '../../store/modal-context';
 import RevisionContext from '../../store/revision-context';
+import { useSnackbar } from "notistack";
 
 export default function Passport(props) {
 
@@ -33,7 +34,8 @@ export default function Passport(props) {
     let [selectedStep, setSelectedStep] = useState({})
     const [isLoading, setIsLoading] = useState(false)
 
-
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+    const addNotification = (message, variant) => enqueueSnackbar(message, { variant })
 
     useEffect(() => {
         setIsLoading(false)
@@ -41,9 +43,7 @@ export default function Passport(props) {
             .then((res) => {
                 const currentPassport = res.passport;
                 if(currentPassport.status === "production"){
-                    alert(
-                        "Данное изделие находиться в стадии разработки\nНекоторые данные могут отображаться некорректно!"
-                    )
+                    addNotification("Данное изделие находиться в стадии разработки\nНекоторые данные могут отображаться некорректно!", "warning")
                 }
                 currentPassport.biography.forEach((step, index) => {
                     step.employee_name &&

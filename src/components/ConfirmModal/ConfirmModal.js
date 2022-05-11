@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import Button from "../../components/Button/Button";
+import Button from "../Button/Button";
 
-import Modal from "../../components/Modal/Modal"
+import Modal from "../Modal/Modal"
 import { history } from "../../store/main";
 
 import ModalActionsContext from "../../store/modal-context"
@@ -10,6 +10,7 @@ import RevisionContext from "../../store/revision-context";
 import classes from "./ConfirmModal.module.css"
 
 import conf from '../../config.json'
+import { useSnackbar } from "notistack";
 
 function ConfirmModal () {
 
@@ -17,6 +18,9 @@ function ConfirmModal () {
   const { revisionsItem } = useContext(RevisionContext)
   const [nameRevision, setNameRevision] = useState([])
   const [idsRevision, setIdsRevision] = useState([])
+
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  const addNotification = (message, variant) => enqueueSnackbar(message, { variant })
 
   const pushToServerHandler = () => {
     const internal_id = window.location.pathname.split("/")[2];
@@ -39,7 +43,7 @@ function ConfirmModal () {
     })
     .then(()=> {
       onClose()
-      alert('Этапы отправлены на доработку')
+      addNotification('Этапы отправлены на доработку', 'success')
       history.push(`/tcd`)
     })
     
