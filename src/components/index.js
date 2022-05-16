@@ -16,6 +16,7 @@ import Sidebar from "./Sidebar/Sidebar";
 import Table from "./Table/Table";
 import Tag from './Tag/Tag'
 import ConfirmModal from "./ConfirmModal/ConfirmModal";
+import TransitionModal from "./TransitionModal/TransitionModal";
 
 export {
   Button,
@@ -35,5 +36,6 @@ export {
   Sidebar,
   Table,
   Tag,
-  ConfirmModal
+  ConfirmModal,
+  TransitionModal
 }
