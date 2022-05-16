@@ -156,7 +156,7 @@ function Protocol() {
   const makeButtonSection = () => {
     return (
       <div className={styles["btns-section"]}>
-        <Button variant="clear" onClick={goToPassportHandler}>
+        <Button clear onClick={goToPassportHandler}>
           Открыть паспорт
         </Button>
         <div>
@@ -178,7 +178,7 @@ function Protocol() {
               {protocol.txn_hash && (
                 <Button onClick={openTXNHashLink}>Datalog</Button>
               )}
-              <Button variant="delete" onClick={onDeleteProtocol}>
+              <Button delete onClick={onDeleteProtocol}>
                 Удалить протокол
               </Button>
             </>

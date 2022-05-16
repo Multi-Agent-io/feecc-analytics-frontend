@@ -15,14 +15,8 @@
 }
 
 .deleteButton {
-    padding: 10px 26px;
-    font-size: 1.2rem;
     background-color: var(--color-main-white);
     border: 2px solid var(--color-strong-orange);
-    border-radius: 8px;
-    transition: all 0.3s;
-    color: var(--color-main-black);
-    cursor: pointer;
 }
 
 .deleteButton:hover {
@@ -37,19 +31,12 @@
 }
 
 .clearButton {
-    padding: 10px 26px;
-    /* width: 277px; */
-    font-size: 1.2rem;
     background-color: var(--color-main-white);
     border: 1px solid var(--color-main-black);
-    border-radius: 8px;
-    transition: all 0.3s;
-    color: var(--color-main-black);
-    cursor: pointer;
 }
 .clearButton:hover {
-    /*background-color: var(--color-light-purple);*/
-    /*color: var(--color-main-white);*/
+    background-color: var(--color-light-purple);
+    color: var(--color-main-black);
 }
 
 .disabled {
