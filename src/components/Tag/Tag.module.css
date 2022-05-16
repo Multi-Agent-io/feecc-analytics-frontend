@@ -11,9 +11,14 @@
     transition: all .5s;
 }
 
+.addShadow {
+    box-shadow: var(--moved-shadow);
+}
+
 .tagHover:hover {
     background-color: var(--color-strong-purple);
     transition: all .5s;
     color: var(--color-main-white);
     cursor: pointer;
+    box-shadow: var(--hight-shadow);
 }
