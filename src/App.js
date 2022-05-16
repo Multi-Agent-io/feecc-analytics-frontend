@@ -9,10 +9,19 @@ import ModalProvider from './store/ModalProvider';
 
 
 import Sidebar from "./components/Sidebar/Sidebar";
+
 import {
-  Passports, Protocol, UnderConstruction, Login, Passport, TechnicalControlDepartment, ScanModal, Schemas, Schema
+  Passports, 
+  Protocol, 
+  UnderConstruction, 
+  Login, 
+  Passport, 
+  TechnicalControlDepartment, 
+  ScanModal, 
+  Schemas, 
+  Schema
 } from './pages'
-import { ConfirmModal } from './components'
+import { ConfirmModal, RemoveProtocolModal } from './components'
 
 import RevisionProvider from './store/RevisionProvider';
 // import Schema from "./pages/Schema/Schema";
@@ -83,6 +92,7 @@ function App() {
       <RevisionProvider>
         <ScanModal/>
         <ConfirmModal/>
+        <RemoveProtocolModal/>
         <div className="App">
           { location !== '/' && (<Sidebar/>) }
           { route(location) }

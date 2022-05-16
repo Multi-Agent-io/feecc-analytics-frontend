@@ -12,7 +12,8 @@ export default function Button(props) {
         
             <button hidden={props.hidden} disabled={props.disabled} onClick={onClickHandler} className={clsx({
                 [styles.defaultButton]: props.variant === 'default' || props.variant === undefined,
-                [styles.clearButton]: props.variant === 'clear',
+                [styles.clearButton]: props.clear,
+                [styles.deleteButton]: props.delete,
                 [styles.disabled]: props.disabled
             })}>{props.children}</button>
         
