@@ -12,6 +12,8 @@ import conf from "../../config.json";
 import { doApproveProtocol } from "../../store/userActions";
 import ModalActionsContext from "../../store/modal-context";
 
+import { useSnackbar } from 'notistack';
+
 function Protocol() {
   const [protocol, setProtocol] = useState(undefined);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,6 +31,10 @@ function Protocol() {
 
   const superEngineer = useSelector(getRule) === undefined;
   const internal_id = history.location.pathname.split("/")[3];
+
+
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  const addNotification = (message, variant) => enqueueSnackbar(message, { variant })
 
   // ======== all handlers ========
   const inputDataHandler = (event) => {
@@ -69,28 +75,24 @@ function Protocol() {
     }
 
     if (!serialNumber) {
-      alert("Внимание вы не заполнили серийный номер!");
+      addNotification("Внимание вы не заполнили серийный номер!", "warning")
     }
 
     if (allFieldChecked && serialNumber) {
       console.log(protocol);
 
-      const serialBody = `serial_number=${serialNumber}`;
-      fetch(
-        `${conf.base_url}/api/v1/passports/${internal_id}/serial?${serialBody}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          // body: serialBody, через body, по невероятным причинам, не работает
-        }
-      ).then((res) => {
-        res.ok
-          ? alert("Серийный номер отправлен!")
-          : alert("Что-то пошло не так серийного номера!");
-      });
+      const serialBody = `serial_number=${ serialNumber }`
+      fetch(`${ conf.base_url }/api/v1/passports/${ internal_id }/serial?${ serialBody }`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${ localStorage.getItem('token') }`
+        },
+        // body: serialBody, через body, по невероятным причинам, не работает
+      })
+        .then((res) => {
+          res.ok ? addNotification("Серийный номер отправлен!", 'info') : addNotification("Что-то пошло не так серийного номера!", 'error')
+        })
 
       fetch(`${conf.base_url}/api/v1/tcd/protocols/${internal_id}`, {
         method: "POST",
@@ -101,11 +103,9 @@ function Protocol() {
         body: JSON.stringify(protocol),
       })
         .then((res) => {
-          res.ok
-            ? alert("Протокол успешно отправлен!")
-            : alert("Что-то пошло не так c отправкой протокола!");
+          res.ok ? addNotification("Протокол успешно отправлен!", 'success') : addNotification("Что-то пошло не так c отправкой протокола!", 'error');
           if (res.status === 403) {
-            alert("У вас недостаточно прав для отправки протокола!");
+            addNotification("У вас недостаточно прав для отправки протокола!", 'error')
           }
         })
         .then(() => {
@@ -117,9 +117,9 @@ function Protocol() {
 
   const approveProtocol = () => {
     doApproveProtocol(protocolId)
-      .then(() => alert("Протокол отправлен успешно"))
-      .catch((error) => alert(`Ошибка при отправке протокола:\n${error}`));
-  };
+      .then(() => addNotification('Протокол отправлен успешно', 'success'))
+      .catch((error) => addNotification(`Ошибка при отправке протокола:\n${ error }`, 'error'))
+  }
 
   const goToPassportHandler = () => {
     history.push(`/passport/${protocolId}/edit`);
@@ -258,7 +258,7 @@ function Protocol() {
       .then((res) => {
         console.log(res);
         if (res.detail !== "Success")
-          alert("Error reading protocol. No schema for this product");
+          addNotification("Error reading protocol. No schema for this product", 'error')
         else {
           setProtocol(res.protocol);
           setProtocolId(internal_id);

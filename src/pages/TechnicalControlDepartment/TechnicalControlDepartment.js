@@ -76,10 +76,8 @@ function TechnicalControlDepartment() {
     // ====== useEffect ======
 
     useEffect(() => {
-
         sendRequest({
             url: `${conf.base_url}/api/v1/tcd/protocols`,
-            headers: authorizationHeaders,
         })
         .then(({data}) => {
             setProtocols(data)

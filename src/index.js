@@ -3,18 +3,21 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {Provider} from "react-redux";
-import {store} from "./store/main";
-import {ConnectedRouter} from "connected-react-router";
-import {history} from "./store/main";
+import { Provider } from "react-redux";
+import { store } from "./store/main";
+import { ConnectedRouter } from "connected-react-router";
+import { history } from "./store/main";
+import { SnackbarProvider } from "notistack";
 
 ReactDOM.render(
   <React.StrictMode>
-        <Provider store={store}>
-          <ConnectedRouter history={history}>
-              <App />
-          </ConnectedRouter>
-         </Provider>
+    <Provider store={ store }>
+      <ConnectedRouter history={ history }>
+        <SnackbarProvider maxSnack={5}>
+          <App/>
+        </SnackbarProvider>
+      </ConnectedRouter>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

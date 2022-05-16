@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import Button from "../../components/Button/Button";
+import Button from "../Button/Button";
 
-import Modal from "../../components/Modal/Modal"
+import Modal from "../Modal/Modal"
 import { history } from "../../store/main";
 
 import ModalActionsContext from "../../store/modal-context"
@@ -10,6 +10,7 @@ import RevisionContext from "../../store/revision-context";
 import classes from "./ConfirmModal.module.css"
 
 import conf from '../../config.json'
+import { useSnackbar } from "notistack";
 
 function ConfirmModal () {
 
@@ -18,16 +19,17 @@ function ConfirmModal () {
   const [nameRevision, setNameRevision] = useState([])
   const [idsRevision, setIdsRevision] = useState([])
 
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  const addNotification = (message, variant) => enqueueSnackbar(message, { variant })
+
   const pushToServerHandler = () => {
     const internal_id = window.location.pathname.split("/")[2];
     const desiredArray = [];
-    for (const id of idsRevision) {
-      if(id){
-        desiredArray.push(id)
-      }
-    }
-    console.log(internal_id);
-    console.log(desiredArray);
+    for (const id of idsRevision)
+      if(id) desiredArray.push(id)
+
+    // console.log(internal_id)
+    // console.log(desiredArray)
     
     const url = `${conf.base_url}/api/v1/passports/${internal_id}/revision`;
 
@@ -40,8 +42,9 @@ function ConfirmModal () {
       body: JSON.stringify(desiredArray)
     })
     .then(()=> {
-      onClose();
-      history.push(`/tcd`);
+      onClose()
+      addNotification('Этапы отправлены на доработку', 'success')
+      history.push(`/tcd`)
     })
     
   }

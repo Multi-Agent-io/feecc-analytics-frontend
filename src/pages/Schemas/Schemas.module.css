@@ -1,0 +1,92 @@
+.contentWrapper {
+    width: calc(100vw - 166px);
+    padding-top: 32px;
+}
+
+.searchWrapper {
+    padding: 0 44px;
+}
+
+.filtersWrapper {
+    padding: 32px 44px 32px;
+}
+
+.filtersHeader {
+    font-size: 1.7rem;
+    height: 40px;
+}
+
+.filtersCol {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.selectTypeWrapper {
+    width: 400px;
+}
+
+.tcd_table {
+    max-height: 100%;
+    overflow-x: scroll;
+    width: 100%;
+    padding: 32px 0;
+}
+
+.tcd_thead {
+    width: 100%;
+    display: inherit;
+    border: none;
+}
+.tcd_tbody {
+    display: block;
+    height: calc(100vh - 350px);
+    overflow: auto;
+}
+
+.tcd_tr {
+    display: grid;
+    grid-template-columns: .3fr 6fr 2fr 2fr;
+    column-gap: 20px;
+    margin-right: 30px;
+}
+
+/*.tdc_tr_subrow {*/
+/*}*/
+
+.tcd_td {
+    display: flex;
+    margin: 10px 0;
+    text-align: left;
+    justify-content: flex-start;
+    padding-left: 20px;
+}
+
+.table_item_header {
+    cursor: pointer;
+}
+
+.arrowButton {
+    height: 28px;
+    margin-left: 10px;
+    border-radius: 50%;
+    background-color: var(--color-light-gray);
+    padding: 7px;
+    cursor: pointer;
+}
+
+.arrowButton:hover {
+    background-color: var(--color-strong-purple);
+}
+
+.blockedButton {
+    opacity: .4;
+    cursor: default;
+}
+.blockedButton:hover{
+    background-color: var(--color-light-gray);
+}
+
+.activeButton {
+    transform: rotate(90deg);
+}

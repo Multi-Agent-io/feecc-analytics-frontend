@@ -235,3 +235,25 @@ export const doRemoveProtocol = (protocolId) => {
       .catch(reject);
   });
 };
+
+export const doGetSchemas = (dispatch) => {
+  return new Promise((resolve, reject) => {
+    axios.get(
+      `${ conf.base_url }/api/v1/schemas`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${ localStorage.getItem('token') }`
+        }
+      })
+      .then(res => {
+        let schemas = [...res.data.data]
+        let tree = schemas.filter((schema) => schema.parent_schema_id === null)
+        tree.forEach((schema) => schema['innerSchemas'] = schemas.filter((item) => item.parent_schema_id === schema.schema_id))
+
+        dispatch({type: types.USER__FETCH_SCHEMAS, data: res.data.data, count: res.data.count, tree: tree})
+      resolve(res.data)
+    })
+      .catch(res => reject(res))
+  })
+}

@@ -15,8 +15,9 @@ import Button from "../../components/Button/Button";
 import { useTranslation } from "react-i18next";
 import ReactPlayer from "react-player";
 
-import ModalActionsContext from "../../store/modal-context";
-import RevisionContext from "../../store/revision-context";
+import ModalActionsContext from '../../store/modal-context';
+import RevisionContext from '../../store/revision-context';
+import { useSnackbar } from "notistack";
 
 export default function Passport(props) {
   let { t } = useTranslation();

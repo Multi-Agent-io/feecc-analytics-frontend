@@ -142,11 +142,12 @@ export const userInitialState = fromJS({
     employees: {},
     passportTypes: [],
     rule: 'approve',
+    schemas: []
 })
 
 export const userReducer = (state = {}, action) => {
-    // if(action.type.startsWith('USER__'))
-    //     console.log('user-reducer', action)
+    if(action.type.startsWith('USER__'))
+        console.log('user-reducer', action)
 
     switch (action.type) {
         case types.USER__AUTHORIZE: {
@@ -193,7 +194,16 @@ export const userReducer = (state = {}, action) => {
             return state
                 .set('passportTypes', [...passportTypes])
         }
-        
+
+
+        case types.USER__FETCH_SCHEMAS: {
+            console.log('SETTING SCHEMAS')
+            console.log(action.data)
+            return state
+              .set('schemas', action.data)
+              .set('schemasCount', action.count)
+              .set('schemasTree', action.tree)
+        }
         
         default:
             return state

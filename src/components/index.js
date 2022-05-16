@@ -14,6 +14,8 @@ import SelectMultiple from "./SelectMultiple/SelectMultiple";
 import SettingsButton from "./SettingsButton/SettingsButton";
 import Sidebar from "./Sidebar/Sidebar";
 import Table from "./Table/Table";
+import Tag from './Tag/Tag'
+import ConfirmModal from "./ConfirmModal/ConfirmModal";
 
 export {
   Button,
@@ -31,5 +33,7 @@ export {
   SelectMultiple,
   SettingsButton,
   Sidebar,
-  Table
+  Table,
+  Tag,
+  ConfirmModal
 }
