@@ -16,10 +16,16 @@
     --color-main-gray: #A0A0A6;
     --color-light-gray: #E9EEFF;
     --color-strong-orange: rgba(233, 80, 14, .8);
-
+    --color-light-orange:rgba(233, 80, 14, .6);
 
     --space: 1.5rem;
 
+    --shadow-color: #ccc;
+    --shadow-dark-color: #aaa;
+
+    --shadow: 2px 2px 6px var(--shadow-color);
+    --moved-shadow: 2px 2px 6px var(--shadow-color);
+    --hight-shadow: 7px 7px 10px var(--shadow-dark-color);
 }
 
 .App {
