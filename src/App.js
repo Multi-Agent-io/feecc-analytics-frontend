@@ -24,10 +24,7 @@ import {
 import { ConfirmModal, RemoveProtocolModal } from './components'
 
 import RevisionProvider from './store/RevisionProvider';
-// import Schema from "./pages/Schema/Schema";
 
-// import Schemas from "./pages/Schemas/Schemas";
-// import Employees from "./pages/Employees/Employees";
 
 function App() {
   let authorized = useSelector(getAuthorizationStatus)
@@ -46,9 +43,6 @@ function App() {
     ['^/production-schemas', () => <UnderConstruction/>],
     // ['^/production-schemas/schema/*', () => <Schema/>],
     // ['^/production-schemas', () => <Schemas/>],
-
-
-
   ]
   let route = (path) => routes.find(r => path.match(r[0]) !== null)?.[1]?.()
 

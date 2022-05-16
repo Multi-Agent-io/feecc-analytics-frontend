@@ -16,6 +16,7 @@ import Sidebar from "./Sidebar/Sidebar";
 import Table from "./Table/Table";
 import Tag from './Tag/Tag'
 import ConfirmModal from "./ConfirmModal/ConfirmModal";
+import RemoveProtocolModal from "./RemoveProtocolModal/RemoveProtocolModal";
 import TransitionModal from "./TransitionModal/TransitionModal";
 
 export {
@@ -37,5 +38,6 @@ export {
   Table,
   Tag,
   ConfirmModal,
+  RemoveProtocolModal,
   TransitionModal
 }
