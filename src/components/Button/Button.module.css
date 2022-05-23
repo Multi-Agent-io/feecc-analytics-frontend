@@ -42,3 +42,13 @@
 .disabled {
     cursor: not-allowed;
 }
+
+.warningButton {
+    border-color: var(--color-light-orange);
+    background-color: var(--color-main-white);
+}
+
+.warningButton:hover {
+    border-color: var(--color-strong-orange);
+    background-color: var(--color-light-orange);
+}

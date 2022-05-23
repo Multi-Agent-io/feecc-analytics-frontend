@@ -14,6 +14,7 @@ export default function Button(props) {
                 [styles.defaultButton]: props.variant === 'default' || props.variant === undefined,
                 [styles.clearButton]: props.clear,
                 [styles.deleteButton]: props.delete,
+                [styles.warningButton]: props.warning,
                 [styles.disabled]: props.disabled
             })}>{props.children}</button>
         
