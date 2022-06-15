@@ -1,9 +1,9 @@
-import { applyMiddleware, combineReducers, compose, createStore } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
-import { userReducer, userInitialState } from "./userReducer";
+import { combineReducers, createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
-import { createBrowserHistory } from "history";
-import { connectRouter, routerMiddleware } from "connected-react-router";
+import { createBrowserHistory } from 'history';
+import { connectRouter } from 'connected-react-router';
+import { userReducer, userInitialState } from './userReducer';
 
 export const history = createBrowserHistory();
 
@@ -19,7 +19,7 @@ export const store = createStore(
   {
     user: userInitialState,
   },
-  composeWithDevTools()
+  composeWithDevTools(),
   // compose(
   //     applyMiddleware(routerMiddleware(history))
   // )
