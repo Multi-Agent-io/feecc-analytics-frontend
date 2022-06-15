@@ -1,73 +1,81 @@
-import React, { useContext, useEffect, useState } from "react";
-import styles from "./Passport.module.css";
-import clsx from "clsx";
+import React, { useContext, useEffect, useState } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+
+import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
+import ReactPlayer from 'react-player';
+
+import clsx from 'clsx';
+import styles from './Passport.module.css';
 import {
   getAllEmployees,
   getCurrentPassport,
   getLocation,
-} from "../../store/selectors";
-import { useDispatch, useSelector } from "react-redux";
-import { decodeUser, doGetPassport } from "../../store/userActions";
-import overworkIcon from "../../assets/time_icon.svg";
-import removeIcon from "../../assets/remove.png";
-import fixRequiredIcon from "../../assets/fix_icon.svg";
-import Button from "../../components/Button/Button";
-import { useTranslation } from "react-i18next";
-import ReactPlayer from "react-player";
+} from '../../store/selectors';
+import { decodeUser, doGetPassport } from '../../store/userActions';
+import overworkIcon from '../../assets/time_icon.svg';
+import removeIcon from '../../assets/remove.png';
+import fixRequiredIcon from '../../assets/fix_icon.svg';
+import Button from '../../components/Button/Button';
 
 import ModalActionsContext from '../../store/modal-context';
 import RevisionContext from '../../store/revision-context';
-import { useSnackbar } from "notistack";
 
-export default function Passport(props) {
-  let { t } = useTranslation();
-  let dispatch = useDispatch();
+export default function Passport() {
+  const { enqueueSnackbar } = useSnackbar();
+  const addNotification = (message, variant) => enqueueSnackbar(message, { variant });
 
-  let location = useSelector(getLocation);
-  let passport = useSelector(getCurrentPassport)?.toJS();
-  let employees = useSelector(getAllEmployees)?.toJS();
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
 
-  const editModeIsOn = location.split("/")[3] === "edit";
+  const location = useSelector(getLocation);
+  const passport = useSelector(getCurrentPassport)?.toJS();
+  const employees = useSelector(getAllEmployees)?.toJS();
+
+  const editModeIsOn = location.split('/')[3] === 'edit';
 
   const { onOpenConfirm } = useContext(ModalActionsContext);
   const { changeRevision, canSendRevision } = useContext(RevisionContext);
 
-  let [showModal, toggleModal] = useState(false);
-  let [selectedStep, setSelectedStep] = useState({});
+  const [showModal, toggleModal] = useState(false);
+  const [selectedStep, setSelectedStep] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setIsLoading(false);
-    doGetPassport(dispatch, location.split("/")[2])
+    doGetPassport(dispatch, location.split('/')[2])
       .then((res) => {
         const currentPassport = res.passport;
-        if (currentPassport.status === "production") {
-          alert(
-            "Данное изделие находиться в стадии разработки\nНекоторые данные могут отображаться некорректно!"
-          );
+        if (currentPassport.status === 'production') {
+          addNotification('Данное изделие находиться в стадии разработки\nНекоторые данные могут отображаться некорректно!', 'warning');
+          // alert(
+          // );
         }
-        currentPassport.biography.forEach((step, index) => {
-          decodeUser(dispatch, step.employee_name).then((res) => {});
+        currentPassport.biography.forEach((step) => {
+          decodeUser(dispatch, step.employee_name).then(() => { });
         });
         setIsLoading(true);
         return currentPassport;
       })
-      .catch((error) => {});
+      .catch(() => { });
   }, []);
 
   const changeRevisionArrayHandler = (id, name, index, event) => {
     const currentBtn = event.target;
-    currentBtn.classList.toggle(styles["checked-btn"]);
+    currentBtn.classList.toggle(styles['checked-btn']);
     changeRevision(id, name, index);
   };
 
-  let parseDate = (dateString) => {
-    const [hours, min, sec] = dateString.split(" ")[1].split(":");
-    const [day, month, year] = dateString.split(" ")[0].split("-");
-    return { hours, min, sec, year, month, day };
+  const parseDate = (dateString) => {
+    const [hours, min, sec] = dateString.split(' ')[1].split(':');
+    const [day, month, year] = dateString.split(' ')[0].split('-');
+    return {
+      hours, min, sec, year, month, day,
+    };
   };
 
-  let formatTime = (step) => {
+  const formatTime = (step) => {
     const {
       hours: hoursS,
       min: minS,
@@ -90,34 +98,34 @@ export default function Passport(props) {
     const end = new Date(yearE, monthE, dayE, hoursE, minE, secE);
 
     if (step.session_start_time === null || step.session_end_time === null) {
-      return "Время не указано";
+      return 'Время не указано';
     }
     const diff = (end - start) / 1000;
-    let hours = parseInt((diff / 3600).toFixed(0));
-    let hoursAdd = "";
-    if (hours === 1) hoursAdd = "час";
-    else if (hours > 1 && hours < 5) hoursAdd = "часа";
-    else hoursAdd = "часов";
-    let minutes = parseInt(((diff / 60) % 60).toFixed(0));
-    let minutesAdd = "";
-    if (minutes === 1) minutesAdd = "минута";
-    else if (minutes > 1 && minutes < 5) minutesAdd = "минуты";
-    else minutesAdd = "минут";
-    let seconds = parseInt((diff % 60).toFixed(0));
-    let secondsAdd = "";
-    if (seconds === 1) secondsAdd = "секунда";
-    else if (seconds > 1 && seconds < 5) secondsAdd = "секунды";
-    else secondsAdd = "секунд";
-    let res = "";
-    if (hours > 0) res += hours + " " + hoursAdd + " ";
-    if (minutes > 0) res += minutes + " " + minutesAdd + " ";
-    if (seconds > 0) res += seconds + " " + secondsAdd;
-    if (res === "") res += "0 секунд";
+    const hours = parseInt((diff / 3600).toFixed(0), 10);
+    let hoursAdd = '';
+    if (hours === 1) hoursAdd = 'час';
+    else if (hours > 1 && hours < 5) hoursAdd = 'часа';
+    else hoursAdd = 'часов';
+    const minutes = parseInt(((diff / 60) % 60).toFixed(0), 10);
+    let minutesAdd = '';
+    if (minutes === 1) minutesAdd = 'минута';
+    else if (minutes > 1 && minutes < 5) minutesAdd = 'минуты';
+    else minutesAdd = 'минут';
+    const seconds = parseInt((diff % 60).toFixed(0), 10);
+    let secondsAdd = '';
+    if (seconds === 1) secondsAdd = 'секунда';
+    else if (seconds > 1 && seconds < 5) secondsAdd = 'секунды';
+    else secondsAdd = 'секунд';
+    let res = '';
+    if (hours > 0) res += `${hours} ${hoursAdd} `;
+    if (minutes > 0) res += `${minutes} ${minutesAdd} `;
+    if (seconds > 0) res += `${seconds} ${secondsAdd}`;
+    if (res === '') res += '0 секунд';
     return res;
   };
 
-  let extractDate = (dateString) => {
-    let dateArray = dateString.split(" ")[0].split("-");
+  const extractDate = (dateString) => {
+    const dateArray = dateString.split(' ')[0].split('-');
     return `${dateArray[0]}.${dateArray[1]}.${dateArray[2].slice(2)}`;
   };
 
@@ -125,14 +133,15 @@ export default function Passport(props) {
     isLoading && (
       <div className={styles.pageWrapper}>
         <div className={styles.passportHeaderWrapper}>
-          {passport.type !== null &&
-            passport.type !== undefined &&
-            passport.type !== "" && <h2>{passport.type}</h2>}
+          {passport.type !== null
+            && passport.type !== undefined
+            && passport.type !== ''
+            && <h2>{passport.type}</h2>}
           <div className={styles.passportNameWrapper}>
             <h1>
-              {passport.model !== null && passport.model !== ""
+              {passport.model !== null && passport.model !== ''
                 ? passport.model
-                : "Без названия"}
+                : 'Без названия'}
             </h1>
             <div className={styles.icons}>
               <img
@@ -148,30 +157,33 @@ export default function Passport(props) {
             </div>
           </div>
           <h2 className={styles.passportUUId}>
-            {passport.uuid} | {passport.internal_id}
+            {passport.uuid}
+            {' '}
+            |
+            {' '}
+            {passport.internal_id}
           </h2>
-          <h2>{`Cерийный номер: ${
-            passport["serial_number"] ? passport["serial_number"] : "не найдено"
-          }`}</h2>
+          <h2>
+            {
+              `Cерийный номер: 
+              ${passport.serial_number ? passport.serial_number : 'не найдено'}`
+            }
+          </h2>
         </div>
         <div className={styles.passportMainContent}>
-          {passport.biography !== null &&
-          passport.biography !== undefined &&
-          passport.biography.length > 0 ? (
-            passport.biography.map((step, index) => {
-              return (
-                <div key={index} className={styles.passportStepWrapper}>
+          {passport.biography !== null
+            && passport.biography !== undefined
+            && passport.biography.length > 0 ? (
+              passport.biography.map((step, index) => (
+                <div key={step.name} className={styles.passportStepWrapper}>
                   <div className={styles.stepContentWrapper}>
                     <h2>
                       {step.name}
                       {step.unit_name && (
                         <p>
-                          относится к{" "}
-                          <a
-                            href={`/passport/${step.parent_unit_internal_id}/${
-                              editModeIsOn ? "edit" : "view"
-                            }`}
-                          >
+                          относится к
+                          {' '}
+                          <a href={`/passport/${step.parent_unit_internal_id}/${editModeIsOn ? 'edit' : 'view'}`}>
                             {step.unit_name}
                           </a>
                         </p>
@@ -182,8 +194,8 @@ export default function Passport(props) {
                         <h3 className={styles.descriptionRowHeader}>
                           Время начала:
                         </h3>
-                        {step.session_start_time?.split(" ")[1] ? (
-                          <h3>{step.session_start_time?.split(" ")[1]}</h3>
+                        {step.session_start_time?.split(' ')[1] ? (
+                          <h3>{step.session_start_time?.split(' ')[1]}</h3>
                         ) : (
                           <h3>Не найдено</h3>
                         )}
@@ -220,7 +232,7 @@ export default function Passport(props) {
                       </div>
                     </div>
                   </div>
-                  <div
+                  <button
                     className={clsx(styles.stepVideoPreview, {
                       [styles.notFound]: step.video_hashes === null,
                     })}
@@ -230,37 +242,36 @@ export default function Passport(props) {
                         toggleModal(true);
                       }
                     }}
+                    type="button"
                   >
                     <h2>
                       {step.video_hashes !== null
-                        ? "Превью видеозаписи"
-                        : "Запись недоступна"}
+                        ? 'Превью видеозаписи'
+                        : 'Запись недоступна'}
                     </h2>
-                  </div>
+                  </button>
                   {editModeIsOn && (
                     <div className={styles.configurationButtonsWrapper}>
                       <Button
-                        onClick={changeRevisionArrayHandler.bind(
-                          null,
+                        onClick={() => changeRevisionArrayHandler(
                           step.id,
                           step.name,
-                          index
+                          index,
                         )}
-                        variant={step.unit_name === null ? "default" : "clear"}
-                        hidden={step.unit_name === null ? false : true}
+                        variant={step.unit_name === null ? 'default' : 'clear'}
+                        hidden={step.unit_name !== null}
                       >
                         Нужна доработка
                       </Button>
                     </div>
                   )}
                 </div>
-              );
-            })
-          ) : (
-            <h1 className={styles.noRequiredInformation}>
-              {t("passport.noRequiredInformation")}
-            </h1>
-          )}
+              ))
+            ) : (
+              <h1 className={styles.noRequiredInformation}>
+                {t('passport.noRequiredInformation')}
+              </h1>
+            )}
           {editModeIsOn && !canSendRevision && (
             <Button onClick={onOpenConfirm}>Отправить на добработку</Button>
           )}
@@ -269,18 +280,22 @@ export default function Passport(props) {
         {showModal && (
           <div className={styles.modalWrapper}>
             <div className={styles.modalContent}>
-              <img
+              <button
                 onClick={() => toggleModal(false)}
+                type="button"
                 className={styles.removeIcon}
-                src={removeIcon}
-                alt="remove icon"
-              />
+              >
+                <img
+                  src={removeIcon}
+                  alt="remove icon"
+                />
+              </button>
               {selectedStep.video_hashes !== null ? (
                 <ReactPlayer
-                  playing={true}
+                  playing
                   width={1100}
                   height={630}
-                  controls={true}
+                  controls
                   url={`https://multiagent.mypinata.cloud/ipfs/${selectedStep.video_hashes[0]}`}
                 />
               ) : (
