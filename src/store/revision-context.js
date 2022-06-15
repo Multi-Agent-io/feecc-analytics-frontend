@@ -1,9 +1,8 @@
-
-import React from "react";
+import React from 'react';
 
 const RevisionContext = React.createContext({
-  changeRevision : () => {},
-  revisionsItem: []
+  changeRevision: () => {},
+  revisionsItem: [],
 });
 
 export default RevisionContext;

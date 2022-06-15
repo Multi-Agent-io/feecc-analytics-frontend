@@ -1,41 +1,43 @@
+/* eslint-disable react/jsx-filename-extension */
+import React, { useState, useMemo } from 'react';
+import PropTypes from 'prop-types';
+import RevisionContext from './revision-context';
 
-import { useState } from "react";
-import RevisionContext from "./revision-context";
+function RevisionProvider({ children }) {
+  const [revisionIds, setRevisionIds] = useState([]);
+  const [canSendRevision, setCanSendRevision] = useState([]);
 
-
-function RevisionProvider (props) {
-
-  const [revisionIds, setRevisionIds] = useState([])
-  const [canSendRevision, setCanSendRevision] = useState([])
-
-
-  const changeRevisions = (id, name, index,) => {
-
+  const changeRevisions = (id, name, index) => {
     setRevisionIds((prevState) => {
       const newState = JSON.parse(JSON.stringify(prevState));
 
-      if(newState[index]){
-          newState[index] = null
+      if (newState[index]) {
+        newState[index] = null;
       } else {
-          newState[index] = { [id]: name }
+        newState[index] = { [id]: name };
       }
-      setCanSendRevision(newState.every(obj => obj === null)); // for passport button "send on revision"
+      // eslint-disable-next-line max-len
+      setCanSendRevision(newState.every((obj) => obj === null)); // for passport button "send on revision"
 
-      return newState
-  })
-  }
+      return newState;
+    });
+  };
 
-  const revisionActions = {
-    changeRevision : changeRevisions,
+  const revisionActions = useMemo(() => ({
+    changeRevision: changeRevisions,
     revisionsItem: revisionIds,
-    canSendRevision: canSendRevision
-  }
+    canSendRevision,
+  }));
 
   return (
     <RevisionContext.Provider value={revisionActions}>
-      {props.children}
+      {children}
     </RevisionContext.Provider>
   );
 }
 
-export default RevisionProvider
+export default RevisionProvider;
+
+RevisionProvider.propTypes = {
+  children: PropTypes.element.isRequired,
+};
