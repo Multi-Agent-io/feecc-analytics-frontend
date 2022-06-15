@@ -1,5 +1,3 @@
-
-
 import { useState, useCallback } from 'react';
 
 const useHttp = () => {
@@ -14,8 +12,8 @@ const useHttp = () => {
       const response = await fetch(requestConfig.url, {
         method: requestConfig.method ? requestConfig.method : 'GET',
         headers: requestConfig.headers ? requestConfig.headers : {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem('token')}`
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         body: requestConfig.body ? JSON.stringify(requestConfig.body) : null,
       });
@@ -25,14 +23,13 @@ const useHttp = () => {
       }
 
       data = await response.json();
-      
     } catch (err) {
       setError(err.message || 'Something went wrong!');
     } finally {
       setIsLoading(false);
-      return data
+      // eslint-disable-next-line no-unsafe-finally
+      return data;
     }
-    
   }, []);
 
   return {
