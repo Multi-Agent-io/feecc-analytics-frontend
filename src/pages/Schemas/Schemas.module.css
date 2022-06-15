@@ -62,13 +62,19 @@
     padding-left: 20px;
 }
 
+.tcd_td a {
+    font-size: inherit;
+    font-family: inherit;
+    color: inherit;
+    text-decoration: none;
+}
+
 .table_item_header {
     cursor: pointer;
 }
 
 .arrowButton {
     height: 28px;
-    margin-left: 10px;
     border-radius: 50%;
     background-color: var(--color-light-gray);
     padding: 7px;
@@ -89,4 +95,11 @@
 
 .activeButton {
     transform: rotate(90deg);
+}
+
+td button {
+    border: none;
+    background-color: transparent;
+    margin-left: 10px;
+    border-radius: 50%;
 }
