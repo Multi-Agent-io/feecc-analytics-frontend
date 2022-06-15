@@ -114,58 +114,7 @@ div .controlsWrapper {
   gap: var(--space);
 }
 
-.removeModalContent {
-  display: grid;
-  grid-template-columns: 1.5fr 3fr;
-  grid-column-gap: calc(var(--space) / 2);
-  grid-row-gap: var(--space);
-  padding-top: var(--space);
-}
 
-.removeModalContent div {
-  font-size: 16px;
-}
-
-.removeModalControls {
-  display: flex;
-  padding-top: var(--space);
-  gap: var(--space);
-}
-
-.stepHeader {
-  grid-column: 1;
-  /* align-self: center; */
-}
-
-.stepContent {
-  grid-column: 2;
-  /* align-self: center; */
-}
-
-.modifyModalContent {
-  display: grid;
-  grid-template-columns: 100px 1fr 1fr;
-  grid-column-gap: var(--space);
-}
-
-.stepContentUpdate {
-  grid-column: 3;
-}
-
-.modifyModalContent div {
-  font-size: 16px;
-}
-
-.modifyModalContent input {
-  font-size: 16px;
-  height: 100%;
-}
-
-.modifyModalContent .stepHeader, 
-.modifyModalContent .stepContent, 
-.modifyModalContent .stepContentUpdate {
-  padding-top: var(--space);
-}
 
 .cardPlaceholder {
   position: absolute;
