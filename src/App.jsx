@@ -64,8 +64,8 @@ function App() {
     }
     if (!authorized) {
       if (
-        localStorage.getItem('token') !== undefined &&
-        localStorage.getItem('token') !== null
+        localStorage.getItem('token') !== undefined
+        && localStorage.getItem('token') !== null
       ) {
         doFetchUser(dispatch)
           .then((res) => {
@@ -76,11 +76,10 @@ function App() {
           .catch((err) => {
             if (err.response.status === 401 && location !== '/') history.push('/');
           });
+      } else if (location !== '/') {
+        localStorage.setItem('tablePage', '1');
+        history.push('/');
       }
-      else if (location !== '/') {
-          localStorage.setItem('tablePage', '1');
-          history.push('/');
-        }
     }
   });
 
