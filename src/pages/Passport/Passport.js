@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useRef} from 'react';
 import styles from './Passport.module.css'
 import clsx from "clsx";
 import {getAllEmployees, getCurrentPassport, getLocation} from "../../store/selectors";
@@ -59,7 +59,23 @@ export default function Passport(props) {
             })
             .catch((error) => {})
         
-    }, [])
+    }, []);
+
+    let videoClose = useRef();
+
+    useEffect(() => {
+        let handler = (event) => {
+            if (!videoClose.current.contains(event.target)) {
+                toggleModal(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handler)
+
+        return () => {
+            document.removeEventListener("mousedown", handler)
+        }
+    });
 
     const changeRevisionArrayHandler = (id, name, index, event) => {
         const currentBtn = event.target;
@@ -220,10 +236,21 @@ export default function Passport(props) {
 
             {showModal && (
                 <div className={styles.modalWrapper}>
-                    <div className={styles.modalContent}>
-                        <img onClick={() => toggleModal(false)} className={styles.removeIcon} src={removeIcon} alt="remove icon"/>
+                    <div 
+                        ref={videoClose}
+                        className={styles.modalContent}>
+                        <img 
+                            onClick={() => toggleModal(false)} 
+                            className={styles.removeIcon} 
+                            src={removeIcon} 
+                            alt="remove icon"/>
                         {selectedStep.video_hashes !== null ? (
-                            <ReactPlayer playing={true} width={1100} height={630} controls={true} url={`https://multiagent.mypinata.cloud/ipfs/${selectedStep.video_hashes[0]}`}/>
+                            <ReactPlayer 
+                                playing={true} 
+                                width={1100} 
+                                height={630} 
+                                controls={true} 
+                                url={`https://multiagent.mypinata.cloud/ipfs/${selectedStep.video_hashes[0]}`}/>
                         ) : (
                             <div className={styles.cantFindVideo}>Невозможно найти видео</div>
                         )}
