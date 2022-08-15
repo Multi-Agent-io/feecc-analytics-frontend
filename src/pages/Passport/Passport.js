@@ -46,10 +46,13 @@ export default function Passport(props) {
                     )
                 }
                 currentPassport.biography.forEach((step, index) => {
+
+                    if ( !step.employee_name ) {
+                        return
+                    }
+                    
                     decodeUser(dispatch, step.employee_name)
-                        .then((res) => {  
-                            
-                        })
+                        .then((res) => {})
                 })
                 setIsLoading(true)
                 return currentPassport
