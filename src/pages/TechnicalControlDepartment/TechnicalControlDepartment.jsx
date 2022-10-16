@@ -71,7 +71,7 @@ function TechnicalControlDepartment() {
     if (page > pages && page !== 0) {
       setPage(page)
     }
-  }, [filtersValues, page])
+  }, [filtersValues, page, sortingDirection])
 
   return (<div className={styles.pageWrapper}>
     <div className={styles.searchWrapper}>
