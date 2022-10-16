@@ -7,9 +7,10 @@ export const types = {
     USER__FETCH_SELECTED_PASSPORT: 'USER_FETCH_SELECTED_PASSPORT',
     USER__DECODE_EMPLOYEE        : 'USER__DECODE_EMPLOYEE',
     USER__FETCH_PASSPORT_TYPES   : 'USER__FETCH_PASSPORT_TYPES',
-    USER_FETCH_PROTOCOLS         : "USER_FETCH_PROTOCOLS",
+    USER__FETCH_PROTOCOLS         : "USER_FETCH_PROTOCOLS",
     USER_CHANGE_EDIT_MODE        : "USER_CHANGE_EDIT_MODE",
-    
+
+
 }
 
 export const axiosWrapper = (dispatch, event, opts, successChecker) => {

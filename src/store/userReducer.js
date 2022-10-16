@@ -1,13 +1,13 @@
-import {types} from "./common";
-import {fromJS} from "immutable";
+import { types } from './common';
+import { fromJS } from 'immutable';
 
 export const userInitialState = fromJS({
-    usrename: 'Iota',
-    firstName: 'Ivan',
-    lastName: 'Glebov',
-    email: 'glebov.vanya@list.ru-RU',
-    authorized: false,
-    passports: [
+  usrename: 'Iota',
+  firstName: 'Ivan',
+  lastName: 'Glebov',
+  email: 'glebov.vanya@list.ru-RU',
+  authorized: false,
+  passports: [
     //     {
     //     model: 'Row 1 test name ',
     //     type: 'Test 1',
@@ -136,66 +136,75 @@ export const userInitialState = fromJS({
     //         needFix: true,
     //         overwork: false
     //     }
-        ],
-    passportsNumber: 0,
-    selectedPassport: {},
-    employees: {},
-    passportTypes: [],
-    rule: 'approve',
-})
+  ],
+  passportsNumber: 0,
+  selectedPassport: {},
+  employees: {},
+  passportTypes: [],
+  protocols: [],
+  rule: 'approve',
+});
 
 export const userReducer = (state = {}, action) => {
-    // if(action.type.startsWith('USER__'))
-    //     console.log('user-reducer', action)
+  // if(action.type.startsWith('USER__'))
+  //     console.log('user-reducer', action)
 
-    switch (action.type) {
-        case types.USER__AUTHORIZE: {
-            return state
-                .set('authorized', action.status)
-        }
-        case types.USER__FETCH_PASSPORTS: {
-            let passports = []
-            action.data.forEach((item, index) => {
-                passports[index] = item
-                if(passports[index].model === null)
-                    passports[index].model = "Без названия"
-                passports[index].needFix = true // Random boolean
-                passports[index].overwork = true // Random boolean
-            })
-            return state
-                .set('passports', fromJS(passports))
-                .set('passportsNumber', action.count)
-        }
-        case types.USER__FETCH_SELECTED_PASSPORT: {
-            return state
-                .set('selectedPassport', fromJS(action.passport))
-        }
-        case types.USER__FETCH_INFO: {
-            return state
-                .set('username', action.username)
-                .set('authorized', true)
-                .set("rule", action.user.rule_set[2] || undefined)
-        }
-        case types.USER__DECODE_EMPLOYEE: {
-            return state
-                .setIn(['employees', action.userHash], action.username)
-        }
-        case types.USER__FETCH_PASSPORT_TYPES: {
-            let passportTypes = []
-            // TODO Refactor this for just pushing action.passportTypes inside state.passportTypes
-            // TODO Refactor parsing of state.passportTypes in Select.js component
-            action.passportTypes.forEach((type, index) => {
-                let tempType = {name: '', state: false}
-                tempType.name = type
-                tempType.state = false
-                passportTypes.push(tempType)
-            })
-            return state
-                .set('passportTypes', [...passportTypes])
-        }
-        
-        
-        default:
-            return state
+  switch (action.type) {
+    case types.USER__AUTHORIZE: {
+      return state
+        .set('authorized', action.status);
     }
+    case types.USER__FETCH_PASSPORTS: {
+      let passports = [];
+      action.data.forEach((item, index) => {
+        passports[index] = item;
+        if (passports[index].model === null) {
+          passports[index].model = 'Без названия';
+        }
+        passports[index].needFix = true; // Random boolean
+        passports[index].overwork = true; // Random boolean
+      });
+      return state
+        .set('passports', fromJS(passports))
+        .set('passportsNumber', action.count);
+    }
+    case types.USER__FETCH_SELECTED_PASSPORT: {
+      return state
+        .set('selectedPassport', fromJS(action.passport));
+    }
+    case types.USER__FETCH_INFO: {
+      return state
+        .set('username', action.username)
+        .set('authorized', true)
+        .set('rule', action.user.rule_set[2] || undefined);
+    }
+    case types.USER__DECODE_EMPLOYEE: {
+      return state
+        .setIn(['employees', action.userHash], action.username);
+    }
+    case types.USER__FETCH_PASSPORT_TYPES: {
+      let passportTypes = [];
+      // TODO Refactor this for just pushing action.passportTypes inside state.passportTypes
+      // TODO Refactor parsing of state.passportTypes in Select.js component
+      action.passportTypes.forEach((type, index) => {
+        let tempType = {
+          name: '',
+          state: false
+        };
+        tempType.name = type;
+        tempType.state = false;
+        passportTypes.push(tempType);
+      });
+      return state
+        .set('passportTypes', [...passportTypes]);
+    }
+    case types.USER__FETCH_PROTOCOLS: {
+      return state
+        .set('protocols', fromJS(action.data))
+        .set('protocolsNumber', action.count);
+    }
+
+    default:
+      return state
+  }
 }
