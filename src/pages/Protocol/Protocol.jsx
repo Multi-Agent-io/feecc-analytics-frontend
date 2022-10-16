@@ -36,7 +36,7 @@ function Protocol(){
       const targetValue = targetInput.type === "checkbox" ? targetInput.checked : targetInput.value;
       const [index, place] = targetInput.id.split(" ");
 
-      
+
       const newState = JSON.parse(JSON.stringify(protocol));
       const rowsArray = newState.rows;
 
@@ -53,7 +53,7 @@ function Protocol(){
     const rowsArray = protocol.rows
 
     let allFieldChecked = true;
-    
+
     for (let i = 0; i < rowsArray.length - 1; i++) {
       if(rowsArray[i].checked === false) {
         allFieldChecked = false;
@@ -119,10 +119,10 @@ function Protocol(){
 
     for (let i = 0; i < allCheckBox.length; i++) {
       allCheckBox[i].checked = true;
-  
-      const targetValue =  allCheckBox[i].checked 
+
+      const targetValue =  allCheckBox[i].checked
       const [row, place] = allCheckBox[i].id.split(" ");
-      
+
       rowsArray[row][place] = targetValue;
 
     }
@@ -141,7 +141,7 @@ function Protocol(){
               <Button onClick = {submitDataHandler}>{protocol.status === "Вторая стадия испытаний пройдена" ? "Сохранить" : "Подтвердить и отправить"}</Button>
             </>
           }
-          {isSuperEngineer && 
+          {isSuperEngineer &&
             <Button>Подтвердить</Button>
           }
         </div>
@@ -157,26 +157,26 @@ function Protocol(){
           <div key={`${index} name`}>{name}</div>
           <div key={`${index} value`}>{value}</div>
           <div key={`${index} deviation`}>{deviation}</div>
-          <input 
-              key ={`${index} test1`} 
-              type='text' 
-              placeholder={"Введите значение"} 
+          <input
+              key ={`${index} test1`}
+              type='text'
+              placeholder={"Введите значение"}
               id = {`${index} test1`}
               value={test1}
               disabled={protocol.status === "Протокол утверждён"}
           />
-          <input 
-              key ={`${index} test2`} 
-              type='text' 
-              placeholder={"Введите значение"} 
+          <input
+              key ={`${index} test2`}
+              type='text'
+              placeholder={"Введите значение"}
               id = {`${index} test2`}
               value={test2}
               disabled={protocol.status === "Протокол утверждён"}
           />
           <div key ={`${index} checked`}>
-              <input 
-                defaultChecked={checked} 
-                type="checkbox"  
+              <input
+                defaultChecked={checked}
+                type="checkbox"
                 id = {`${index} checked`}
                 disabled={protocol.status === "Протокол утверждён"}
               />
@@ -184,7 +184,7 @@ function Protocol(){
           </div>
         </>
       )
-      
+
     })
 
     return (
@@ -198,7 +198,7 @@ function Protocol(){
   useEffect(() => {
 
     setIsLoading(true) // start loading
-    
+
     fetch(`${conf.base_url}/api/v1/tcd/protocols/${internal_id}`,{
       headers: {
         'Content-Type': 'application/json',
@@ -207,10 +207,10 @@ function Protocol(){
     })
     .then(res => {
         return res.json()
-    }) 
+    })
     .then(res => {
       console.log(res);
-      if(res.detail !== "Successful")
+      if(res.detail !== "Success")
         alert("Error reading protocol. No schema for this product")
       else {
         setProtocol(res.protocol)
@@ -238,7 +238,7 @@ function Protocol(){
             <h2 className={styles["protocol_name"]}>{protocol.protocol_name}</h2>
             <h2>
               SN: {protocol.default_serial_number !== null ? protocol.default_serial_number : '941619006-'}
-              <input 
+              <input
                 onChange={serialNumberHandler}
                 value={serialNumber}
                 className = {styles["serial_number"]}
@@ -261,8 +261,8 @@ function Protocol(){
         </div>
 
         {makeGridTable(protocol.rows)}
-          
-        {makeButtonSection()} 
+
+        {makeButtonSection()}
 
       </section>)
   )
