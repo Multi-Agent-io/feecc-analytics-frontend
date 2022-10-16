@@ -9,7 +9,7 @@ export default function Select (props) {
 
   let [checkboxes, setCheckboxes] = useState([])
   let [selectStatus, toggleSelect] = useState(false)
-  let [selectedElement, setSelectedElement] = useState('')
+  let [selectedElement, setSelectedElement] = useState(props.options[0].name)
   let {t} = useTranslation()
 
   const updateCheckbox = (index) => {
@@ -27,12 +27,12 @@ export default function Select (props) {
   }
 
   useEffect(() => {
-    setCheckboxes(props.options)
+    setCheckboxes(props.options);
     setTimeout(() => {
-      if(checkboxes[0] !== undefined && checkboxes[0].state === true)
-        setSelectedElement(checkboxes[0].name)
-      else {
-        setSelectedElement(t('filters.ChooseFromList'))
+      if (checkboxes[0] !== undefined && checkboxes[0].state === true) {
+        setSelectedElement(checkboxes[0].name);
+      } else {
+        setSelectedElement(t('filters.ChooseFromList'));
       }
     }, 300)
   }, [])
@@ -47,7 +47,7 @@ export default function Select (props) {
           <img className={clsx({[styles.rotatedArrow]: selectStatus})} src={arrowDownIcon} alt="Down arrow icon"/>
         </div>
         <div className={clsx(styles.checkboxesWrapper, {[styles.hidden]: !selectStatus})}>
-          {checkboxes.map((item, index) => {
+          {checkboxes?.map((item, index) => {
             return (
               <div key={index + item.name + item.value}>
                 <Checkbox checked={item.state} onChange={() => updateCheckbox(index)} variant="small" >{item.name}</Checkbox>
@@ -55,7 +55,6 @@ export default function Select (props) {
             )
           })}
         </div>
-
       </ul>
     </div>
   )
