@@ -1,0 +1,38 @@
+.modalContent {
+  display: grid;
+  grid-template-columns: 100px 1fr 1fr;
+  grid-column-gap: var(--space);
+}
+
+.stepHeader {
+  grid-column: 1;
+}
+
+.stepContent {
+  grid-column: 2;
+}
+
+.stepContentUpdate {
+  grid-column: 3;
+}
+
+.modalContent .stepHeader,
+.modalContent .stepContent,
+.modalContent .stepContentUpdate {
+  padding-top: var(--space);
+}
+
+.modalContent div {
+  font-size: 16px;
+}
+
+.modalControls {
+  display: flex;
+  padding-top: var(--space);
+  gap: var(--space);
+}
+
+.modalContent input {
+  font-size: 16px;
+  height: 100%;
+}
