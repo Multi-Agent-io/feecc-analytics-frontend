@@ -1,37 +1,30 @@
-/* eslint-disable react/no-array-index-key */
-import React from 'react';
-import PropTypes from 'prop-types';
 
-import arrowDown from '../../assets/arrrow_left.svg';
-import classes from './SearchProtocol.module.css';
+import arrow_down from "../../assets/arrrow_left.svg"
 
-function SearchProtocol({
-  types, label, onChange, value,
-}) {
-  const [optionsArray, header] = [types, label];
+import classes from "./SearchProtocol.module.css"
+
+function SearchProtocol(props) {
+  
+
+  const [optionsArray, label] = [props.types, props.label]
 
   return (
     <div className={classes.container}>
-      <h2>{header}</h2>
-      <select
-        defaultValue={value}
-        value={value}
-        className={classes.select}
-        onChange={onChange}
+      <h2>{label}</h2>
+      <select 
+        defaultValue={props.value}
+        value={props.value}
+        className={classes.select} 
+        onChange={props.onChange}
       >
-        <option disabled>Выберите из списка</option>
-        {optionsArray.map((type, index) => (<option key={index}>{type}</option>))}
+        <option disabled={true}>Выберите из списка</option>
+        {optionsArray.map((type, index)=> {
+          return <option key={index}>{type}</option>
+        })}
       </select>
-      <img id="arrow-select" alt="Arrow icon" className={classes.arrow} src={arrowDown} />
+      <img id="arrow-select" className={classes.arrow} src={arrow_down}/>
     </div>
-  );
+  )
 }
 
-export default SearchProtocol;
-
-SearchProtocol.propTypes = {
-  types: PropTypes.arrayOf({}).isRequired,
-  label: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-};
+export default SearchProtocol

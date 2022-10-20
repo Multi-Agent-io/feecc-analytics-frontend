@@ -5,6 +5,7 @@ table {
 thead {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     color: var(--color-main-gray);
     border-bottom: 1px solid var(--color-main-gray);
     padding-bottom: 10px;
@@ -18,18 +19,23 @@ td {
     min-height: 50px;
 }
 
+td > div {
+    font-size: 1.3rem;
+}
+
 tr {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     min-height: 50px;
-    font-size: 1.7rem;
+    padding: 5px;
+    font-size: 1.5rem;
     border-bottom: 1px solid var(--color-light-purple);
 }
 
 tr > td {
-    font-size: 1.7rem;
+    font-size: 1.5rem;
 }
 
 #timeCol,

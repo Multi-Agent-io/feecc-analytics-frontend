@@ -1,139 +1,118 @@
 import React, { useState, useEffect } from 'react';
 
-// import { history } from '../../store/main';
+import { history } from '../../store/main';
 
-import {
-  ScanButton, Search, SearchProtocol, Button,
-} from '../../components';
-
-import useHttp from '../../hooks/use-http';
-
+import ScanButton from '../../components/ScanButton/ScanButton';
+import Search from '../../components/Search/Search';
 import styles from './TechnicalControlDepartment.module.css';
-import conf from '../../config.json';
+import Filters from '../../components/Filters/Filters';
+import SettingsButton from '../../components/SettingsButton/SettingsButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { doGetProtocols } from '../../store/userActions';
+import Table from '../../components/Table/Table';
+import { getProtocols, getProtocolsNumber } from '../../store/selectors';
 
 function TechnicalControlDepartment() {
-  const [searchValue, setSearchValue] = useState('');
-  const [protocols, setProtocols] = useState([]);
-  const [filteredProtocols, setFilteredProtocols] = useState([]);
-  const [statusOfProtocol, setStatusOfProtocol] = useState('Выберите из списка');
-  const [filterTypes, setFilterTypes] = useState([]);
 
-  const { isLoading, sendRequest } = useHttp();
-  const authorizationHeaders = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
-  };
+  const dispatch = useDispatch()
+
+  const [searchValue, setSearchValue] = useState('');
+  const [filtersDisplay, changeFiltersDisplay] = useState(true);
+
+  const [filtersValues, setFiltersValues] = useState({
+    multiSelect: [''],
+    date: null,
+    overwork: null,
+    requiredFix: null,
+    singleSelect: 'Первая стадия испытаний пройдена'
+  })
+  const [pageSize, setPageSize] = useState(11);
+  const [page, setPage] = useState(localStorage.getItem('protocolsTablePage') || 1)
+  const [sortingDirection, setSortingDirection] = useState('asc');
+
+  let rows = useSelector(getProtocols)?.toJS()
+  let pages = Math.ceil(useSelector(getProtocolsNumber) / pageSize)
+
+  const selectOptions = [
+    {
+      name: 'Первая стадия испытаний пройдена',
+      value: 'Первая стадия испытаний пройдена',
+      status: true
+    },
+    {
+      name: 'Вторая стадия испытаний пройдена',
+      value: 'Вторая стадия испытаний пройдена',
+      status: false
+    },
+    {
+      name: 'Протокол утверждён',
+      value: 'Протокол утверждён',
+      status: false
+    }
+  ];
 
   // ====== handler functions ======
-
-  // const goToProtocolHandler = (id) => {
-  //   history.push(`/tcd/protocol/${id}`);
-  // };
-
-  const changeFilterProtocolsStatusHandler = (event) => {
-    setStatusOfProtocol(event.target.value);
+  const goToProtocolHandler = (id) => {
+    history.push(`/tcd/protocol/${id}`);
   };
 
-  const cleanAllFilters = () => {
-    setSearchValue('');
-    setStatusOfProtocol('Выберите из списка');
-  };
-
-  // ====== render functions ======
-
-  const makeProtocolsTable = () => (
-    <table className={styles.tcd_table}>
-      <thead className={styles.tcd_thead}>
-        <tr className={styles.tcd_tr}>
-          <td className={styles.tcd_td}>Название</td>
-          <td className={styles.tcd_td}>Состояние</td>
-          <td className={styles.tcd_td}>Время создания</td>
-        </tr>
-      </thead>
-      <tbody className={styles.tcd_tbody}>
-        {filteredProtocols.map((protocol) => {
-          const date = new Date(protocol.creation_time);
-          const year = date.getFullYear();
-          const month = (date.getMonth() + 1) < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
-          const day = (date.getDate() + 1) < 10 ? `0${date.getDate() + 1}` : date.getDate() + 1;
-          return (
-            <tr className={styles.tcd_tr}>
-              <td className={`${styles.tcd_td} ${styles.table_item_header}`}>
-                <a
-                  href={`/tcd/protocol/${protocol.associated_unit_id}`}
-                  type="link"
-                >
-                  {protocol.protocol_name}
-                </a>
-              </td>
-              <td className={styles.tcd_td}>{protocol.status}</td>
-              <td className={styles.tcd_td}>{`${year}.${month}.${day}`}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-
-    </table>
-  );
+  const setTablePage = (page) => {
+    setPage(page)
+    localStorage.setItem('protocolsTablePage', page)
+  }
+  const fetchProtocols = () => {
+    doGetProtocols(dispatch, page, pageSize, null, null, filtersValues.singleSelect, sortingDirection)
+      .then(res => console.log(res))
+  }
 
   // ====== useEffect ======
-
   useEffect(() => {
-    sendRequest({
-      url: `${conf.base_url}/api/v1/tcd/protocols`,
-    })
-      .then(({ data }) => {
-        setProtocols(data);
-        setFilteredProtocols(data);
-      });
-
-    sendRequest({
-      url: `${conf.base_url}/api/v1/tcd/protocols/types`,
-      headers: authorizationHeaders,
-    })
-      .then((res) => {
-        setFilterTypes(res.data);
-      });
-  }, []);
-
-  // filter logic
-  useEffect(() => {
-    if (searchValue.length === 0 && statusOfProtocol.length === 0) {
-      setFilteredProtocols(protocols.slice());
-    } else {
-      setFilteredProtocols(
-        protocols.map((protocol) => (
-          protocol.protocol_name.toLowerCase().includes(searchValue.toLowerCase())
-          && (statusOfProtocol === 'Выберите из списка' ? true : protocol.status === statusOfProtocol)
-        )),
-      );
+    fetchProtocols()
+    if (page > pages && page !== 0) {
+      setPage(page)
     }
-  }, [searchValue, statusOfProtocol]);
+  }, [filtersValues, page, sortingDirection])
 
-  return (
-    <section className={styles.pageWrapper}>
-      <div className={styles.searchWrapper}>
-        <ScanButton />
-        <Search value={searchValue} onChange={setSearchValue} />
-      </div>
-      <div className={styles.filters}>
-        <div className={styles.filters__main}>
-          <SearchProtocol
-            label="Статус"
-            types={filterTypes}
-            value={statusOfProtocol}
-            onChange={changeFilterProtocolsStatusHandler}
-          />
-        </div>
-        <Button onClick={cleanAllFilters} variant="clear">Очистить фильтры</Button>
-      </div>
-      {isLoading ? (
-        <h1>Идёт загрузка...</h1>
-      ) : (
-        makeProtocolsTable()
-      )}
-    </section>
-  );
+  return (<div className={styles.pageWrapper}>
+    <div className={styles.searchWrapper}>
+      <ScanButton/>
+      <Search value={searchValue} onChange={setSearchValue}/>
+      <SettingsButton onClick={() => {
+        changeFiltersDisplay(!filtersDisplay);
+        filtersDisplay ? setPageSize(13) : setPageSize(11);
+      }}/>
+    </div>
+    <div className={styles.contentWrapper}>
+      <Filters
+        onDrop={() => console.log('Filters drop')}
+        onChange={(value) => {
+          setFiltersValues(value);
+        }}
+        toggle={filtersDisplay}
+        multiselectFilter={{ display: false }}
+        datePickerFilter={{ display: false }}
+        singleselectFilter={{
+          display: true,
+          name: 'Статус протокола',
+          options: [...selectOptions]
+        }}
+      />
+      <Table
+        onDirectionChange={setSortingDirection}
+        redirectFunction={goToProtocolHandler}
+        type="passports"
+        setPage={setTablePage}
+        rowsData={rows}
+        page={page}
+        pages={pages}
+        pageSize={pageSize}
+        showTimeIcon={false}
+        showFixIcon={false}
+        headerRow={['Название', 'Статус протокола', 'Дата создания']}
+        rowsKeys={{nameCol: 'protocol_name', typeCol: 'status', dateTimeCol: 'creation_time', id: 'associated_unit_id'}}
+      />
+    </div>
+  </div>);
 }
 
 export default TechnicalControlDepartment;

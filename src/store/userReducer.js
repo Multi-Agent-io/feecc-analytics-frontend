@@ -141,8 +141,9 @@ export const userInitialState = fromJS({
   selectedPassport: {},
   employees: {},
   passportTypes: [],
-  rule: 'approve',
+  protocols: [],
   schemas: [],
+  rule: 'approve',
 });
 
 // eslint-disable-next-line default-param-last
@@ -199,6 +200,12 @@ export const userReducer = (state = {}, action) => {
         .set('schemas', action.data)
         .set('schemasCount', action.count)
         .set('schemasTree', action.tree);
+    }
+    
+    case types.USER__FETCH_PROTOCOLS: {
+      return state
+        .set('protocols', fromJS(action.data))
+        .set('protocolsNumber', action.count);
     }
 
     default:

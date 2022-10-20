@@ -1,10 +1,11 @@
 import classes from "./Modal.module.css";
 import ReactDOM from "react-dom";
+
 import { useContext} from "react";
 import ModalActionsContext  from "../../store/modal-context";
 
 function Backdrop(props) {
-  
+
   const { onClose } = useContext(ModalActionsContext);
 
   return <div onClick={onClose} className={classes.backdrop}></div>;
@@ -21,7 +22,7 @@ function ModalOverlay(props) {
 function Modal(props) {
 
   const portalPlace = document.querySelector("#overlays");
-  
+
   return (
     <>
       {ReactDOM.createPortal(<Backdrop />, portalPlace)}
