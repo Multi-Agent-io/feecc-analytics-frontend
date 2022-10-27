@@ -1,4 +1,5 @@
 .pageWrapper {
+  padding-top: 32px;
   width: calc(100vw - 166px);
 }
 
