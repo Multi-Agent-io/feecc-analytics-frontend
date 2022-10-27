@@ -1,56 +1,47 @@
-import { useContext, useEffect, useState } from "react"; 
+import React, { useContext, useEffect } from 'react';
 
-import ModalActionsContext from "../../store/modal-context";
-import { history } from "../../store/main";
+import ModalActionsContext from '../../store/modal-context';
+import { history } from '../../store/main';
 
-import Modal from "../../components/Modal/Modal";
+import Modal from '../../components/Modal/Modal';
 
-import barcodeLogo from "../../assets/barcode_scanner.png"
+import barcodeLogo from '../../assets/barcode_scanner.png';
 
-import classes from "./ScanModal.module.css"
+import classes from './ScanModal.module.css';
 
-
-function ScanModal () {
+function ScanModal() {
   const { modalBarStatus, onClose } = useContext(ModalActionsContext);
 
   let protocolId = ''; // because i don't now how to do this with useState
 
   const keyDownHandler = (event) => {
-
-    if(event.key === "Enter"){
-      history.push(`/tcd/protocol/${protocolId}`)
-      onClose()
-    } else {
-      if(!Number.isNaN(+event.key)){
-        protocolId = protocolId + event.key
-      }  
+    if (event.key === 'Enter') {
+      history.push(`/tcd/protocol/${protocolId}`);
+      onClose();
+    } else if (!Number.isNaN(+event.key)) {
+      protocolId += event.key;
     }
-  }
+  };
 
-  useEffect(()=> {
-
-    if(modalBarStatus){
-      document.addEventListener("keydown", keyDownHandler);
+  useEffect(() => {
+    if (modalBarStatus) {
+      document.addEventListener('keydown', keyDownHandler);
     } else {
-      document.removeEventListener("keydown", keyDownHandler)
+      document.removeEventListener('keydown', keyDownHandler);
       protocolId = '';
-    } 
-    
-  }, [modalBarStatus])
+    }
+  }, [modalBarStatus]);
 
   return (
-    <>
-      {modalBarStatus && (
-        <Modal>
-          <section className={classes.modal}>
-            <img alt="Отсканируйте штрих код" src = {barcodeLogo}/>
-            <h2>Отсканируйте штрих код...</h2>
-          </section>
-        </Modal>
-      )}
-    </>
-  )
-
+    modalBarStatus && (
+      <Modal>
+        <section className={classes.modal}>
+          <img alt="Отсканируйте штрих код" src={barcodeLogo} />
+          <h2>Отсканируйте штрих код...</h2>
+        </section>
+      </Modal>
+    )
+  );
 }
 
-export default ScanModal
+export default ScanModal;

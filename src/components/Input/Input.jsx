@@ -1,27 +1,37 @@
 import React from 'react';
-import styles from './Input.module.css'
-import clsx from "clsx";
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import styles from './Input.module.css';
 
-export default function Input(props) {
+export default function Input({
+  onChange, placeholder, error, type, onKeyDown,
+}) {
+  const onChangeHandler = (e) => {
+    if (onChange !== undefined) onChange(e.target.value);
+  };
+  const onKeyDownHandler = (({ key }) => {
+    if (onKeyDown) onKeyDown(key);
+  });
 
-    let onChangeHandler = (e) => {
-        props.onChange && props.onChange(e.target.value)
-    }
-    let onKeyDownHandler = (e) => {
-        props.onKeyDown && props.onKeyDown(e.key)
-    }
+  return (
+    <div className={styles.inputWrapper}>
+      <input
+        onKeyDown={onKeyDownHandler}
+        onChange={onChangeHandler}
+        className={clsx(styles.mainInput, { [styles.error]: error })}
+        placeholder={placeholder}
+        type={type !== undefined ? type : 'text'}
+      />
+      <div className={styles.errorMessage}>{error}</div>
+    </div>
 
-    return (
-        <div className={styles.inputWrapper}>
-            <input
-                onKeyDown={onKeyDownHandler}
-                onChange={onChangeHandler}
-                className={clsx(styles.mainInput, {[styles.error]: props.error})}
-                placeholder={props.placeholder}
-                type={props.type !== undefined ? props.type : "text"}
-            />
-            <div className={styles.errorMessage}>{props.error}</div>
-        </div>
-
-    );
+  );
 }
+
+Input.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  onKeyDown: PropTypes.func.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  error: PropTypes.string.isRequired,
+  type: PropTypes.oneOf([undefined, 'text', 'password']).isRequired,
+};

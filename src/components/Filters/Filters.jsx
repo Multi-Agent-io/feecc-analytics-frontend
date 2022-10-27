@@ -1,82 +1,88 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
-import styles from './Filters.module.css';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
+import { useDispatch } from 'react-redux';
+import styles from './Filters.module.css';
 import SelectMultiple from '../SelectMultiple/SelectMultiple';
 import Select from '../Select/Select';
 import DatePicker from '../DatePicker/DatePicker';
 import { doGetPassportTypes } from '../../store/userActions';
-import { useDispatch, useSelector } from 'react-redux';
 import { history } from '../../store/main';
-import { getAllTypes } from '../../store/selectors';
 
-export default function Filters(props) {
-  let dispatch = useDispatch();
-  let [date, setDate] = useState(null);
-  let [overwork, setOverwork] = useState(false);
-  let [requiredFix, setRequiredFix] = useState(false);
-  let [deviceType, setDeviceType] = useState(['']);
-  let [passportType, setPassportType] = useState(props.singleselectFilter.options[0].name);
-  let { t } = useTranslation();
-
-  let passportTypes = useSelector(getAllTypes);
+export default function Filters({
+  singleselectFilter, onChange, onDrop, multiselectFilter, datePickerFilter, toggle,
+}) {
+  const dispatch = useDispatch();
+  const [date, setDate] = useState(null);
+  const [overwork, setOverwork] = useState(false);
+  const [requiredFix, setRequiredFix] = useState(false);
+  const [deviceType, setDeviceType] = useState(['']);
+  const [passportType, setPassportType] = useState(singleselectFilter.options[0].name);
+  const { t } = useTranslation();
 
   useEffect(() => {
-    props.onChange && props.onChange({
-      multiSelect: deviceType,
-      date,
-      overwork,
-      requiredFix,
-      singleSelect: passportType
-    });
+    if (onChange !== undefined) {
+      onChange({
+        multiSelect: deviceType,
+        date,
+        overwork,
+        requiredFix,
+        singleSelect: passportType,
+      });
+    }
   }, [date, overwork, requiredFix, deviceType, passportType]);
 
   useEffect(() => {
     doGetPassportTypes(dispatch)
-      .then((res) => {
-      })
+      .then()
       .catch((err) => {
-        if (err.response.status === 401) {
-          history.push('/');
-        }
+        if (err.response.status === 401) history.push('/');
       });
   }, []);
 
-  let dropFilters = () => {
+  const dropFilters = () => {
     setDate(null);
     setOverwork(false);
     setRequiredFix(false);
     setDeviceType(['']);
-    props.onDrop && props.onDrop();
+    if (onDrop !== undefined) onDrop();
   };
 
-
-  return props.toggle === true ? (
+  return toggle === true ? (
     <div className={styles.contentWrapper}>
       <div className={styles.filtersWrapper}>
-        {props.multiselectFilter.display && (
+        {multiselectFilter.display && (
           <div className={styles.column}>
-            <div className={styles.filterName}>{t(props.multiselectFilter.name)}</div>
+            <div className={styles.filterName}>{t(multiselectFilter.name)}</div>
             <div className={styles.deviceTypeSelect}>
-              <SelectMultiple onChange={(e) => setDeviceType(e)} options={passportTypes}/>
+              <SelectMultiple
+                onChange={(e) => setDeviceType(e)}
+                options={multiselectFilter.options}
+              />
             </div>
           </div>
         )}
-        {props.datePickerFilter.display && (
+        {datePickerFilter.display && (
           <div className={styles.column}>
-            <div className={styles.filterName}>{t(props.datePickerFilter.name)}</div>
-            <DatePicker value={moment(date)
-              .format('yyyy-MM-DD')} onChange={(e) => setDate(e)}/>
+            <div className={styles.filterName}>{t(datePickerFilter.name)}</div>
+            <DatePicker
+              value={moment(date).format('yyyy-MM-DD')}
+              onChange={(e) => setDate(e)}
+            />
           </div>
         )}
-        {props.singleselectFilter.display && (
+        {singleselectFilter.display && (
           <div className={styles.column}>
-            <div className={styles.filterName}>{t(props.singleselectFilter.name)}</div>
+            <div className={styles.filterName}>{t(singleselectFilter.name)}</div>
             <div className={styles.deviceTypeSelect}>
               <Select
-                options={props.singleselectFilter.options}
-                onChange={(e) => setPassportType(e.value)}/>
+                options={singleselectFilter.options}
+                onChange={(e) => setPassportType(e.value)}
+              />
             </div>
           </div>
         )}
@@ -87,5 +93,34 @@ export default function Filters(props) {
           </div>
         </div>
       </div>
-    </div>) : (<div/>);
+    </div>
+  ) : (<div />);
 }
+
+Filters.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  onDrop: PropTypes.func.isRequired,
+  toggle: PropTypes.bool.isRequired,
+  singleselectFilter: PropTypes.instanceOf({
+    display: PropTypes.bool.isRequired,
+    name: PropTypes.string.isRequired,
+    options: PropTypes.arrayOf(PropTypes.instanceOf({
+      name: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+      state: PropTypes.bool.isRequired,
+    })),
+  }).isRequired,
+  datePickerFilter: PropTypes.instanceOf({
+    display: PropTypes.bool.isRequired,
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+  multiselectFilter: PropTypes.instanceOf({
+    display: PropTypes.bool.isRequired,
+    name: PropTypes.string.isRequired,
+    options: PropTypes.arrayOf(PropTypes.instanceOf({
+      name: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+      state: PropTypes.bool.isRequired,
+    })),
+  }).isRequired,
+};

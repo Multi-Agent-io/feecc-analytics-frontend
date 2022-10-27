@@ -239,19 +239,24 @@ export const doRemoveProtocol = (protocolId) => new Promise((resolve, reject) =>
 });
 
 export const doGetSchemas = (dispatch) => new Promise((resolve, reject) => {
-  axios.get(
-    `${conf.base_url}/api/v1/schemas`,
-    {
+  axios
+    .get(`${conf.base_url}/api/v1/schemas`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
-    },
-  )
+    })
     .then((res) => {
       const schemas = [...res.data.data];
-      const tree = schemas.filter((schema) => schema.parent_schema_id === null);
-      tree.forEach((schema) => schema.innerSchemas = schemas.filter((item) => item.parent_schema_id === schema.schema_id));
+      const tree = schemas.filter(
+        (schema) => schema.parent_schema_id === null,
+      );
+      tree.forEach(
+        (schema) => (schema.innerSchemas = schemas.filter(
+          (item) => item.parent_schema_id === schema.schema_id,
+        )
+        ),
+      );
 
       dispatch({
         type: types.USER__FETCH_SCHEMAS,
@@ -263,48 +268,56 @@ export const doGetSchemas = (dispatch) => new Promise((resolve, reject) => {
     })
     .catch((res) => reject(res));
 });
-export const doGetProtocols = (dispatch, page = 1, size = 12, name = null, date = null, status = null, dateDirection = 'asc') => {
-  return new Promise ((resolve, reject) => {
-    let request = `${conf.base_url}/api/v1/tcd/protocols`;
-    request += `/?page=${page}&items=${size}`
+export const doGetProtocols = (
+  dispatch,
+  page = 1,
+  size = 12,
+  name = null,
+  date = null,
+  status = null,
+  dateDirection = 'asc',
+) => new Promise((resolve, reject) => {
+  let request = `${conf.base_url}/api/v1/tcd/protocols`;
+  request += `/?page=${page}&items=${size}`;
 
-    if (name !== null && name !== undefined && name !== '') {
-      request += `&name=${name}`
-    }
-    if (date !== null && date !== undefined && date !== '') {
-      request += `&date=${date}`
-    }
-    if (status !== null && status !== undefined && status !== '') {
-      request += `&status=${status}`
-    }
-    if (dateDirection !== null && dateDirection !== '' && dateDirection !== undefined && typeof dateDirection === 'string') {
-      request += `&sort_by_date=${dateDirection}`
-    }
+  if (name !== null && name !== undefined && name !== '') {
+    request += `&name=${name}`;
+  }
+  if (date !== null && date !== undefined && date !== '') {
+    request += `&date=${date}`;
+  }
+  if (status !== null && status !== undefined && status !== '') {
+    request += `&status=${status}`;
+  }
+  if (
+    dateDirection !== null
+    && dateDirection !== ''
+    && dateDirection !== undefined
+    && typeof dateDirection === 'string'
+  ) {
+    request += `&sort_by_date=${dateDirection}`;
+  }
 
-
-    axios.get(
-      request,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+  axios
+    .get(request, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+    .then((res) => {
+      if (res.status === 200) {
+        resolve(res.data);
+        dispatch({
+          type: types.USER__FETCH_PROTOCOLS,
+          data: res.data.data,
+          count: res.data?.count || 10,
+        });
+      } else {
+        reject(res);
       }
-    )
-      .then((res) => {
-        if (res.status === 200) {
-          resolve(res.data)
-          dispatch({
-            type: types.USER__FETCH_PROTOCOLS,
-            data: res.data.data,
-            count: res.data?.count || 10
-          })
-        } else {
-          reject(res)
-        }
-      })
-      .catch((error) => {
-        reject(error)
-      })
-  })
-}
+    })
+    .catch((error) => {
+      reject(error);
+    });
+});

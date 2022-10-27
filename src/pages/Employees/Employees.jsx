@@ -1,7 +1,7 @@
 import React from 'react';
 
-export default function Employees(props) {
-    return (
-        <div></div>
-    );
+export default function Employees() {
+  return (
+    <div />
+  );
 }

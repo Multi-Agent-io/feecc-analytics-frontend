@@ -1,6 +1,10 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
-import { history } from '../../store/main';
+import clsx from 'clsx';
 import timeIcon from '../../assets/time_icon.svg';
 import fixIcon from '../../assets/fix_icon.svg';
 import sorting from '../../assets/sorting.svg';
@@ -8,118 +12,123 @@ import styles from './Table.module.css';
 import leftArrow from '../../assets/arrrow_left.svg';
 import rightArrow from '../../assets/arrow_right.svg';
 import slashIcon from '../../assets/slash.svg';
-import clsx from 'clsx';
 
-export default function Table(props) {
+export default function Table({
+  pages, setPage, page, onDirectionChange, showFixIcon,
+  showTimeIcon, headerRow, rowsData, type, rowsKeys, redirectFunction,
+}) {
+  const [direction, setDirection] = useState(false);
 
-  let [direction, setDirection] = useState(false);
-
-  let onInputChange = (e) => {
-    let value = e.target.value;
-    if (typeof parseInt(value) === 'number') {
+  const onInputChange = (e) => {
+    const { value } = e.target;
+    if (typeof parseInt(value, 10) === 'number') {
       if (value === '') {
         setPage(1);
-      } else if (value > 0 && value <= props.pages) {
-        setPage(parseInt(e.target.value));
+      } else if (value > 0 && value <= pages) {
+        setPage(parseInt(value, 10));
       }
     }
   };
 
-  let checkDate = (dateString) => {
+  const checkDate = (dateString) => {
     if (dateString === 'Invalid date') {
       return 'Can\'t find time';
     }
     return dateString;
   };
 
-  let setPage = (page) => {
-    props.setPage && props.setPage(page);
-  };
-
-  let decreasePage = () => {
-    if (props.page > 1) {
-      setPage(parseInt(props.page) - 1);
+  const decreasePage = () => {
+    if (page > 1) {
+      setPage(parseInt(page, 10) - 1);
     } else {
-      setPage(props.pages)
+      setPage(pages);
     }
   };
 
-  let increasePage = () => {
-    if (props.page < props.pages) {
-      setPage(parseInt(props.page) + 1);
+  const increasePage = () => {
+    if (page < pages) {
+      setPage(parseInt(page, 10) + 1);
     } else {
-      setPage(1)
+      setPage(1);
     }
   };
 
   useEffect(() => {
-    props.onDirectionChange && props.onDirectionChange(!direction ? 'asc' : 'desc');
+    onDirectionChange(!direction ? 'asc' : 'desc');
   }, [direction]);
 
   useEffect(() => {
-    if (props.page > props.pages) {
-      props.setPage && props.setPage(props.pages);
-    }
-  }, [props.pages])
+    if (page > pages) setPage(pages);
+  }, [pages]);
 
   return (
     <div>
       <table>
         <thead>
-        {props.showTimeIcon && (
-          <td id={styles.timeCol}>
-            <img src={timeIcon} alt="Overwork icon"/>
-          </td>
-        )}
-        {props.showFixIcon && (
-          <td id={styles.fixCol}>
-            <img src={fixIcon} alt="Fix required icon"/>
-          </td>
-        )}
+          {showTimeIcon && (
+            <td id={styles.timeCol}>
+              <img src={timeIcon} alt="Overwork icon" />
+            </td>
+          )}
+          {showFixIcon && (
+            <td id={styles.fixCol}>
+              <img src={fixIcon} alt="Fix required icon" />
+            </td>
+          )}
 
-        <td id={styles.nameCol}>{props.headerRow[0]}</td>
-        <td id={styles.typeCol}>{props.headerRow[1]}</td>
-        <td id={styles.dateTimeCol}>
-          <img className={clsx({ [styles.reversed]: direction })}
-               onClick={() => setDirection(!direction)} src={sorting} alt="sorting icon"/>
-          <div>{props.headerRow[2]}</div>
-        </td>
+          <td id={styles.nameCol}>{headerRow[0]}</td>
+          <td id={styles.typeCol}>{headerRow[1]}</td>
+          <td id={styles.dateTimeCol}>
+            <img
+              className={clsx({ [styles.reversed]: direction })}
+              onClick={() => setDirection(!direction)}
+              src={sorting}
+              alt="sorting icon"
+            />
+            <div>{headerRow[2]}</div>
+          </td>
         </thead>
         <tbody>
-        {props.type === 'passports' &&
-          props.rowsData.map((item, index) => {
-            return (<tr key={index}>
-              {props.showTimeIcon && (
-                <td id={styles.timeCol}>
-                  {item.overwork && (<img src={timeIcon} alt="Overwork icon"/>)}
+          {type === 'passports'
+            && rowsData.map((item) => (
+              <tr key={item[rowsKeys.id]}>
+                {showTimeIcon && (
+                  <td id={styles.timeCol}>
+                    {item.overwork && (<img src={timeIcon} alt="Overwork icon" />)}
+                  </td>
+                )}
+                {showFixIcon && (
+                  <td id={styles.fixCol}>
+                    {item.needFix && (<img src={fixIcon} alt="Fix required icon" />)}
+                  </td>
+                )}
+                <td
+                  onClick={() => redirectFunction(item[rowsKeys.id])}
+                  id={styles.nameCol}
+                >
+                  {item[rowsKeys.nameCol]}
                 </td>
-              )}
-              {props.showFixIcon && (
-                <td id={styles.fixCol}>
-                  {item.needFix && (<img src={fixIcon} alt="Fix required icon"/>)}
+                <td id={styles.typeCol}>{item[rowsKeys.typeCol] !== null ? item[rowsKeys.typeCol] : 'Сборка'}</td>
+                <td id={styles.dateTimeCol}>
+                  <div>{checkDate(moment(item[rowsKeys.dateTimeCol]).format('DD.MM.YYYY HH:MM:SS'))}</div>
                 </td>
-              )}
-              <td onClick={() => props.redirectFunction(item[props.rowsKeys.id])}
-                  id={styles.nameCol}>{item[props.rowsKeys.nameCol]}</td>
-              <td id={styles.typeCol}>{item[props.rowsKeys.typeCol] !== null ? item[props.rowsKeys.typeCol] : 'Сборка'}</td>
-              <td id={styles.dateTimeCol}>
-                <div>{checkDate(moment(item[props.rowsKeys.dateTimeCol])
-                  .format('DD.MM.YYYY HH:MM:SS'))}</div>
-              </td>
-            </tr>);
-          })}
+              </tr>
+            ))}
         </tbody>
       </table>
       <div className={styles.pageSelectorWrapper}>
         <div onClick={decreasePage} className={styles.arrows}>
-          <img src={leftArrow} alt="Previous page arrow"/>
+          <img src={leftArrow} alt="Previous page arrow" />
         </div>
-        <input onChange={onInputChange} className={styles.outlinedPageNumberWrapper}
-               value={props.page}/>
-        <img className={styles.slashSeparator} src={slashIcon} alt="Pages slash separator"/>
-        <div className={styles.pageNumberWrapper}>{props.pages}</div>
+        <input
+          onChange={onInputChange}
+          className={styles.outlinedPageNumberWrapper}
+          value={page}
+        />
+        <img className={styles.slashSeparator} src={slashIcon} alt="Pages slash separator" />
+        <div className={styles.pageNumberWrapper}>{pages}</div>
         <div onClick={increasePage} className={styles.arrows}>
-          <img src={rightArrow} alt="Next page arrow"/>
+          <img src={rightArrow} alt="Next page arrow" />
         </div>
       </div>
     </div>
@@ -127,8 +136,10 @@ export default function Table(props) {
 }
 
 Table.propTypes = {
-  setParentPage: PropTypes.func.isRequired,
+  // setParentPage: PropTypes.func.isRequired,
   onDirectionChange: PropTypes.func.isRequired,
+  setPage: PropTypes.func.isRequired,
+  redirectFunction: PropTypes.func.isRequired,
   pages: PropTypes.number.isRequired,
   page: PropTypes.number.isRequired,
   type: PropTypes.oneOf(['passports', undefined]).isRequired,
@@ -136,5 +147,14 @@ Table.propTypes = {
     overwork: PropTypes.bool.isRequired,
     status: PropTypes.oneOf(['revision', undefined]),
     type: PropTypes.string.isRequired,
+  }).isRequired,
+  showFixIcon: PropTypes.bool.isRequired,
+  showTimeIcon: PropTypes.bool.isRequired,
+  headerRow: PropTypes.arrayOf(PropTypes.string).isRequired,
+  rowsKeys: PropTypes.instanceOf({
+    nameCol: PropTypes.string.isRequired,
+    typeCol: PropTypes.string.isRequired,
+    dateTimeCol: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
   }).isRequired,
 };

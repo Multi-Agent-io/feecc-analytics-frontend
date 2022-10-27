@@ -1,12 +1,12 @@
-import printBtn from '../../assets/print_btn.svg'
+import React from 'react';
+import printBtn from '../../assets/print_btn.svg';
 
-import classes from "./PrintButton.module.css" 
+import classes from './PrintButton.module.css';
 
-function PrintButton(props) {
-  
-  return(
-    <button {...props} className={classes.button} onClick = {() => window.print()}><img src={printBtn} alt="Распечатать документ"/></button>
-  )
+function PrintButton() {
+  return (
+    <button type="button" className={classes.button} onClick={() => window.print()}><img src={printBtn} alt="Распечатать документ" /></button>
+  );
 }
 
-export default PrintButton
+export default PrintButton;

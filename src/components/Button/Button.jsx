@@ -1,20 +1,37 @@
 import React from 'react';
-import clsx from "clsx";
-import styles from './Button.module.css'
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
+import styles from './Button.module.css';
 
-export default function Button(props) {
-
-    let onClickHandler = (e) => {
-        props.onClick && props.onClick(e)
+export default function Button({
+  onClick, hidden, disabled, variant, children,
+}) {
+  const onClickHandler = (e) => {
+    if (onClick !== undefined) {
+      onClick(e);
     }
-
-    return (
-        
-            <button hidden={props.hidden} disabled={props.disabled} onClick={onClickHandler} className={clsx({
-                [styles.defaultButton]: props.variant === 'default' || props.variant === undefined,
-                [styles.clearButton]: props.variant === 'clear',
-                [styles.disabled]: props.disabled
-            })}>{props.children}</button>
-        
-    );
+  };
+  return (
+    <button
+      type="button"
+      hidden={hidden}
+      disabled={disabled}
+      onClick={onClickHandler}
+      className={clsx({
+        [styles.defaultButton]: variant === 'default' || variant === undefined,
+        [styles.clearButton]: variant === 'clear',
+        [styles.disabled]: disabled,
+      })}
+    >
+      {children}
+    </button>
+  );
 }
+
+Button.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  hidden: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  variant: PropTypes.oneOf(['default', 'clear']).isRequired,
+  children: PropTypes.element.isRequired,
+};

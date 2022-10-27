@@ -1,18 +1,27 @@
-import arrowLeft from "../../assets/arrrow_left.svg"
-import {history} from "../../store/main";
+import React from 'react';
+import PropTypes from 'prop-types';
+import arrowLeft from '../../assets/arrrow_left.svg';
+import { history } from '../../store/main';
+import styles from './ButtonBack.module.css';
 
-import styles from "./ButtonBack.module.css"
-
-function ButtonBack(props){
-
-  return <button 
-            {...props}
-            onClick={() => history.goBack()}
-            
-            className ={`${styles["btn-back"]} ${props.classes}`}
-          >
-            <img src={arrowLeft}></img>
-          </button>
+function ButtonBack({ classes }) {
+  return (
+    <button
+      type="button"
+      onClick={() => history.goBack()}
+      className={`${styles['btn-back']} ${classes}`}
+    >
+      <img src={arrowLeft} alt="arrowLeft" />
+    </button>
+  );
 }
 
-export default ButtonBack
+ButtonBack.propTypes = {
+  classes: PropTypes.string,
+};
+
+ButtonBack.defaultProps = {
+  classes: '',
+};
+
+export default ButtonBack;

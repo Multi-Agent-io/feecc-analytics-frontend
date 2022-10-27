@@ -1,3 +1,4 @@
+/* eslint-disable react/no-this-in-sfc */
 import React, { useEffect, useState } from 'react';
 
 import { useSnackbar } from 'notistack';

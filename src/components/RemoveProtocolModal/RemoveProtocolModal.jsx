@@ -24,7 +24,7 @@ function RemoveProtocolModal() {
       <Modal>
         <section className={classes.contentUl}>
           <h1>Удалить протокол?</h1>
-          <div className={classes["btn-section"]}>
+          <div className={classes['btn-section']}>
             <Button onClick={onClose}>Отмена</Button>
             <Button variant="delete" onClick={pushToServerHandler}>
               Удалить

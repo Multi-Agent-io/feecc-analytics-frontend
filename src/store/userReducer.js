@@ -201,7 +201,7 @@ export const userReducer = (state = {}, action) => {
         .set('schemasCount', action.count)
         .set('schemasTree', action.tree);
     }
-    
+
     case types.USER__FETCH_PROTOCOLS: {
       return state
         .set('protocols', fromJS(action.data))
