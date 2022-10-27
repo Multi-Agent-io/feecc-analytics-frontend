@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/no-array-index-key */
-/* eslint-disable no-alert */
 import React, { useState, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
@@ -13,6 +12,7 @@ import PrintButton from '../../components/PrintButton/PrintButton';
 import ButtonBack from '../../components/ButtonBack/ButtonBack';
 import Button from '../../components/Button/Button';
 import conf from '../../config.json';
+import useNotify from '../../hooks/useNotify';
 
 function Protocol() {
   const [protocol, setProtocol] = useState(undefined);
@@ -20,6 +20,8 @@ function Protocol() {
   const [protocolId, setProtocolId] = useState('');
   const [isSuperEngineer, setSuperEngineer] = useState('');
   const [serialNumber, setSerialNumber] = useState('');
+
+  const { notify } = useNotify();
 
   // const {isLoading, error, sendRequest} = useHttp() ......needs to be finalized
   // const authorizationHeaders = {
@@ -65,7 +67,7 @@ function Protocol() {
     }
 
     if (!serialNumber) {
-      alert('Внимание вы не заполнили серийный номер!');
+      notify('Внимание вы не заполнили серийный номер!', 'success');
     }
 
     if (allFieldChecked && serialNumber) {
@@ -82,8 +84,8 @@ function Protocol() {
         // body: serialBody, через body, по невероятным причинам, не работает
       })
         .then((res) => {
-          if (res.ok) alert('Серийный номер отправлен!');
-          else alert('Что-то пошло не так серийного номера!');
+          if (res.ok) notify('Серийный номер отправлен!', 'success');
+          else notify('Что-то пошло не так серийного номера!', 'error');
         });
 
       fetch(`${conf.base_url}/api/v1/tcd/protocols/${internalId}`, {
@@ -95,10 +97,10 @@ function Protocol() {
         body: JSON.stringify(protocol),
       })
         .then((res) => {
-          if (res.ok) alert('Протокол успешно отправлен!');
-          else alert('Что-то пошло не так c отправкой протокола!');
+          if (res.ok) notify('Протокол успешно отправлен!', 'success');
+          else notify('Что-то пошло не так c отправкой протокола!', 'error');
           if (res.status === 403) {
-            alert('У вас недостаточно прав для отправки протокола!');
+            notify('У вас недостаточно прав для отправки протокола!', 'warning');
           }
         }).then(() => {
           window.onbeforeunload = () => null;
@@ -209,7 +211,7 @@ function Protocol() {
       .then((res) => {
         // eslint-disable-next-line no-console
         console.log(res);
-        if (res.detail !== 'Success') alert('Error reading protocol. No schema for this product');
+        if (res.detail !== 'Success') notify('Error reading protocol. No schema for this product', 'error');
         else {
           setProtocol(res.protocol);
           setProtocolId(internalId);

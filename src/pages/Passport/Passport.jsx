@@ -18,6 +18,7 @@ import Button from '../../components/Button/Button';
 
 import ModalActionsContext from '../../store/modal-context';
 import RevisionContext from '../../store/revision-context';
+import useNotify from '../../hooks/useNotify';
 
 export default function Passport() {
   const { t } = useTranslation();
@@ -36,16 +37,15 @@ export default function Passport() {
   const [selectedStep, setSelectedStep] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
+  const notify = useNotify();
+
   useEffect(() => {
     setIsLoading(false);
     doGetPassport(dispatch, location.split('/')[2])
       .then((res) => {
         const currentPassport = res.passport;
         if (currentPassport.status === 'production') {
-          // eslint-disable-next-line no-alert
-          alert(
-            'Данное изделие находиться в стадии разработки\nНекоторые данные могут отображаться некорректно!',
-          );
+          notify('Данное изделие находиться в стадии разработки\nНекоторые данные могут отображаться некорректно!', 'warning');
         }
         currentPassport.biography.forEach((step) => {
           if (!step.employee_name) return;
