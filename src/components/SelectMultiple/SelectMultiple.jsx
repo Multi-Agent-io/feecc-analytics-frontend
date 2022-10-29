@@ -16,14 +16,14 @@ export default function SelectMultiple({ onChange, options }) {
   const { t } = useTranslation();
 
   const resetSelection = () => {
-    const arr = [...checkboxes];
-    arr.map((item) => ({ ...item, state: false }));
+    let arr = [...checkboxes];
+    arr = arr.map((item) => ({ ...item, state: false }));
     setCheckboxes(arr);
   };
 
   const updateCheckbox = (index) => {
-    const arr = [...checkboxes];
-    arr.map((item, innerIndex) => {
+    let arr = [...checkboxes];
+    arr = arr.map((item, innerIndex) => {
       const element = { ...item };
       if (index === innerIndex) element.state = !element.state;
       return element;

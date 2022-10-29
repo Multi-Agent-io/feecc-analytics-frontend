@@ -15,8 +15,8 @@ export default function Select({ options, onChange }) {
   const { t } = useTranslation();
 
   const updateCheckbox = (index) => {
-    const arr = [...checkboxes];
-    arr.map((item, innerIndex) => {
+    let arr = [...checkboxes];
+    arr = arr.map((item, innerIndex) => {
       const element = { ...item };
       if (index === innerIndex) {
         element.state = true;
