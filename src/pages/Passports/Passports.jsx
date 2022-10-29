@@ -5,7 +5,7 @@ import Search from '../../components/Search/Search';
 import SettingsButton from '../../components/SettingsButton/SettingsButton';
 import Filters from '../../components/Filters/Filters';
 import Table from '../../components/Table/Table';
-import { doGetPassports } from '../../store/userActions';
+import { doGetPassports, doGetPassportTypes } from '../../store/userActions';
 import {
   getAllTypes, getAuthorizationStatus, getPassports, getPassportsNumber,
 } from '../../store/selectors';
@@ -98,6 +98,14 @@ export default function Passports() {
     setPage(parseInt(tablePage, 10));
     localStorage.setItem('tablePage', page);
   };
+
+  useEffect(() => {
+    doGetPassportTypes(dispatch)
+      .then()
+      .catch((err) => {
+        if (err.response.status === 401) history.push('/');
+      });
+  }, []);
 
   useEffect(() => {
     fetchPassports();

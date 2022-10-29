@@ -5,23 +5,19 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
-import { useDispatch } from 'react-redux';
 import styles from './Filters.module.css';
 import SelectMultiple from '../SelectMultiple/SelectMultiple';
 import Select from '../Select/Select';
 import DatePicker from '../DatePicker/DatePicker';
-import { doGetPassportTypes } from '../../store/userActions';
-import { history } from '../../store/main';
 
 export default function Filters({
   singleselectFilter, onChange, onDrop, multiselectFilter, datePickerFilter, toggle,
 }) {
-  const dispatch = useDispatch();
   const [date, setDate] = useState(null);
   const [overwork, setOverwork] = useState(false);
   const [requiredFix, setRequiredFix] = useState(false);
   const [deviceType, setDeviceType] = useState(['']);
-  const [passportType, setPassportType] = useState(singleselectFilter.options[0].name);
+  const [passportType, setPassportType] = useState(singleselectFilter.options[0].value);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -35,14 +31,6 @@ export default function Filters({
       });
     }
   }, [date, overwork, requiredFix, deviceType, passportType]);
-
-  useEffect(() => {
-    doGetPassportTypes(dispatch)
-      .then()
-      .catch((err) => {
-        if (err.response.status === 401) history.push('/');
-      });
-  }, []);
 
   const dropFilters = () => {
     setDate(null);
