@@ -98,7 +98,7 @@ export const doGetPassports = (
   if (rework !== null && rework !== undefined && !devBlock) {
     request += `&rework=${rework}`;
   }
-  request += `&status=${passportType}`;
+  if (passportType) request += `&status=${passportType}`;
   axios
     .get(request, {
       headers: {

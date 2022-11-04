@@ -19,11 +19,11 @@ function TechnicalControlDepartment() {
   const [filtersDisplay, changeFiltersDisplay] = useState(true);
 
   const [filtersValues, setFiltersValues] = useState({
-    multiSelect: [''],
+    multiSelectType: [''],
     date: null,
     overwork: null,
     requiredFix: null,
-    singleSelect: 'Первая стадия испытаний пройдена',
+    singleSelectType: 'Первая стадия испытаний пройдена',
   });
   const [pageSize, setPageSize] = useState(11);
   const [page, setPage] = useState(localStorage.getItem('protocolsTablePage') || 1);
@@ -66,11 +66,10 @@ function TechnicalControlDepartment() {
       pageSize,
       null,
       null,
-      filtersValues.singleSelect,
+      filtersValues.singleSelectType,
       sortingDirection,
     )
-      // eslint-disable-next-line no-console
-      .then((res) => console.log(res));
+      .then();
   };
 
   // ====== useEffect ======

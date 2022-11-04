@@ -23,11 +23,11 @@ export default function Filters({
   useEffect(() => {
     if (onChange !== undefined) {
       onChange({
-        multiSelect: deviceType,
+        multiSelectType: deviceType,
         date,
         overwork,
         requiredFix,
-        singleSelect: passportType,
+        singleSelectType: passportType,
       });
     }
   }, [date, overwork, requiredFix, deviceType, passportType]);
