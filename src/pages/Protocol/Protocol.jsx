@@ -18,6 +18,8 @@ function Protocol(){
   const [protocolId, setProtocolId] = useState('');
   const [isSuperEngineer, setSuperEngineer] = useState('');
   const [serialNumber, setSerialNumber] = useState('');
+  const [user, setUser] = useState({});
+  const [inPrint, setInPrint] = useState(false);
 
   // const {isLoading, error, sendRequest} = useHttp() ......needs to be finalized
   // const authorizationHeaders = {
@@ -160,7 +162,7 @@ function Protocol(){
           <input
               key ={`${index} test1`}
               type='text'
-              placeholder={"Введите значение"}
+              placeholder={!inPrint ? "Введите значение" : "Не проводилось"}
               id = {`${index} test1`}
               value={test1}
               disabled={protocol.status === "Протокол утверждён"}
@@ -168,7 +170,7 @@ function Protocol(){
           <input
               key ={`${index} test2`}
               type='text'
-              placeholder={"Введите значение"}
+              placeholder={!inPrint ? "Введите значение" : "Не проводилось"}
               id = {`${index} test2`}
               value={test2}
               disabled={protocol.status === "Протокол утверждён"}
@@ -218,6 +220,7 @@ function Protocol(){
         setSuperEngineer(superEngineer)
         setSerialNumber(res.serial_number)
         setIsLoading(false)
+        setUser(res.employee);
       }
     })
 
@@ -247,7 +250,11 @@ function Protocol(){
               </input>
             </h2>
           </div>
-          <PrintButton disabled={isLoading} />
+          <PrintButton 
+            beforePrintAction={() => setInPrint(true)}
+            afterPrintAction={() => setInPrint(false)}
+            disabled={isLoading} 
+          />
         </div>
 
         <div className={`${styles["grid-container_header"]} ${styles.grid}`}>
@@ -261,7 +268,14 @@ function Protocol(){
         </div>
 
         {makeGridTable(protocol.rows)}
-
+        <div className={styles.subscriptionsSection}>
+          <div>
+            <h4>Испытание провёл:</h4>
+            <h4>{user?.position}</h4>
+            <h4>{user?.name}</h4>
+          </div>
+          <div className={styles.subscritpionUnderline} />
+        </div>
         {makeButtonSection()}
 
       </section>)

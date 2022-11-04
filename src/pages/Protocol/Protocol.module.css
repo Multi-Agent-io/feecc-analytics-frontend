@@ -1,4 +1,9 @@
 @media print {
+  @page { 
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
   .grid * {
     min-width: 140px;
   }
@@ -12,6 +17,13 @@
   }
   .protocol_name {
     height: 200px;
+  }
+  .subscriptionsSection {
+    display: flex !important;
+    /* margin-left: 900px; */
+    width: 900px !important;
+    flex-direction: flex-end;
+    margin-bottom: 0 !important;
   }
 }
 
@@ -122,4 +134,27 @@ input::-webkit-inner-spin-button {
 }
 .btns-section button {
   margin-right: 1rem;
+}
+
+.subscriptionsSection {
+  display: none;
+  width: calc(100vw - 250px);
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.subscriptionsSection > h3 {
+  /* max-height: 20px; */
+}
+
+.subscritpionUnderline {
+  min-width: 100px;
+  width: 200px;
+  border-bottom: 1px solid black;
+}
+
+.subscriptionsSection > div {
+  display: flex;
+  flex-direction: column;
 }
