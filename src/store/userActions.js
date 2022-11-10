@@ -6,10 +6,10 @@ import conf from '../config.json';
 //     dispatch({type: types.USER__AUTHORIZE, status: status})
 // }
 
-export const doGetAuthToken = (username, password) => {
+export const doGetAuthToken = (username, password, keepSession) => {
   return new Promise((resolve, reject) => {
     axios.post(
-      `${conf.base_url}/token`,
+      `${conf.base_url}/token?keep_session=${keepSession}`,
       `username=${username}&password=${password}&scope=&client_id=&client_secret=`,
       {
         headers: {
