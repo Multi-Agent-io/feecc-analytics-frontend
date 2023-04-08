@@ -1,17 +1,16 @@
+import React from 'react';
 import styles from './Sidebar.module.css'
-import logo from '../../assets/logo.png'
-// import {useEffect, useState} from "react";
-
+import logo from '../../assets/Logo.svg'
 
 import {useTranslation} from "react-i18next";
 import {useSelector} from "react-redux";
 import {history} from "../../store/main";
 import clsx from "clsx";
 
-import passportsIcon from '../../assets/passports.svg'
-import employeesIcon from '../../assets/employees.svg'
-import schemasIcon from '../../assets/schemas.svg'
-// import exitIcon from '../../assets/exit.png'
+import passportsIcon from '../../assets/pasports.svg'
+import otkIcon from '../../assets/otk.svg'
+import employeesIcon from '../../assets/users.svg'
+import schemasIcon from '../../assets/schema.svg'
 
 
 export default function Sidebar () {
@@ -28,40 +27,32 @@ export default function Sidebar () {
     return (
         <aside className={styles.columnWrapper}>
             <div className={styles.logoIcon}>
-                <img src={logo} alt="simple placeholder for logo"/>
+                <img src={logo} alt="Multi-agent.io FEECC"/>
             </div>
             <div className={styles.menu}>
                 <div className={clsx(styles.menuItem, {[styles.selectedItem]: pathname === '/passports'})}
                     onClick={() => changeLocation('/passports')}
                 >
-                    <div className={styles.topLine}/>
-                    <img src={passportsIcon} alt="passports icon"/>
-                    <div className={styles.menuItemDescription}>{t('sidebar.Passports')}</div> 
-                    <div className={styles.bottomLine}/>
+                    <img src={passportsIcon} aria-hidden="true" />
+                    <div className={styles.menuItemDescription}>{t('sidebar.Passports')}</div>
                 </div>
                 <div className={clsx(styles.menuItem, {[styles.selectedItem]: pathname === '/tcd'})}
                     onClick={() => changeLocation('/tcd')}
                 >
-                    <div className={styles.topLine}/>
-                    <img src={passportsIcon} alt="passports icon"/>
-                    <div className={styles.menuItemDescription}>{t("sidebar.TCD")}</div> 
-                    <div className={styles.bottomLine}/>
+                    <img src={otkIcon} aria-hidden="true" />
+                    <div className={styles.menuItemDescription}>{t("sidebar.TCD")}</div>
                 </div>
                 <div className={clsx(styles.menuItem, {[styles.selectedItem]: pathname === '/employees'})}
                     onClick={() => changeLocation('/employees')}
                 >
-                    <div className={styles.topLine}/>
-                    <img src={employeesIcon} alt="employees icon"/>
+                    <img src={employeesIcon} aria-hidden="true" />
                     <div className={styles.menuItemDescription}>{t('sidebar.Employees')}</div>
-                    <div className={styles.bottomLine}/>
                 </div>
                 <div className={clsx(styles.menuItem, {[styles.selectedItem]: pathname === '/production-schemas'})}
                     onClick={() => changeLocation('/production-schemas')}
                 >
-                    <div className={styles.topLine}/>
-                    <img src={schemasIcon} alt="schemas icon"/>
+                    <img src={schemasIcon} aria-hidden="true" />
                     <div className={styles.menuItemDescription}>{t('sidebar.Schemas')}</div>
-                    <div className={styles.bottomLine}/>
                 </div>
                 <div className={styles.menuItem}>
                     <div onClick={logout} className={styles.menuItemDescription}>{t('sidebar.Logout')}</div>

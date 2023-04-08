@@ -4,7 +4,7 @@ import { history } from '../../store/main';
 import timeIcon from '../../assets/time_icon.svg';
 import fixIcon from '../../assets/fix_icon.svg';
 import sorting from '../../assets/sorting.svg';
-import styles from './Table.module.css';
+import './table.scoped.css';
 import leftArrow from '../../assets/arrrow_left.svg';
 import rightArrow from '../../assets/arrow_right.svg';
 import slashIcon from '../../assets/slash.svg';
@@ -67,20 +67,20 @@ export default function Table(props) {
       <table>
         <thead>
         {props.showTimeIcon && (
-          <td id={styles.timeCol}>
+          <td id="timeCol">
             <img src={timeIcon} alt="Overwork icon"/>
           </td>
         )}
         {props.showFixIcon && (
-          <td id={styles.fixCol}>
+          <td id="fixCol">
             <img src={fixIcon} alt="Fix required icon"/>
           </td>
         )}
 
-        <td id={styles.nameCol}>{props.headerRow[0]}</td>
-        <td id={styles.typeCol}>{props.headerRow[1]}</td>
-        <td id={styles.dateTimeCol}>
-          <img className={clsx({ [styles.reversed]: direction })}
+        <td id="nameCol">{props.headerRow[0]}</td>
+        <td id="typeCol">{props.headerRow[1]}</td>
+        <td id="dateTimeCol">
+          <img className={clsx({ ["reversed"]: direction })}
                onClick={() => setDirection(!direction)} src={sorting} alt="sorting icon"/>
           <div>{props.headerRow[2]}</div>
         </td>
@@ -90,19 +90,19 @@ export default function Table(props) {
           props.rowsData.map((item, index) => {
             return (<tr key={index}>
               {props.showTimeIcon && (
-                <td id={styles.timeCol}>
+                <td id="timeCol">
                   {item.overwork && (<img src={timeIcon} alt="Overwork icon"/>)}
                 </td>
               )}
               {props.showFixIcon && (
-                <td id={styles.fixCol}>
+                <td id="fixCol">
                   {item.needFix && (<img src={fixIcon} alt="Fix required icon"/>)}
                 </td>
               )}
               <td onClick={() => props.redirectFunction(item[props.rowsKeys.id])}
-                  id={styles.nameCol}>{item[props.rowsKeys.nameCol]}</td>
-              <td id={styles.typeCol}>{item[props.rowsKeys.typeCol] !== null ? item[props.rowsKeys.typeCol] : 'Сборка'}</td>
-              <td id={styles.dateTimeCol}>
+                  id="nameCol">{item[props.rowsKeys.nameCol]}</td>
+              <td id="typeCol">{item[props.rowsKeys.typeCol] !== null ? item[props.rowsKeys.typeCol] : 'Сборка'}</td>
+              <td id="dateTimeCol">
                 <div>{checkDate(moment(item[props.rowsKeys.dateTimeCol])
                   .format('DD.MM.YYYY HH:MM:SS'))}</div>
               </td>
@@ -110,15 +110,15 @@ export default function Table(props) {
           })}
         </tbody>
       </table>
-      <div className={styles.pageSelectorWrapper}>
-        <div onClick={decreasePage} className={styles.arrows}>
+      <div className="pageSelectorWrapper">
+        <div onClick={decreasePage} className="arrows">
           <img src={leftArrow} alt="Previous page arrow"/>
         </div>
-        <input onChange={onInputChange} className={styles.outlinedPageNumberWrapper}
+        <input onChange={onInputChange} className="outlinedPageNumberWrapper"
                value={props.page}/>
-        <img className={styles.slashSeparator} src={slashIcon} alt="Pages slash separator"/>
-        <div className={styles.pageNumberWrapper}>{props.pages}</div>
-        <div onClick={increasePage} className={styles.arrows}>
+        <img className="slashSeparator" src={slashIcon} alt="Pages slash separator"/>
+        <div className="pageNumberWrapper">{props.pages}</div>
+        <div onClick={increasePage} className="arrows">
           <img src={rightArrow} alt="Next page arrow"/>
         </div>
       </div>

@@ -1,0 +1,56 @@
+.loader {
+  --spinner_speed: .675s;
+  --spinner_radius: 80%;
+  --spinner_fill_radius: 90px;
+
+  --spinner_size: 50px;
+  --spinner_thickness: 10px;
+  --spinner_inner_circle: $spinner_size - $spinner_thickness;
+
+  --spinner_color: var(--color-strong-purple);
+  --spinner_bg: var(--color-light-purple);
+  --spinner_inner_bg: var(--color-light-purple);
+
+  animation: spin var(--spinner_speed) linear 0s infinite normal;
+  background: var(--spinner_bg);
+  border-radius: 80%;
+  display: block;
+  height: var(--spinner_size);
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  width: var(--spinner_size);
+}
+
+.loader:before, .loader:after {
+  content: "";
+  display: block;
+  position: absolute;
+}
+
+.loader:before {
+  border-radius: 0 var(--spinner_fill_radius) var(--spinner_fill_radius) 0;
+  height: var(--spinner_size);
+  width: 50%;
+  top: 0; right: 0;
+  z-index: 1;
+  background: var(--spinner_color);
+  background-image: linear-gradient( var(--spinner_bg), var(--spinner_color));
+}
+
+.loader:after {
+  border-radius: var(--spinner_radius);
+  height: var(--spinner_inner_circle);
+  width: var(--spinner_inner_circle);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  background: var(--spinner_inner_bg);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -5,11 +5,9 @@
 }
 
 .columnWrapper {
+    background-color: var(--color-light-purple);
     display: flex;
     flex-direction: column;
-    width: 166px;
-    background-color: var(--color-light-purple);
-    height: 100vh;
 }
 
 .logoIcon {
@@ -35,6 +33,7 @@
     align-items: center;
     transition: all 0.3s;
     cursor: pointer;
+    padding: calc(var(--gap)*2) var(--gap);
 }
 
 .menuItem:hover {
@@ -43,11 +42,13 @@
 }
 
 .menuItem img {
-    padding-bottom: 10px;
+    display: inline-block;
+    margin-bottom: 10px;
+    max-width: 50px;
 }
 
 .menuItemDescription {
-    font-size: 1.7rem;
+    font-size: 1.2rem;
 }
 
 .topLine,

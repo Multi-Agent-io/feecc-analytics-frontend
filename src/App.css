@@ -1,39 +1,99 @@
-* {
-    font-family: Roboto Mono, monospace;
-    font-size: 14px;
-    line-height: 1.15;
-    font-weight: normal;
-    padding: 0;
-    margin: 0;
-}
-
 :root {
+    /* initial colors from developers of this app */
     --color-light-purple: #E9EEFF;
     --color-strong-purple: #4452D0;
+    --color-strong-purple-darken: #323da2;
     --color-main-black: #000000;
     --color-main-white: #FFFFFF;
     --color-main-border: #181820;
     --color-main-gray: #A0A0A6;
-    /*--color-light-gray: #E9EEFF;*/
     --color-strong-orange: rgba(233, 80, 14, .8);
+    
+    /* color base */
+    --color-light: #ffffff;
+    --color-gray: #8c8c8c;
+    --color-gray-light: #e3e3e3;
+    --color-dark: #000000;
+    --color-green: #e1fcf2;
+    
+    /* color on purpoise */
+    --color-bg-primary: var(--color-light);
+    --color-text-primary: var(--color-dark);
 
+    /* measurments */
+    --gap: 1rem;
+    --layout-padding: calc(var(--gap) * 2);
+
+    /* input styles */
+    --input-padding: calc(var(--gap) * 0.5);
+    --input-border-color: var(--color-gray);
+    --input-border-width: 1px;
+    --input-bg: var(--color-light);
+    --input-text-color: var(--color-text-primary);
+    --input-border-radius: 2px;
+
+    /* fonts and other text measurments */
+    --font-family-primary: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    /* --font-family-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; */
+    --font-family-code: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    --font-size-primary: 1rem;
+    --line-height: 1.2;
+}
+
+/* + browser style reset */
+* 
+{
+	margin:0; padding:0;
+    box-sizing: border-box;
+	-webkit-font-smoothing: antialiased;
+  	-moz-osx-font-smoothing: grayscale;
+}
+img {border: 0;}
+html {
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%; 
+    -ms-text-size-adjust: 100%; 
+}
+/* - browser style reset */
+  
+body {
+    font-family: var(--font-family-primary);
+    line-height: var(--line-height);
+}
+
+code {
+    font-family: var(--font-family-code);
 }
 
 .App {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 166px auto;
+    min-height: 100svh;
 }
 
-h1 {
-    font-size: 2.57rem;
+@media print {
+    :root{
+        --font-size-primary: 0.6rem;
+    }
+
+    .App {
+        display: block !important;
+    }
+
+    input {
+        --input-border-width: 0;
+        --input-padding: 0;
+    }
 }
 
-h2 {
-    font-size: 1.71rem;
+.app-content {
+    padding: var(--layout-padding)
 }
 
-h3 {
-    font-size: 1.29rem;
-}
+h1, h1 input { font-size: calc(var(--font-size-primary) * 1.8); }
+h2 { font-size: calc(var(--font-size-primary) * 1.6); }
+h3 { font-size: calc(var(--font-size-primary) * 1.4); }
+h4 { font-size: calc(var(--font-size-primary) * 1.2); }
+h5 { font-size: calc(var(--font-size-primary) * 1); }
+
+h1 input { font-weight: bold; }

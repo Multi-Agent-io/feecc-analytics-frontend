@@ -47,9 +47,9 @@ function App() {
         if(authorized && localStorage.getItem('token') !== undefined && localStorage.getItem('token') !== null) {
             doFetchUser(dispatch)
                 .then((res) => {
-                    if (res.status === 200 && location === '/') {
+                    if (res?.status === 200 && location === '/') {
                         history.push('/passports')
-                    } else if (res.status === 401) {
+                    } else if (res?.status === 401) {
                         history.push('/')
                     }
                 })
@@ -61,11 +61,11 @@ function App() {
         if(!authorized) {
             if(localStorage.getItem('token') !== undefined && localStorage.getItem('token') !== null)
                 doFetchUser(dispatch).then((res) => {
-                    if(res.status === 200 && location === '/') {
+                    if(res?.status === 200 && location === '/') {
                         history.push('/passports')
                     }
                 }).catch((err) => {
-                    if(err.response.status === 401 && location !== '/')
+                    if(err.response?.status === 401 && location !== '/')
                         history.push('/')
                 })
             else {
@@ -83,7 +83,9 @@ function App() {
             <ConfirmModal/>
             <div className="App">
                 {location !== '/' && (<Sidebar/>)}
-                {route(location)}
+                <section className='app-content'>
+                    {route(location)}
+                </section>
             </div>
             </RevisionProvider>
     </ModalProvider>
