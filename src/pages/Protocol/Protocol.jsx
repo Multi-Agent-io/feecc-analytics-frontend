@@ -1,6 +1,7 @@
 /* TODO: 
 + better status showing. You can show it in statusbar, not alert
 + better detecting user leaves page (now only reload is detected)
++ replace alerts with soft messages within page
 */
 
 import React, { useState, useEffect, useRef } from "react";
@@ -31,45 +32,59 @@ const Protocol = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isEdited, setIsEdited] = useState(false);
   const [submitText, setSubmitText] = useState('Cохранить');
-  const [checkedAll, setCheckedAll] = useState(null);
+  const [checkedAll, setCheckedAll] = useState(null); /* We use it on submit checks and for buttom 'протокол отметить всё' */
   let fetched = false;
 
-  useEffect(() => {
+  const dynamicTitle = title => {
+    if(title) {
+      document.title = 'Протокол: ' + title
+    }
+  }
 
-    if(!fetched) {
-    /* garantee that we fetch protocols data only once */
-      fetched = true
-      setIsLoading(true)
+  useEffect(async () => {
 
-      fetch(`${conf.base_url}/api/v1/tcd/protocols/${internal_id}`,{
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-      })
-      .then(res => {
-        return res.json()
-      })
-      .then(res => {
+      if(!fetched) {
+        fetched = true
+        setIsLoading(true)
+
+        const response = await fetch(`${conf.base_url}/api/v1/tcd/protocols/${internal_id}`,{
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+        })
+        const res = await response.json()
+
+        if(response) {
+          setIsLoading(false)
+        }
 
         if(res?.detail === 'Success') {
 
           if(res?.protocol) {
             setAllProtocols(res.protocol)
             initialData = JSON.parse(JSON.stringify(res.protocol))
+
+            if(res.protocol?.status === 'Вторая стадия испытаний пройдена') {
+              setSubmitText('Сохранить')
+            } else {
+              setSubmitText('Подтвердить и отправить')
+            }
           }
           
           /* + Detect selected protocol id */
           if (!res?.protocol?.protocols) {
-            setSelectedProtocol(res?.protocol?.protocol_schema_id)
-            setProtocol(res?.protocol)
+            setSelectedProtocol(res.protocol?.protocol_schema_id)
+            setProtocol(res.protocol)
+            dynamicTitle(res.protocol?.protocol_name)
           } else {
             setSelectedProtocol(res?.protocol.protocols[0]?.protocol_schema_id)
             const findSelected = res?.protocol?.protocols.find( o => { return o.protocol_schema_id === res?.protocol.protocols[0]?.protocol_schema_id })
             setProtocol(findSelected)
+            dynamicTitle(findSelected?.protocol_name)
           }
-
-          if(res?.serial_number) {
+          
+          if(res?.serial_number || res?.serial_number ==='') {
             setSerialNumber(res.serial_number)
             initialSerial = res.serial_number
           }
@@ -77,19 +92,10 @@ const Protocol = () => {
           if(res?.employee) {
             setEmployee(res?.employee)
           }
-
-          if(protocol?.status === 'Вторая стадия испытаний пройдена') {
-            setSubmitText('Сохранить')
-          } else {
-            setSubmitText('Подтвердить и отправить')
-          }
           
         }
-
-        setIsLoading(false)
-
-      })
-    }
+      }
+    
 
     return () => {
       window.onbeforeunload = () => null // clear event listener for defence from reloading (from checkAllHandler)
@@ -107,13 +113,13 @@ const Protocol = () => {
 
 
   useEffect( () => {
-    if(initialSerial) {
+
+    if(initialSerial || initialSerial==='') {
       setIsEdited(initialSerial != serialNumber)
     }
     
   }, [serialNumber])
-
-  // useEffect(() => {
+  
 
   /* Update data when selected protocol data changed */
   useEffect(() => {
@@ -128,21 +134,33 @@ const Protocol = () => {
     } else {
       setAllProtocols(protocol)
     }
-    
 
     /* Force update for inputs when change protocol type */
     const inputs = document.querySelectorAll('[data-handle]')
     if(inputs) {
+      let inputsCount = 0
+
       inputs.forEach( i => {
         if(i.dataset.handleIndex && i.dataset.handleType) {
           if(i.type === 'checkbox') {
             i.checked = protocol.rows[i.dataset.handleIndex][i.dataset.handleType]
+            if(i.checked) {
+             inputsCount++
+            }
           } else {
             i.value = protocol.rows[i.dataset.handleIndex][i.dataset.handleType]
           }
           
         }
       })
+
+      /* Reset checkedAll status */
+      const inputsChecked = document.querySelectorAll('[data-handle-type="checked"]')
+      if((inputsCount == inputsChecked.length) && (inputsChecked.length > 0)) {
+        setCheckedAll(true)
+      } else {
+        setCheckedAll(false)
+      }
     }
 
   }, [protocol])
@@ -150,8 +168,8 @@ const Protocol = () => {
 
   /* Select protocol */
   /* Detect how much protocols we have and show text name or select */
-  const handleSelectedProtocol = event => {
-    const selected = event.target.value
+  const handleSelectedProtocol = e => {
+    const selected = e.target.value
     const findSelected = allProtocols.protocols.find( o => { return o.protocol_schema_id === selected })
 
     setSelectedProtocol(selected)
@@ -174,8 +192,8 @@ const Protocol = () => {
   }
 
   /* Serial number */
-  const serialNumberHandler = (event) => {
-    setSerialNumber(event.target.value)
+  const serialNumberHandler = e => {
+    setSerialNumber(e.target.value)
   }
 
   /* Header of protocol */
@@ -423,49 +441,48 @@ const Protocol = () => {
 
     setSubmitText('Идёт сохранение')
 
-    let allFieldChecked = true
-    protocol.rows.map( e => {
-      if(e.checked === false) {
-        allFieldChecked = false
-      }
-    })
-
-    if(!allFieldChecked){
-      allFieldChecked = window.confirm("Внимание вы не проверили все поля! Вы хотите продолжить?") // should be changed to a modal window
-    }
-
+    let confirmSerialEmpty = true
     if(!serialNumber){
-      alert("Внимание вы не заполнили серийный номер!")
+      confirmSerialEmpty = window.confirm("Внимание вы не заполнили серийный номер!")
     }
 
-    fetch(`${conf.base_url}/api/v1/passports/${internal_id}/serial?serial_number=${serialNumber}`, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }
-    })
-    .then((res)=> {
-      res.ok ? alert("Серийный номер отправлен!") : alert("Что-то пошло не так серийного номера!")
-    })
+    if(confirmSerialEmpty) {
+      fetch(`${conf.base_url}/api/v1/passports/${internal_id}/serial?serial_number=${serialNumber}`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      .then((res)=> {
+        res.ok ? alert("Серийный номер отправлен!") : alert("Что-то пошло не так серийного номера!")
+      })
+    }
 
-    fetch(`${conf.base_url}/api/v1/tcd/protocols/${internal_id}`, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      },
-      body: JSON.stringify(protocol)
-    })
-    .then((res)=> {
-      res.ok ? alert("Протокол успешно отправлен!") : alert("Что-то пошло не так c отправкой протокола!");
-      if(res?.status === 403) {
-        alert("У вас недостаточно прав для отправки протокола!")
-      }
-    }).then(()=> {
-      window.onbeforeunload = () => null;
-      window.location.reload(true);
-    })
+    let confirmNotAllChecked = true
+    if(!checkedAll){
+      confirmNotAllChecked = window.confirm("Внимание вы не проверили все поля! Вы хотите продолжить?")
+    }
+
+    if(confirmNotAllChecked) {
+      fetch(`${conf.base_url}/api/v1/tcd/protocols/${internal_id}`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(protocol)
+      })
+      .then((res)=> {
+        res.ok ? alert("Протокол успешно отправлен!") : alert("Что-то пошло не так c отправкой протокола!");
+        if(res?.status === 403) {
+          alert("У вас недостаточно прав для отправки протокола!")
+        }
+      }).then(()=> {
+        window.onbeforeunload = () => null;
+        window.location.reload(true);
+      })
+    }
 
   }
 
