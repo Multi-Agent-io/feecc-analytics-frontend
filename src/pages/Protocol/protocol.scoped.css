@@ -195,11 +195,11 @@ table th {
   --input-bg: transparent;
   --input-border-radius: 0;
   --input-border-width: 0px;
+  height: 100%;
+  left: var(--table-border-width);
   position: absolute;
   top: var(--table-border-width);
-  left: var(--table-border-width);
-  right: var(--table-border-width);
-  bottom: var(--table-border-width);
+  width: 100%;
 }
 
 .protocol-tablecell-input input:focus:not([disabled]) {
@@ -237,6 +237,8 @@ table th {
 }
 
 @media print {
+
+  @page { size: auto;  margin: 0mm; }
 
   .print-only {
     display: initial;
