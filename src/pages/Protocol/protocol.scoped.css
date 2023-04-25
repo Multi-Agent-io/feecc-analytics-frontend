@@ -191,15 +191,15 @@ table th {
   position: relative;
 }
 
-.protocol-tablecell-input input:not([disabled]) {
+.protocol-tablecell-input input {
   --input-bg: transparent;
   --input-border-radius: 0;
   --input-border-width: 0px;
-  height: 100%;
+  height: calc(100% - var(--table-border-width));
   left: var(--table-border-width);
   position: absolute;
   top: var(--table-border-width);
-  width: 100%;
+  width: calc(100% - var(--table-border-width));
 }
 
 .protocol-tablecell-input input:focus:not([disabled]) {
@@ -209,7 +209,7 @@ table th {
   --input-border-radius: 0;
 }
 
-.protocol-tablecell-input input:placeholder-shown {
+.protocol-tablecell-input input:placeholder-shown:not([disabled]) {
   --input-bg: var(--color-light-purple);
 }
 
@@ -221,8 +221,17 @@ table th {
   --input-bg: var(--color-green);
 }
 
-.protocol-contentblock tr.checked input[type=checkbox]:hover {
+.protocol-contentblock tr.checked input[type=checkbox]:not([disabled]):hover {
   --input-bg: var(--color-light);
+}
+
+.protocol-contentblock table input[type="checkbox"][disabled] {
+  --input-border-width: 0;
+  cursor: default;
+}
+
+.protocol-contentblock table input[type="checkbox"][disabled] + label {
+  cursor: default;
 }
 /* - content */
 
@@ -238,8 +247,6 @@ table th {
 
 @media print {
 
-  @page { size: auto;  margin: 0mm; }
-
   .print-only {
     display: initial;
   }
@@ -250,13 +257,6 @@ table th {
 
   .print:last-child {
       page-break-after: auto;
-  }
-
-  :root {
-    --input-border-width: 0;
-    --input-border-color: transparent;
-    appearance: none;
-    padding: 0;
   }
 
   .app-content {
@@ -272,9 +272,13 @@ table th {
     width: 100%;
   }
 
-  .protocol-header-title {
+  .protocol-header-title, .protocol-header-title select {
     text-align: left;
     font-size: 16px;
+  }
+
+  .protocol-header-title select {
+    width: 100%;
   }
   
   .protocol-header-title h1 {
@@ -284,7 +288,7 @@ table th {
   .protocol-header-title-detail {
     margin-left: 0;
     margin-bottom: 20px;
-    max-width: 50%;
+    max-width: 60%;
   }
 
   .protocol-controls {
@@ -306,5 +310,15 @@ table th {
   .protocol-status-title {
     display: inline;
   }
+
+  .signline {
+    display: inline-block;
+  }
 }
+
+.signline {
+  width: 250px;
+  border-bottom: 1px solid var(--color-dark);
+}
+
 /* - print */

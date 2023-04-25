@@ -178,14 +178,18 @@ const Protocol = () => {
   const detailChoose = () => {
     if(allProtocols?.protocols?.length > 0) {
       return (
-        <select className="protocol-header-title-detail" value={selectedProtocol} onChange={handleSelectedProtocol}>
-          {allProtocols.protocols.map(({ protocol_schema_id, protocol_name }, index) => <option value={protocol_schema_id} >{protocol_name}</option>)}
-        </select>
+        <>
+          <select class="protocol-header-title-detail screen-only" value={selectedProtocol} onChange={handleSelectedProtocol}>
+            {allProtocols.protocols.map(({ protocol_schema_id, protocol_name }, index) => <option value={protocol_schema_id} >{protocol_name}</option>)}
+          </select>
+
+          <div class="print-only">{protocol?.protocol_name}</div>
+        </>
       )
     } else {
       return (
         <>
-          <div className="protocol-header-title-detail">{protocol?.protocol_name}</div>
+          <div class="protocol-header-title-detail">{protocol?.protocol_name}</div>
         </>
       )
     }
@@ -205,19 +209,32 @@ const Protocol = () => {
           <h1>Протокол приёмо-сдаточных испытаний <span class="print-only">№__-В</span></h1>
           
           { detailChoose() }
-          <div>SN: {protocol?.default_serial_number ?? '941619006'}-
+          <div>SN: {protocol?.default_serial_number ?? '941619006'}
             <input 
-              className="width-ch6"
+              class="width-ch6 screen-only"
               onChange={serialNumberHandler}
               value={serialNumber}
               placeholder = "000000"
             />
+            <span class="print-only">{serialNumber ?? '000000'}</span>
           </div>
         </>
       )
     } else {
       return (
         <h1>Протокол приёмо-сдаточных испытаний</h1>
+      )
+    }
+  }
+
+  const cleanChecked = () => {
+    if(protocol?.status !== "Протокол утверждён") {
+      return (
+        <div>
+          <a href="javascript:;" class="link screen-only" onClick={handleCheckAll}>
+            {checkedAll ? 'Очистить' : 'Всё' }
+          </a>
+        </div>
       )
     }
   }
@@ -237,11 +254,7 @@ const Protocol = () => {
                   <th rowSpan={2}>Вторичное испытание</th>
                   <th rowSpan={2}>
                     Проверено
-                    <div>
-                      <a href="javascript:;" class="link screen-only" onClick={handleCheckAll}>
-                        {checkedAll ? 'Очистить' : 'Всё' }
-                      </a>
-                    </div>
+                    { cleanChecked() }
                   </th>
                 </tr>
                 <tr>
@@ -285,7 +298,7 @@ const Protocol = () => {
                   data-handle={selectedProtocol}
                   data-handle-type='test1'
                   data-handle-index={index}
-                  placeholder='Введите значение'
+                  placeholder={protocol?.status === "Протокол утверждён" ? '' : 'Введите значение'}
                   disabled={protocol?.status === "Протокол утверждён"}
                   onBlur={handleInputProtocolData}
                   class="screen-only"
@@ -301,7 +314,7 @@ const Protocol = () => {
                   data-handle={selectedProtocol}
                   data-handle-type='test2'
                   data-handle-index={index}
-                  placeholder='Введите значение'
+                  placeholder={protocol?.status === "Протокол утверждён" ? '' : 'Введите значение'}
                   disabled={protocol?.status === "Протокол утверждён"}
                   onBlur={handleInputProtocolData}
                   class="screen-only"
@@ -384,7 +397,7 @@ const Protocol = () => {
   const showEmployee = () => {
     if(employee) {
       return (
-        <div><b>Испытания провёл:<br/> {employee?.position}<br/> {employee?.name}</b></div>
+        <div><b>Испытания провёл:<br/> {employee?.position}<br/> {employee?.name} <span class="print-only signline"></span></b></div>
       )
     }
   }
