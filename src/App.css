@@ -72,7 +72,7 @@ code {
 }
 
 @media print {
-    @page { size: auto;  margin: 0mm; }
+    @page { size: auto;  margin: 12mm 0mm; }
 
     :root{
         --font-size-primary: 0.6rem;
@@ -88,6 +88,8 @@ code {
         appearance: none;
         padding: 0 !important;
     }
+    
+
 }
 
 .app-content {

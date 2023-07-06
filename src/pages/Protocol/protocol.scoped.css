@@ -249,6 +249,7 @@ table th {
 
   .print-only {
     display: initial;
+    font-weight: 300 !important;
   }
 
   .screen-only {
@@ -305,6 +306,11 @@ table th {
 
   .protocol-contentblock table tr td:not(:first-child), .protocol-contentblock table tr td:not(:first-child) input {
     font-size: 9px !important;
+    font-weight: 300 !important;
+  }
+
+  .protocol-contentblock table tr td b {
+    font-weight: 300;
   }
 
   .protocol-status-title {
@@ -313,6 +319,11 @@ table th {
 
   .signline {
     display: inline-block;
+  }
+
+  .signtext b {
+    font-size: 11px !important;
+    font-weight: 300 !important;
   }
 }
 
