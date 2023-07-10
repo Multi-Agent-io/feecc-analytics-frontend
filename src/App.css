@@ -72,7 +72,34 @@ code {
 }
 
 @media print {
-    @page { size: auto;  margin: 12mm 0mm; }    
+    /* @page { size: auto;  margin: 0mm 0mm; }    */
+
+    @page {
+        size: auto; 
+        margin: 40px 0;
+        @top-left {
+            content: normal;
+        }
+        @bottom-center { 
+            content: element(footer);
+        } 
+    }
+
+    @page :first {
+        margin-top: 0;
+    }
+
+    table tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+      }
+      table  td {
+        page-break-inside: avoid;
+        page-break-after: auto;
+      }
+
+
+
 
     :root{
         --font-size-primary: 0.6rem;
@@ -81,7 +108,13 @@ code {
     }
 
     .App {
+        margin: 12mm 0 !important;
         display: block !important;
+    }
+
+
+    body {
+        margin: 12mm 0 !important;
     }
 
     input, select {
