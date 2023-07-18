@@ -397,7 +397,7 @@ const Protocol = () => {
   const showEmployee = () => {
     if(employee) {
       return (
-        <div><b>Испытания провёл:<br/> {employee?.position}<br/> {employee?.name} <span class="print-only signline"></span></b></div>
+        <div class="print-only signtext"><b>Испытания провёл:<br/> {employee?.position}<br/> {employee?.name} <span class="print-only signline"></span></b></div>
       )
     }
   }
