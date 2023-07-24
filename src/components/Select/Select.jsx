@@ -27,6 +27,15 @@ export default function Select (props) {
   }
 
   useEffect(() => {
+    if(!props.type) {
+      setSelectedElement(t('filters.ChooseFromList'));
+      checkboxes.map(item => {
+        item.state = false
+      })
+    }
+  }, [props.type])
+
+  useEffect(() => {
     setCheckboxes(props.options);
     setTimeout(() => {
       if (checkboxes[0] !== undefined && checkboxes[0].state === true) {

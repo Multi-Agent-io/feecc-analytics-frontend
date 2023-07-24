@@ -1,74 +1,88 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './Passports.module.css';
 import Search from '../../components/Search/Search';
 import SettingsButton from '../../components/SettingsButton/SettingsButton';
 import Filters from '../../components/Filters/Filters';
 import Table from '../../components/Table/Table';
-import { doGetPassports } from '../../store/userActions';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAuthorizationStatus, getPassports, getPassportsNumber } from '../../store/selectors';
+import { doGetPassports, doGetPassportTypes } from '../../store/userActions';
+import {
+  getAllTypes, getAuthorizationStatus, getPassports, getPassportsNumber,
+} from '../../store/selectors';
 import { history } from '../../store/main';
 
-export default function Passports(props) {
+export default function Passports() {
+  const dispatch = useDispatch();
 
-  let dispatch = useDispatch();
-
-  let [pageSize, setPageSize] = useState(11);
-  let [filtersValues, setFiltersValues] = useState({
+  const [pageSize, setPageSize] = useState(11);
+  const [filtersValues, setFiltersValues] = useState({
     deviceType: [''],
     date: null,
     overwork: null,
-    requiredFix: null
+    requiredFix: null,
   });
-  let [searchValue, setSearchValue] = useState('');
-  let [page, setPage] = useState(localStorage.getItem('tablePage') || 1);
-  let [filtersDisplay, changeFiltersDisplay] = useState(true);
-  let [sortingDirection, setSortingDirection] = useState('asc');
+  const [searchValue, setSearchValue] = useState('');
+  const [page, setPage] = useState(localStorage.getItem('tablePage') || 1);
+  const [filtersDisplay, changeFiltersDisplay] = useState(true);
+  const [sortingDirection, setSortingDirection] = useState('asc');
 
-  let authorized = useSelector(getAuthorizationStatus);
-  let pages = Math.ceil(useSelector(getPassportsNumber) / pageSize);
-  let rows = useSelector(getPassports)
-    ?.toJS();
+  const authorized = useSelector(getAuthorizationStatus);
+  const pages = Math.ceil(useSelector(getPassportsNumber) / pageSize);
+  const rows = useSelector(getPassports)?.toJS();
 
+  const passportsTypes = useSelector(getAllTypes);
   const selectOptions = [
     {
       name: 'В производстве',
       value: 'production',
-      state: true
+      state: true,
     },
     {
       name: 'Произведённые',
       value: 'built',
-      state: false
+      state: false,
     },
     {
       name: 'На доработке',
       value: 'revision',
-      state: false
+      state: false,
     },
     {
       name: 'Подтверждённые',
       value: 'approved',
-      state: false
+      state: false,
     },
     {
       name: 'Выпущенные',
       value: 'finalized',
-      state: false
+      state: false,
     },
   ];
 
-  let fetchPassports = () => {
-    let {
+  const fetchPassports = () => {
+    const {
       multiSelectType,
       date,
       overwork,
       requiredFix,
-      singleSelectType
+      singleSelectType,
     } = filtersValues;
+
+    const defaultType = selectOptions.filter(option => option.name === singleSelectType)
+
     if (authorized) {
-      doGetPassports(dispatch, page, pageSize, searchValue, date, requiredFix, overwork, multiSelectType, sortingDirection, singleSelectType)
-        .then((res) => {})
+      doGetPassports(
+        dispatch,
+        page,
+        pageSize,
+        searchValue,
+        date,
+        requiredFix,
+        overwork,
+        multiSelectType,
+        sortingDirection,
+        defaultType.length ? defaultType.value : singleSelectType,
+      ).then()
         .catch((err) => {
           if (err.response.status === 401) {
             history.push('/');
@@ -77,37 +91,57 @@ export default function Passports(props) {
     }
   };
 
-  let dropSettings = () => {
+  const dropSettings = () => {
     setSearchValue('');
     setPage(1);
+    setFiltersValues({
+      deviceType: [''],
+      date: null,
+      overwork: null,
+      requiredFix: null,
+    })
   };
 
-  let setTablePage = (page) => {
-    setPage(parseInt(page));
+  const setTablePage = (tablePage) => {
+    setPage(parseInt(tablePage, 10));
     localStorage.setItem('tablePage', page);
   };
+
+  useEffect(() => {
+    doGetPassportTypes(dispatch)
+      .then()
+      .catch((err) => {
+        if (err.response.status === 401) history.push('/');
+      });
+  }, []);
 
   useEffect(() => {
     fetchPassports();
   }, [filtersValues, sortingDirection, page, pageSize, searchValue]);
 
   useEffect(() => {
-    if (rows.length === 0) {
-      fetchPassports();
-    }
-    if (page > pages && pages !== 0) {
-      setPage(pages);
-    }
+    if (rows.length === 0) fetchPassports();
+    if (page > pages && pages !== 0) setPage(pages);
   }, [fetchPassports, rows]);
 
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.searchWrapper}>
-        <Search value={searchValue} onSearch={() => fetchPassports()} onChange={setSearchValue}/>
-        <SettingsButton onClick={() => {
-          changeFiltersDisplay(!filtersDisplay);
-          filtersDisplay ? setPageSize(13) : setPageSize(11);
-        }}/>
+        <Search
+          value={searchValue}
+          onSearch={() => fetchPassports()}
+          onChange={setSearchValue}
+        />
+        <SettingsButton
+          onClick={() => {
+            changeFiltersDisplay(!filtersDisplay);
+            if (filtersDisplay) {
+              setPageSize(13);
+            } else {
+              setPageSize(11);
+            }
+          }}
+        />
       </div>
       <div className={styles.contentWrapper}>
         <Filters
@@ -121,19 +155,20 @@ export default function Passports(props) {
           toggle={filtersDisplay}
           multiselectFilter={{
             display: true,
-            name: 'filters.DeviceType'
+            name: 'filters.DeviceType',
+            options: passportsTypes,
           }}
           datePickerFilter={{
             display: true,
-            name: 'filters.Date'
+            name: 'filters.Date',
           }}
           singleselectFilter={{
             display: true,
             name: 'filters.DeviceStatus',
-            options: selectOptions
+            options: selectOptions,
           }}
         />
-        <Table
+        {rows.length ? (<Table
           onDirectionChange={setSortingDirection}
           redirectFunction={(id) => history.push(`/passport/${id}/view`)}
           type="passports"
@@ -142,11 +177,13 @@ export default function Passports(props) {
           page={page}
           pageSize={pageSize}
           pages={pages}
-          showTimeIcon={true}
-          showFixIcon={true}
+          showTimeIcon
+          showFixIcon
           headerRow={['Название', 'Тип изделия', 'Дата завершения']}
-          rowsKeys={{nameCol: 'model', typeCol: 'type', dateTimeCol: 'creation_time', id: 'internal_id'}}
-        />
+          rowsKeys={{
+            nameCol: 'model', typeCol: 'type', dateTimeCol: 'creation_time', id: 'internal_id',
+          }}
+        />) : (<div className={styles.pageEmpty} >Nothing was found. Try set different settings.</div>) }
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import styles from './Filters.module.css';
 import { useTranslation } from 'react-i18next';
@@ -24,11 +25,11 @@ export default function Filters(props) {
 
   useEffect(() => {
     props.onChange && props.onChange({
-      multiSelect: deviceType,
+      multiSelectType: deviceType,
       date,
       overwork,
       requiredFix,
-      singleSelect: passportType
+      singleSelectType: passportType
     });
   }, [date, overwork, requiredFix, deviceType, passportType]);
 
@@ -48,6 +49,7 @@ export default function Filters(props) {
     setOverwork(false);
     setRequiredFix(false);
     setDeviceType(['']);
+    setPassportType('')
     props.onDrop && props.onDrop();
   };
 
@@ -59,7 +61,7 @@ export default function Filters(props) {
           <div className={styles.column}>
             <div className={styles.filterName}>{t(props.multiselectFilter.name)}</div>
             <div className={styles.deviceTypeSelect}>
-              <SelectMultiple onChange={(e) => setDeviceType(e)} options={passportTypes}/>
+              <SelectMultiple onChange={(e) => setDeviceType(e)} options={passportTypes} type={deviceType}/>
             </div>
           </div>
         )}
@@ -76,6 +78,7 @@ export default function Filters(props) {
             <div className={styles.deviceTypeSelect}>
               <Select
                 options={props.singleselectFilter.options}
+                type={passportType}
                 onChange={(e) => setPassportType(e.value)}/>
             </div>
           </div>
