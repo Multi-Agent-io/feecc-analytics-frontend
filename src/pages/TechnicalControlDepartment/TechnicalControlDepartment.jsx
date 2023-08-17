@@ -20,11 +20,11 @@ function TechnicalControlDepartment() {
   const [filtersDisplay, changeFiltersDisplay] = useState(true);
 
   const [filtersValues, setFiltersValues] = useState({
-    multiSelect: [''],
+    multiSelectType: [''],
     date: null,
     overwork: null,
     requiredFix: null,
-    singleSelect: 'Первая стадия испытаний пройдена'
+    singleSelectType: 'Первая стадия испытаний пройдена'
   })
   const [pageSize, setPageSize] = useState(11);
   const [page, setPage] = useState(localStorage.getItem('protocolsTablePage') || 1)
@@ -61,8 +61,18 @@ function TechnicalControlDepartment() {
     localStorage.setItem('protocolsTablePage', page)
   }
   const fetchProtocols = () => {
-    doGetProtocols(dispatch, page, pageSize, null, null, filtersValues.singleSelect, sortingDirection)
-      .then(res => console.log(res))
+    doGetProtocols(dispatch, page, pageSize, null, null, filtersValues.singleSelectType, sortingDirection)
+      .then()
+  }
+
+  const dropFilters = () => {
+    setFiltersValues({
+      multiSelectType: [''],
+      date: null,
+      overwork: null,
+      requiredFix: null,
+      singleSelectType: 'Первая стадия испытаний пройдена'
+    })
   }
 
   // ====== useEffect ======
@@ -84,7 +94,7 @@ function TechnicalControlDepartment() {
     </div>
     <div className={styles.contentWrapper}>
       <Filters
-        onDrop={() => console.log('Filters drop')}
+        onDrop={dropFilters}
         onChange={(value) => {
           setFiltersValues(value);
         }}

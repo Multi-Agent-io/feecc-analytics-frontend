@@ -32,6 +32,13 @@ export default function SelectMultiple(props) {
         setCheckboxes(props.options)
     }, [props.options])
 
+
+  useEffect(() => {
+    if(props.type.length === 1) {
+        resetSelection()
+    }
+  }, [props.type])
+
     useEffect(() => {
         let res = ''
         checkboxes.filter((v) => v.state === true).forEach((item, index, arr) => {
