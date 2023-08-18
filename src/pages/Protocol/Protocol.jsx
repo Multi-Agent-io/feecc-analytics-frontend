@@ -301,7 +301,7 @@ const Protocol = () => {
                   placeholder={protocol?.status === "Протокол утверждён" ? '' : 'Введите значение'}
                   disabled={protocol?.status === "Протокол утверждён"}
                   onBlur={handleInputProtocolData}
-                  class="screen-only"
+                  className="screen-only"
               />
             </td>
             <td class="protocol-tablecell-input">
@@ -317,7 +317,7 @@ const Protocol = () => {
                   placeholder={protocol?.status === "Протокол утверждён" ? '' : 'Введите значение'}
                   disabled={protocol?.status === "Протокол утверждён"}
                   onBlur={handleInputProtocolData}
-                  class="screen-only"
+                  className="screen-only"
               />
             </td>
             <td>

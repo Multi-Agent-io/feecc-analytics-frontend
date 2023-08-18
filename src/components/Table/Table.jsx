@@ -8,7 +8,8 @@ import clsx from 'clsx';
 import timeIcon from '../../assets/time_icon.svg';
 import fixIcon from '../../assets/fix_icon.svg';
 import sorting from '../../assets/sorting.svg';
-import styles from './Table.module.css';
+// import styles from './Table.module.css';
+import './table.scoped.css';
 import leftArrow from '../../assets/arrrow_left.svg';
 import rightArrow from '../../assets/arrow_right.svg';
 import slashIcon from '../../assets/slash.svg';
@@ -65,70 +66,60 @@ export default function Table({
     <div>
       <table>
         <thead>
-          {showTimeIcon && (
-            <td id={styles.timeCol}>
-              <img src={timeIcon} alt="Overwork icon" />
-            </td>
-          )}
-          {showFixIcon && (
-            <td id={styles.fixCol}>
-              <img src={fixIcon} alt="Fix required icon" />
-            </td>
-          )}
-
-          <td id={styles.nameCol}>{headerRow[0]}</td>
-          <td id={styles.typeCol}>{headerRow[1]}</td>
-          <td id={styles.dateTimeCol}>
-            <img
-              className={clsx({ [styles.reversed]: direction })}
-              onClick={() => setDirection(!direction)}
-              src={sorting}
-              alt="sorting icon"
-            />
-            <div>{headerRow[2]}</div>
+        {showTimeIcon && (
+          <td id="timeCol">
+            <img src={timeIcon} alt="Overwork icon"/>
           </td>
+        )}
+        {showFixIcon && (
+          <td id="fixCol">
+            <img src={fixIcon} alt="Fix required icon"/>
+          </td>
+        )}
+
+        <td id="nameCol">{headerRow[0]}</td>
+        <td id="typeCol">{headerRow[1]}</td>
+        <td id="dateTimeCol">
+          <img className={clsx({ "reversed": direction })}
+               onClick={() => setDirection(!direction)} src={sorting} alt="sorting icon"/>
+          <div>{headerRow[2]}</div>
+        </td>
         </thead>
         <tbody>
-          {type === 'passports'
-            && rowsData.map((item) => (
-              <tr key={item[rowsKeys.id]}>
-                {showTimeIcon && (
-                  <td id={styles.timeCol}>
-                    {item.overwork && (<img src={timeIcon} alt="Overwork icon" />)}
-                  </td>
-                )}
-                {showFixIcon && (
-                  <td id={styles.fixCol}>
-                    {item.needFix && (<img src={fixIcon} alt="Fix required icon" />)}
-                  </td>
-                )}
-                <td
-                  onClick={() => redirectFunction(item[rowsKeys.id])}
-                  id={styles.nameCol}
-                >
-                  {item[rowsKeys.nameCol]}
+        {type === 'passports' &&
+          rowsData.map((item, index) => {
+            return (<tr key={index}>
+              {showTimeIcon && (
+                <td id="timeCol">
+                  {item.overwork && (<img src={timeIcon} alt="Overwork icon"/>)}
                 </td>
-                <td id={styles.typeCol}>{item[rowsKeys.typeCol] !== null ? item[rowsKeys.typeCol] : 'Сборка'}</td>
-                <td id={styles.dateTimeCol}>
-                  <div>{checkDate(moment(item[rowsKeys.dateTimeCol]).format('DD.MM.YYYY HH:mm:ss'))}</div>
+              )}
+              {showFixIcon && (
+                <td id="fixCol">
+                  {item.needFix && (<img src={fixIcon} alt="Fix required icon"/>)}
                 </td>
-              </tr>
-            ))}
+              )}
+              <td onClick={() => redirectFunction(item[rowsKeys.id])}
+                  id="nameCol">{item[rowsKeys.nameCol]}</td>
+              <td id="typeCol">{item[rowsKeys.typeCol] !== null ? item[rowsKeys.typeCol] : 'Сборка'}</td>
+              <td id="dateTimeCol">
+                <div>{checkDate(moment(item[rowsKeys.dateTimeCol])
+                  .format('DD.MM.YYYY HH:mm:ss'))}</div>
+              </td>
+            </tr>);
+          })}
         </tbody>
       </table>
-      <div className={styles.pageSelectorWrapper}>
-        <div onClick={decreasePage} className={styles.arrows}>
-          <img src={leftArrow} alt="Previous page arrow" />
+      <div className="pageSelectorWrapper">
+        <div onClick={decreasePage} className="arrows">
+          <img src={leftArrow} alt="Previous page arrow"/>
         </div>
-        <input
-          onChange={onInputChange}
-          className={styles.outlinedPageNumberWrapper}
-          value={page}
-        />
-        <img className={styles.slashSeparator} src={slashIcon} alt="Pages slash separator" />
-        <div className={styles.pageNumberWrapper}>{pages}</div>
-        <div onClick={increasePage} className={styles.arrows}>
-          <img src={rightArrow} alt="Next page arrow" />
+        <input onChange={onInputChange} className="outlinedPageNumberWrapper"
+               value={page}/>
+        <img className="slashSeparator" src={slashIcon} alt="Pages slash separator"/>
+        <div className="pageNumberWrapper">{pages}</div>
+        <div onClick={increasePage} className="arrows">
+          <img src={rightArrow} alt="Next page arrow"/>
         </div>
       </div>
     </div>
