@@ -61,11 +61,13 @@ function TechnicalControlDepartment() {
     localStorage.setItem('protocolsTablePage', page)
   }
   const fetchProtocols = () => {
-    doGetProtocols(dispatch, page, pageSize, null, null, filtersValues.singleSelectType, sortingDirection)
+    doGetProtocols(dispatch, page, pageSize, searchValue, null, filtersValues.singleSelectType, sortingDirection)
       .then()
   }
 
   const dropFilters = () => {
+    setSearchValue('');
+    setPage(1);
     setFiltersValues({
       multiSelectType: [''],
       date: null,
@@ -81,12 +83,16 @@ function TechnicalControlDepartment() {
     if (page > pages && page !== 0) {
       setPage(page)
     }
-  }, [filtersValues, page, sortingDirection])
+  }, [filtersValues, page, sortingDirection, searchValue])
 
   return (<div className={styles.pageWrapper}>
     <div className={styles.searchWrapper}>
       <ScanButton/>
-      <Search value={searchValue} onChange={setSearchValue}/>
+      <Search 
+        value={searchValue}
+        onSearch={() => fetchProtocols()}
+        onChange={setSearchValue}
+      />
       <SettingsButton onClick={() => {
         changeFiltersDisplay(!filtersDisplay);
         filtersDisplay ? setPageSize(13) : setPageSize(11);
@@ -107,7 +113,7 @@ function TechnicalControlDepartment() {
           options: [...selectOptions]
         }}
       />
-      <Table
+      {rows.length ? <Table
         onDirectionChange={setSortingDirection}
         redirectFunction={goToProtocolHandler}
         type="passports"
@@ -120,7 +126,7 @@ function TechnicalControlDepartment() {
         showFixIcon={false}
         headerRow={['Название', 'Статус протокола', 'Дата создания']}
         rowsKeys={{nameCol: 'protocol_name', typeCol: 'status', dateTimeCol: 'creation_time', id: 'associated_unit_id'}}
-      />
+      />  : (<div className={styles.pageEmpty} >Nothing was found. Try set different settings.</div>)}
     </div>
   </div>);
 }
